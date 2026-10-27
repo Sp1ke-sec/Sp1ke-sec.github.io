@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Fawn About: Fawn is a very easy Linux machine which explores the File Transfer Protocol (FTP) and its exploitation when misconfigured to allow anonymous access. 介绍：Fawn 是一台非常简单的 Linux 机器，它探索了文件传输协议 (FTP) 及其在配置错误时允许匿名访问的">
+<title>2. Fawn</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/2.-fawn/'>
+
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="2. Fawn">
+<meta property='og:description' content="Fawn About: Fawn is a very easy Linux machine which explores the File Transfer Protocol (FTP) and its exploitation when misconfigured to allow anonymous access. 介绍：Fawn 是一台非常简单的 Linux 机器，它探索了文件传输协议 (FTP) 及其在配置错误时允许匿名访问的">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/2.-fawn/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-10-27T14:33:34&#43;08:00'/><meta property='article:modified_time' content='2026-10-27T14:33:34&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/2.-fawn/assets/image-20261027140445868.png' />
+<meta name="twitter:title" content="2. Fawn">
+<meta name="twitter:description" content="Fawn About: Fawn is a very easy Linux machine which explores the File Transfer Protocol (FTP) and its exploitation when misconfigured to allow anonymous access. 介绍：Fawn 是一台非常简单的 Linux 机器，它探索了文件传输协议 (FTP) 及其在配置错误时允许匿名访问的"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/2.-fawn/assets/image-20261027140445868.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#task-8">Task 8</a></li>
+        <li><a href="#task-9">Task 9</a></li>
+        <li><a href="#task-10">Task 10</a></li>
+        <li><a href="#task-11">Task 11</a></li>
+        <li><a href="#submit-single-flag">Submit Single Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/2.-fawn/">
+                <img src="/p/2.-fawn/assets/image-20261027140445868_hu138266325263076044.png"
+                        srcset="/p/2.-fawn/assets/image-20261027140445868_hu138266325263076044.png 800w, /p/2.-fawn/assets/image-20261027140445868_hu9662726866128094227.png 1600w"
+                        width="800" 
+                        height="354" 
+                        loading="lazy"
+                        alt="Featured image of post 2. Fawn" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/2.-fawn/">2. Fawn</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-10-27</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="fawn">Fawn
+</h1><p><img src="/p/2.-fawn/assets/image-20261027140445868.png"
+	width="493"
+	height="218"
+	srcset="/p/2.-fawn/assets/image-20261027140445868_hu3462672244384934782.png 480w, /p/2.-fawn/assets/image-20261027140445868_hu5155911003002538238.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261027140445868"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="226"
+		data-flex-basis="542px"
+	
+></p>
+<p>About: Fawn is a very easy Linux machine which explores the File Transfer Protocol (FTP) and its exploitation when misconfigured to allow anonymous access.</p>
+<p>介绍：Fawn 是一台非常简单的 Linux 机器，它探索了文件传输协议 (FTP) 及其在配置错误时允许匿名访问的利用方式。</p>
+<p>靶机地址：<code>10.129.1.14</code></p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>What does the 3-letter acronym FTP stand for?</p>
+<p>FTP这三个字母的缩写代表什么？</p>
+</blockquote>
+<p>文件传输协议</p>
+<p><strong>答案：File Transfer Protocol</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>Which port does the FTP service listen on usually?</p>
+<p>FTP 服务通常监听哪个端口？</p>
+</blockquote>
+<p><strong>答案：21</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>FTP sends data in the clear, without any encryption. What acronym is used for a later protocol designed to provide similar functionality to FTP but securely, as an extension of the SSH protocol?</p>
+<p>FTP以明文形式发送数据，不进行任何加密。后来出现了一种协议，旨在提供与FTP类似的功能，但更加安全，它是SSH协议的扩展，该协议的缩写是什么？</p>
+</blockquote>
+<p>SSH File Transfer Protocol，是 SSH 的扩展，在 SSH 通道里传输文件，加密数据，替代明文 FTP。</p>
+<p><strong>答案：SFTP</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>What is the command we can use to send an ICMP echo request to test our connection to the target?</p>
+<p>我们可以使用什么命令发送 ICMP 回显请求来测试与目标的连接？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ping 10.129.1.14  
+</span></span><span class="line"><span class="cl">PING 10.129.1.14 <span class="o">(</span>10.129.1.14<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.1.14: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">263</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.1.14: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">234</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.1.14: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">233</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.1.14: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">4</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">230</span> ms
+</span></span><span class="line"><span class="cl">^C
+</span></span><span class="line"><span class="cl">--- 10.129.1.14 ping statistics ---
+</span></span><span class="line"><span class="cl"><span class="m">4</span> packets transmitted, <span class="m">4</span> received, 0% packet loss, <span class="nb">time</span> 2997ms
+</span></span><span class="line"><span class="cl">rtt min/avg/max/mdev <span class="o">=</span> 230.092/240.062/263.132/13.392 ms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：ping</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>From your scans, what version is FTP running on the target?</p>
+<p>根据扫描结果，目标主机上运行的是哪个版本的FTP？</p>
+</blockquote>
+<p>通过 nmap 的 <code>-sV</code> 参数可以详细扫描服务版本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Fawn<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -sV -p <span class="m">21</span> 10.129.1.14           
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-10-27 02:13 -0400
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.1.14 <span class="o">(</span>10.129.1.14<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.26s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">21/tcp open  ftp     vsftpd 3.0.3
+</span></span><span class="line"><span class="cl">Service Info: OS: Unix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 1.70 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案： vsftpd 3.0.3</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>From your scans, what OS type is running on the target?</p>
+<p>根据扫描结果，目标设备运行的是哪种操作系统？</p>
+</blockquote>
+<p>上面扫描结果中有一行 <code>Service Info: OS: Unix</code> ，说明操作系统是 Unix。</p>
+<p><strong>答案：unix</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>What is the command we need to run in order to display the &lsquo;ftp&rsquo; client help menu?</p>
+<p>要显示“ftp”客户端的帮助菜单，我们需要运行什么命令？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Fawn<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ftp -?
+</span></span><span class="line"><span class="cl">usage: ftp <span class="o">[</span>-46AadefginpRtVv<span class="o">]</span> <span class="o">[</span>-b BUFSIZE<span class="o">]</span> <span class="o">[</span>-H HEADER<span class="o">]</span> <span class="o">[</span>-N NETRC<span class="o">]</span> <span class="o">[</span>-o OUTPUT<span class="o">]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[</span>-P PORT<span class="o">]</span> <span class="o">[</span>-q QUITTIME<span class="o">]</span> <span class="o">[</span>-r RETRY<span class="o">]</span> <span class="o">[</span>-s SRCADDR<span class="o">]</span> <span class="o">[</span>-T DIR,MAX<span class="o">[</span>,INC<span class="o">]]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[</span>-x XFERSIZE<span class="o">]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[[</span>USER@<span class="o">]</span>HOST <span class="o">[</span>PORT<span class="o">]]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[[</span>USER@<span class="o">]</span>HOST:<span class="o">[</span>PATH<span class="o">][</span>/<span class="o">]]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[</span>file:///PATH<span class="o">]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[</span>ftp://<span class="o">[</span>USER<span class="o">[</span>:PASSWORD<span class="o">]</span>@<span class="o">]</span>HOST<span class="o">[</span>:PORT<span class="o">]</span>/PATH<span class="o">[</span>/<span class="o">][</span><span class="p">;</span><span class="nv">type</span><span class="o">=</span>TYPE<span class="o">]]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[</span>http://<span class="o">[</span>USER<span class="o">[</span>:PASSWORD<span class="o">]</span>@<span class="o">]</span>HOST<span class="o">[</span>:PORT<span class="o">]</span>/PATH<span class="o">]</span>
+</span></span><span class="line"><span class="cl">           <span class="o">[</span>https://<span class="o">[</span>USER<span class="o">[</span>:PASSWORD<span class="o">]</span>@<span class="o">]</span>HOST<span class="o">[</span>:PORT<span class="o">]</span>/PATH<span class="o">]</span>
+</span></span><span class="line"><span class="cl">           ...
+</span></span><span class="line"><span class="cl">       ftp -u URL FILE ...
+</span></span><span class="line"><span class="cl">       ftp -?
+</span></span><span class="line"><span class="cl">  -4            Only use IPv4 addresses
+</span></span><span class="line"><span class="cl">  -6            Only use IPv6 addresses
+</span></span><span class="line"><span class="cl">  -A            Force active mode
+</span></span><span class="line"><span class="cl">  -a            Use anonymous login
+</span></span><span class="line"><span class="cl">  -b BUFSIZE    Use BUFSIZE bytes <span class="k">for</span> fetch buffer
+</span></span><span class="line"><span class="cl">  -d            Enable debugging
+</span></span><span class="line"><span class="cl">  -e            Disable command-line editing
+</span></span><span class="line"><span class="cl">  -f            Force cache reload <span class="k">for</span> FTP or HTTP proxy transfers
+</span></span><span class="line"><span class="cl">  -g            Disable file name globbing
+</span></span><span class="line"><span class="cl">  -H HEADER     Add custom HTTP header HEADER <span class="k">for</span> HTTP transfers<span class="p">;</span>
+</span></span><span class="line"><span class="cl">                may be repeated <span class="k">for</span> additional headers
+</span></span><span class="line"><span class="cl">  -i            Disable interactive prompt during multiple file transfers
+</span></span><span class="line"><span class="cl">  -N NETRC      Use NETRC instead of ~/.netrc
+</span></span><span class="line"><span class="cl">  -n            Disable auto-login
+</span></span><span class="line"><span class="cl">  -o OUTPUT     Save auto-fetched files to OUTPUT
+</span></span><span class="line"><span class="cl">  -P PORT       Use port PORT
+</span></span><span class="line"><span class="cl">  -p            Force passive mode
+</span></span><span class="line"><span class="cl">  -q QUITTIME   Quit <span class="k">if</span> connection stalls <span class="k">for</span> QUITTIME seconds
+</span></span><span class="line"><span class="cl">  -R            Restart non-proxy auto-fetch
+</span></span><span class="line"><span class="cl">  -r RETRY      Retry failed connection attempts after RETRY seconds
+</span></span><span class="line"><span class="cl">  -s SRCADDR    Use IP <span class="nb">source</span> address SRCADDR
+</span></span><span class="line"><span class="cl">  -T DIR,MAX<span class="o">[</span>,INC<span class="o">]</span>
+</span></span><span class="line"><span class="cl">                Set maximum transfer rate <span class="k">for</span> direction DIR <span class="o">(</span>all, get, or put<span class="o">)</span>
+</span></span><span class="line"><span class="cl">                to MAX bytes/s, with optional increment INC bytes/s
+</span></span><span class="line"><span class="cl">  -t            Enable packet tracing
+</span></span><span class="line"><span class="cl">  -u URL        URL to upload file arguments to
+</span></span><span class="line"><span class="cl">  -V            Disable verbose and progress
+</span></span><span class="line"><span class="cl">  -v            Enable verbose and progress
+</span></span><span class="line"><span class="cl">  -x XFERSIZE   Set socket send and receive size to XFERSIZE bytes
+</span></span><span class="line"><span class="cl">  -?            Display this <span class="nb">help</span> and <span class="nb">exit</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案： ftp -?</strong></p>
+<h3 id="task-8">Task 8
+</h3><blockquote>
+<p>What is username that is used over FTP when you want to log in without having an account?</p>
+<p>当您想在没有帐户的情况下通过 FTP 登录时，使用的用户名是什么？</p>
+</blockquote>
+<p>匿名登录账户 anonymous</p>
+<p><strong>答案：anonymous</strong></p>
+<h3 id="task-9">Task 9
+</h3><blockquote>
+<p>What is the response code we get for the FTP message &lsquo;Login successful&rsquo;?</p>
+<p>对于“登录成功”的 FTP 消息，我们得到的响应代码是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Fawn<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ftp -a 10.129.1.14
+</span></span><span class="line"><span class="cl">Connected to 10.129.1.14.
+</span></span><span class="line"><span class="cl"><span class="m">220</span> <span class="o">(</span>vsFTPd 3.0.3<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">331</span> Please specify the password.
+</span></span><span class="line"><span class="cl"><span class="m">230</span> Login successful.
+</span></span><span class="line"><span class="cl">Remote system <span class="nb">type</span> is UNIX.
+</span></span><span class="line"><span class="cl">Using binary mode to transfer files.
+</span></span><span class="line"><span class="cl">ftp&gt; 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据 Task 7 的帮助菜单可知，<code>-a</code> 是匿名登录。</p>
+<p>由 <code>230 Login successful.</code> 可知登录成功的响应代码是 230。</p>
+<p><strong>答案：230</strong></p>
+<h3 id="task-10">Task 10
+</h3><blockquote>
+<p>There are a couple of commands we can use to list the files and directories available on the FTP server. One is dir. What is the other that is a common way to list files on a Linux system.</p>
+<p>我们可以使用几个命令来列出FTP服务器上可用的文件和目录。一个是dir命令。另一个是Linux系统上常用的文件列表命令是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ftp&gt; dir
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>12392<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Here comes the directory listing.
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> <span class="m">0</span>        <span class="m">0</span>              <span class="m">32</span> Jun <span class="m">04</span>  <span class="m">2021</span> flag.txt
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Directory send OK.
+</span></span><span class="line"><span class="cl">ftp&gt; ls
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>61236<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Here comes the directory listing.
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> <span class="m">0</span>        <span class="m">0</span>              <span class="m">32</span> Jun <span class="m">04</span>  <span class="m">2021</span> flag.txt
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Directory send OK.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：ls</strong></p>
+<h3 id="task-11">Task 11
+</h3><blockquote>
+<p>What is the command used to download the file we found on the FTP server?</p>
+<p>用来下载我们在FTP服务器上找到的文件的命令是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ftp&gt; get flag.txt
+</span></span><span class="line"><span class="cl">local: flag.txt remote: flag.txt
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>38144<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Opening BINARY mode data connection <span class="k">for</span> flag.txt <span class="o">(</span><span class="m">32</span> bytes<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">100% <span class="p">|</span>************************************************<span class="p">|</span>    <span class="m">32</span>        0.13 KiB/s    00:00 ETA
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Transfer complete.
+</span></span><span class="line"><span class="cl"><span class="m">32</span> bytes received in 00:01 <span class="o">(</span>0.03 KiB/s<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：get</strong></p>
+<h3 id="submit-single-flag">Submit Single Flag
+</h3><blockquote>
+<p>Submit the flag located on the FTP server.</p>
+<p>提交位于 FTP 服务器上的 flag。</p>
+</blockquote>
+<p>FTP 没有提供直接读取文件内容的命令，常见的做法是使用 <code>get</code> 下载文件到本地后读取。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ftp&gt; quit
+</span></span><span class="line"><span class="cl"><span class="m">221</span> Goodbye.
+</span></span><span class="line"><span class="cl">                                                                                       
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Fawn<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat flag.txt 
+</span></span><span class="line"><span class="cl">035db21c881520061c53e0536e44f815  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：035db21c881520061c53e0536e44f815</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/1.-meow/">
+        
+        
+            <div class="article-image">
+                <img src="/p/1.-meow/Meow.122025366ccf02d46af5e8b27d41c5df_hu16383599966656616706.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 1. Meow"
+                        
+                        data-hash="md5-EiAlNmzPAtRq9eiyfUHF3w==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">1. Meow</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -7,7 +7,353 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Sp1ke</copyright>
-        <lastBuildDate>Mon, 26 Oct 2026 21:07:44 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 27 Oct 2026 14:33:34 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>2. Fawn</title>
+        <link>https://Sp1ke-sec.github.io/p/2.-fawn/</link>
+        <pubDate>Tue, 27 Oct 2026 14:33:34 +0800</pubDate>
+        
+        <guid>https://Sp1ke-sec.github.io/p/2.-fawn/</guid>
+        <description>&lt;img src="https://Sp1ke-sec.github.io/p/2.-fawn/assets/image-20261027140445868.png" alt="Featured image of post 2. Fawn" /&gt;&lt;h1 id=&#34;fawn&#34;&gt;Fawn
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/2.-fawn/assets/image-20261027140445868.png&#34;
+	width=&#34;493&#34;
+	height=&#34;218&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/2.-fawn/assets/image-20261027140445868_hu3462672244384934782.png 480w, https://Sp1ke-sec.github.io/p/2.-fawn/assets/image-20261027140445868_hu5155911003002538238.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261027140445868&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;226&#34;
+		data-flex-basis=&#34;542px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;About: Fawn is a very easy Linux machine which explores the File Transfer Protocol (FTP) and its exploitation when misconfigured to allow anonymous access.&lt;/p&gt;
+&lt;p&gt;介绍：Fawn 是一台非常简单的 Linux 机器，它探索了文件传输协议 (FTP) 及其在配置错误时允许匿名访问的利用方式。&lt;/p&gt;
+&lt;p&gt;靶机地址：&lt;code&gt;10.129.1.14&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-1&#34;&gt;Task 1
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What does the 3-letter acronym FTP stand for?&lt;/p&gt;
+&lt;p&gt;FTP这三个字母的缩写代表什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;文件传输协议&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：File Transfer Protocol&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-2&#34;&gt;Task 2
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which port does the FTP service listen on usually?&lt;/p&gt;
+&lt;p&gt;FTP 服务通常监听哪个端口？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;答案：21&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-3&#34;&gt;Task 3
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;FTP sends data in the clear, without any encryption. What acronym is used for a later protocol designed to provide similar functionality to FTP but securely, as an extension of the SSH protocol?&lt;/p&gt;
+&lt;p&gt;FTP以明文形式发送数据，不进行任何加密。后来出现了一种协议，旨在提供与FTP类似的功能，但更加安全，它是SSH协议的扩展，该协议的缩写是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;SSH File Transfer Protocol，是 SSH 的扩展，在 SSH 通道里传输文件，加密数据，替代明文 FTP。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：SFTP&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-4&#34;&gt;Task 4
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the command we can use to send an ICMP echo request to test our connection to the target?&lt;/p&gt;
+&lt;p&gt;我们可以使用什么命令发送 ICMP 回显请求来测试与目标的连接？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# ping 10.129.1.14  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PING 10.129.1.14 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;10.129.1.14&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; 56&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;84&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; bytes of data.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; bytes from 10.129.1.14: &lt;span class=&#34;nv&#34;&gt;icmp_seq&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ttl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;63&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;time&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;263&lt;/span&gt; ms
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; bytes from 10.129.1.14: &lt;span class=&#34;nv&#34;&gt;icmp_seq&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ttl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;63&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;time&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;234&lt;/span&gt; ms
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; bytes from 10.129.1.14: &lt;span class=&#34;nv&#34;&gt;icmp_seq&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ttl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;63&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;time&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;233&lt;/span&gt; ms
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;64&lt;/span&gt; bytes from 10.129.1.14: &lt;span class=&#34;nv&#34;&gt;icmp_seq&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;ttl&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;63&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;time&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;230&lt;/span&gt; ms
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;^C
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;--- 10.129.1.14 ping statistics ---
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; packets transmitted, &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; received, 0% packet loss, &lt;span class=&#34;nb&#34;&gt;time&lt;/span&gt; 2997ms
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;rtt min/avg/max/mdev &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; 230.092/240.062/263.132/13.392 ms
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：ping&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-5&#34;&gt;Task 5
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;From your scans, what version is FTP running on the target?&lt;/p&gt;
+&lt;p&gt;根据扫描结果，目标主机上运行的是哪个版本的FTP？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;通过 nmap 的 &lt;code&gt;-sV&lt;/code&gt; 参数可以详细扫描服务版本。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/Fawn&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# nmap -sV -p &lt;span class=&#34;m&#34;&gt;21&lt;/span&gt; 10.129.1.14           
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Starting Nmap 7.99 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; at 2026-10-27 02:13 -0400
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.129.1.14 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;10.129.1.14&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.26s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PORT   STATE SERVICE VERSION
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;21/tcp open  ftp     vsftpd 3.0.3
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Service Info: OS: Unix
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; IP address &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; host up&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; scanned in 1.70 seconds
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案： vsftpd 3.0.3&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-6&#34;&gt;Task 6
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;From your scans, what OS type is running on the target?&lt;/p&gt;
+&lt;p&gt;根据扫描结果，目标设备运行的是哪种操作系统？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;上面扫描结果中有一行 &lt;code&gt;Service Info: OS: Unix&lt;/code&gt; ，说明操作系统是 Unix。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：unix&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-7&#34;&gt;Task 7
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the command we need to run in order to display the &amp;lsquo;ftp&amp;rsquo; client help menu?&lt;/p&gt;
+&lt;p&gt;要显示“ftp”客户端的帮助菜单，我们需要运行什么命令？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/Fawn&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# ftp -?
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;usage: ftp &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-46AadefginpRtVv&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-b BUFSIZE&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-H HEADER&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-N NETRC&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-o OUTPUT&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-P PORT&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-q QUITTIME&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-r RETRY&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-s SRCADDR&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-T DIR,MAX&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;,INC&lt;span class=&#34;o&#34;&gt;]]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;-x XFERSIZE&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;o&#34;&gt;[[&lt;/span&gt;USER@&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;HOST &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;PORT&lt;span class=&#34;o&#34;&gt;]]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;o&#34;&gt;[[&lt;/span&gt;USER@&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;HOST:&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;PATH&lt;span class=&#34;o&#34;&gt;][&lt;/span&gt;/&lt;span class=&#34;o&#34;&gt;]]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;file:///PATH&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ftp://&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;USER&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;:PASSWORD&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;@&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;HOST&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;:PORT&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;/PATH&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;/&lt;span class=&#34;o&#34;&gt;][&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;TYPE&lt;span class=&#34;o&#34;&gt;]]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;http://&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;USER&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;:PASSWORD&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;@&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;HOST&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;:PORT&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;/PATH&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;https://&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;USER&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;:PASSWORD&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;@&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;HOST&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;:PORT&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;/PATH&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;           ...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;       ftp -u URL FILE ...
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;       ftp -?
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -4            Only use IPv4 addresses
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -6            Only use IPv6 addresses
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -A            Force active mode
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -a            Use anonymous login
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -b BUFSIZE    Use BUFSIZE bytes &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; fetch buffer
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -d            Enable debugging
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -e            Disable command-line editing
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -f            Force cache reload &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; FTP or HTTP proxy transfers
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -g            Disable file name globbing
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -H HEADER     Add custom HTTP header HEADER &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; HTTP transfers&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                may be repeated &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; additional headers
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -i            Disable interactive prompt during multiple file transfers
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -N NETRC      Use NETRC instead of ~/.netrc
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -n            Disable auto-login
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -o OUTPUT     Save auto-fetched files to OUTPUT
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -P PORT       Use port PORT
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -p            Force passive mode
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -q QUITTIME   Quit &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; connection stalls &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; QUITTIME seconds
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -R            Restart non-proxy auto-fetch
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -r RETRY      Retry failed connection attempts after RETRY seconds
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -s SRCADDR    Use IP &lt;span class=&#34;nb&#34;&gt;source&lt;/span&gt; address SRCADDR
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -T DIR,MAX&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;,INC&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                Set maximum transfer rate &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; direction DIR &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;all, get, or put&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                to MAX bytes/s, with optional increment INC bytes/s
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -t            Enable packet tracing
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -u URL        URL to upload file arguments to
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -V            Disable verbose and progress
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -v            Enable verbose and progress
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -x XFERSIZE   Set socket send and receive size to XFERSIZE bytes
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  -?            Display this &lt;span class=&#34;nb&#34;&gt;help&lt;/span&gt; and &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案： ftp -?&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-8&#34;&gt;Task 8
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is username that is used over FTP when you want to log in without having an account?&lt;/p&gt;
+&lt;p&gt;当您想在没有帐户的情况下通过 FTP 登录时，使用的用户名是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;匿名登录账户 anonymous&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：anonymous&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-9&#34;&gt;Task 9
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the response code we get for the FTP message &amp;lsquo;Login successful&amp;rsquo;?&lt;/p&gt;
+&lt;p&gt;对于“登录成功”的 FTP 消息，我们得到的响应代码是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/Fawn&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# ftp -a 10.129.1.14
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Connected to 10.129.1.14.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;220&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;vsFTPd 3.0.3&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;331&lt;/span&gt; Please specify the password.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;230&lt;/span&gt; Login successful.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Remote system &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; is UNIX.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Using binary mode to transfer files.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ftp&amp;gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;根据 Task 7 的帮助菜单可知，&lt;code&gt;-a&lt;/code&gt; 是匿名登录。&lt;/p&gt;
+&lt;p&gt;由 &lt;code&gt;230 Login successful.&lt;/code&gt; 可知登录成功的响应代码是 230。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：230&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-10&#34;&gt;Task 10
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;There are a couple of commands we can use to list the files and directories available on the FTP server. One is dir. What is the other that is a common way to list files on a Linux system.&lt;/p&gt;
+&lt;p&gt;我们可以使用几个命令来列出FTP服务器上可用的文件和目录。一个是dir命令。另一个是Linux系统上常用的文件列表命令是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ftp&amp;gt; dir
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;229&lt;/span&gt; Entering Extended Passive Mode &lt;span class=&#34;o&#34;&gt;(||&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;12392&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;150&lt;/span&gt; Here comes the directory listing.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r--    &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;              &lt;span class=&#34;m&#34;&gt;32&lt;/span&gt; Jun &lt;span class=&#34;m&#34;&gt;04&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2021&lt;/span&gt; flag.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;226&lt;/span&gt; Directory send OK.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ftp&amp;gt; ls
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;229&lt;/span&gt; Entering Extended Passive Mode &lt;span class=&#34;o&#34;&gt;(||&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;61236&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;150&lt;/span&gt; Here comes the directory listing.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r--    &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;              &lt;span class=&#34;m&#34;&gt;32&lt;/span&gt; Jun &lt;span class=&#34;m&#34;&gt;04&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2021&lt;/span&gt; flag.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;226&lt;/span&gt; Directory send OK.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：ls&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-11&#34;&gt;Task 11
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the command used to download the file we found on the FTP server?&lt;/p&gt;
+&lt;p&gt;用来下载我们在FTP服务器上找到的文件的命令是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ftp&amp;gt; get flag.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;local: flag.txt remote: flag.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;229&lt;/span&gt; Entering Extended Passive Mode &lt;span class=&#34;o&#34;&gt;(||&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;38144&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;150&lt;/span&gt; Opening BINARY mode data connection &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; flag.txt &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;32&lt;/span&gt; bytes&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;100% &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;************************************************&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    &lt;span class=&#34;m&#34;&gt;32&lt;/span&gt;        0.13 KiB/s    00:00 ETA
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;226&lt;/span&gt; Transfer complete.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;32&lt;/span&gt; bytes received in 00:01 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.03 KiB/s&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：get&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;submit-single-flag&#34;&gt;Submit Single Flag
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Submit the flag located on the FTP server.&lt;/p&gt;
+&lt;p&gt;提交位于 FTP 服务器上的 flag。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;FTP 没有提供直接读取文件内容的命令，常见的做法是使用 &lt;code&gt;get&lt;/code&gt; 下载文件到本地后读取。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ftp&amp;gt; quit
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;221&lt;/span&gt; Goodbye.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                                                                       
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/Fawn&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# cat flag.txt 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;035db21c881520061c53e0536e44f815  
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：035db21c881520061c53e0536e44f815&lt;/strong&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>1. Meow</title>
         <link>https://Sp1ke-sec.github.io/p/1.-meow/</link>
         <pubDate>Mon, 26 Oct 2026 21:07:44 +0800</pubDate>
