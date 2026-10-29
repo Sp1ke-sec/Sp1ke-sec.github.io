@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Redeemer About: Redeemer is a very easy Linux machine which explores the enumeration and exploitation of a Redis database server while showcasing the redis-cli command line utility and basic commands to interact with the Redis service. 介绍：Redeemer 是一个非常简单的 Linux 机器，它探索了 Redis 数据库服务器">
+<title>4. Redeemer</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/4.-redeemer/'>
+
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="4. Redeemer">
+<meta property='og:description' content="Redeemer About: Redeemer is a very easy Linux machine which explores the enumeration and exploitation of a Redis database server while showcasing the redis-cli command line utility and basic commands to interact with the Redis service. 介绍：Redeemer 是一个非常简单的 Linux 机器，它探索了 Redis 数据库服务器">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/4.-redeemer/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-10-29T14:57:42&#43;08:00'/><meta property='article:modified_time' content='2026-10-29T14:57:42&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/4.-redeemer/assets/image-20261029141547603.png' />
+<meta name="twitter:title" content="4. Redeemer">
+<meta name="twitter:description" content="Redeemer About: Redeemer is a very easy Linux machine which explores the enumeration and exploitation of a Redis database server while showcasing the redis-cli command line utility and basic commands to interact with the Redis service. 介绍：Redeemer 是一个非常简单的 Linux 机器，它探索了 Redis 数据库服务器"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/4.-redeemer/assets/image-20261029141547603.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#task-8">Task 8</a></li>
+        <li><a href="#task-9">Task 9</a></li>
+        <li><a href="#task-10">Task 10</a></li>
+        <li><a href="#submit-single-flag">Submit Single Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/4.-redeemer/">
+                <img src="/p/4.-redeemer/assets/image-20261029141547603_hu5373248768044179007.png"
+                        srcset="/p/4.-redeemer/assets/image-20261029141547603_hu5373248768044179007.png 800w, /p/4.-redeemer/assets/image-20261029141547603_hu13540567311350833210.png 1600w"
+                        width="800" 
+                        height="335" 
+                        loading="lazy"
+                        alt="Featured image of post 4. Redeemer" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/4.-redeemer/">4. Redeemer</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-10-29</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="redeemer">Redeemer
+</h1><p><img src="/p/4.-redeemer/assets/image-20261029141547603.png"
+	width="483"
+	height="202"
+	srcset="/p/4.-redeemer/assets/image-20261029141547603_hu1969693782366349890.png 480w, /p/4.-redeemer/assets/image-20261029141547603_hu9140627971715711356.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261029141547603"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="239"
+		data-flex-basis="573px"
+	
+></p>
+<p>About: Redeemer is a very easy Linux machine which explores the enumeration and exploitation of a Redis database server while showcasing the redis-cli command line utility and basic commands to interact with the Redis service.</p>
+<p>介绍：Redeemer 是一个非常简单的 Linux 机器，它探索了 Redis 数据库服务器的枚举和利用，同时展示了 redis-cli 命令行实用程序和与 Redis 服务交互的基本命令。</p>
+<p>靶机 IP：10.129.136.187</p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>Which TCP port is open on the machine?</p>
+<p>机器上哪个 TCP 端口是开放的？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -sV -p <span class="m">6379</span> 10.129.136.187 
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-10-29 02:30 -0400
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.136.187 <span class="o">(</span>10.129.136.187<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.27s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">6379/tcp open  redis   Redis key-value store 5.0.7
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 8.61 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个机器打的时候连接很不稳定，导致多次 nmap 扫描都没扫出开放端口。</p>
+<p>因为机器介绍写了是 Redis 服务，默认开放在 6379 端口，所以只探测 6379 端口。</p>
+<p><strong>答案：6379</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>Which service is running on the port that is open on the machine?</p>
+<p>机器上打开的端口正在运行哪个服务？</p>
+</blockquote>
+<p><strong>答案：redis</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>What type of database is Redis? Choose from the following options: (i) In-memory Database, (ii) Traditional Database</p>
+<p>Redis 是什么类型的数据库？请从以下选项中选择：（i）内存数据库，（ii）传统数据库</p>
+</blockquote>
+<p>Redis 是开源的、基于内存的键值（Key-Value）数据库，数据主要存放在内存中，同时支持持久化落盘。传统数据库一般指 MySQL、PostgreSQL 这类磁盘型关系库。</p>
+<p><strong>答案：In-memory Database</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>Which command-line utility is used to interact with the Redis server? Enter the program name you would enter into the terminal without any arguments.</p>
+<p>哪个命令行工具用于与 Redis 服务器交互？请输入您在终端中输入的程序名称（不带任何参数）。</p>
+</blockquote>
+<p><strong>答案：redis-cli</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>Which flag is used with the Redis command-line utility to specify the hostname?</p>
+<p>在 Redis 命令行工具中，使用哪个标志来指定主机名？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# redis-cli -h 10.129.136.187
+</span></span><span class="line"><span class="cl">10.129.136.187:6379&gt; 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：-h</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>Once connected to a Redis server, which command is used to obtain the information and statistics about the Redis server?</p>
+<p>连接到 Redis 服务器后，使用哪个命令可以获取有关 Redis 服务器的信息和统计信息？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">10.129.136.187:6379&gt; info
+</span></span><span class="line"><span class="cl"><span class="c1"># Server</span>
+</span></span><span class="line"><span class="cl">redis_version:5.0.7
+</span></span><span class="line"><span class="cl">redis_git_sha1:00000000
+</span></span><span class="line"><span class="cl">redis_git_dirty:0
+</span></span><span class="line"><span class="cl">redis_build_id:66bd629f924ac924
+</span></span><span class="line"><span class="cl">redis_mode:standalone
+</span></span><span class="line"><span class="cl">os:Linux 5.4.0-77-generic x86_64
+</span></span><span class="line"><span class="cl">arch_bits:64
+</span></span><span class="line"><span class="cl">multiplexing_api:epoll
+</span></span><span class="line"><span class="cl">atomicvar_api:atomic-builtin
+</span></span><span class="line"><span class="cl">gcc_version:9.3.0
+</span></span><span class="line"><span class="cl">process_id:752
+</span></span><span class="line"><span class="cl">run_id:fcb0da97ee92ef8d1869cdab56861effff0626bd
+</span></span><span class="line"><span class="cl">tcp_port:6379
+</span></span><span class="line"><span class="cl">uptime_in_seconds:1402
+</span></span><span class="line"><span class="cl">uptime_in_days:0
+</span></span><span class="line"><span class="cl">hz:10
+</span></span><span class="line"><span class="cl">configured_hz:10
+</span></span><span class="line"><span class="cl">lru_clock:14871049
+</span></span><span class="line"><span class="cl">executable:/usr/bin/redis-server
+</span></span><span class="line"><span class="cl">config_file:/etc/redis/redis.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Clients</span>
+</span></span><span class="line"><span class="cl">connected_clients:1
+</span></span><span class="line"><span class="cl">client_recent_max_input_buffer:2
+</span></span><span class="line"><span class="cl">client_recent_max_output_buffer:0
+</span></span><span class="line"><span class="cl">blocked_clients:0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Memory</span>
+</span></span><span class="line"><span class="cl">used_memory:859624
+</span></span><span class="line"><span class="cl">used_memory_human:839.48K
+</span></span><span class="line"><span class="cl">used_memory_rss:5881856
+</span></span><span class="line"><span class="cl">used_memory_rss_human:5.61M
+</span></span><span class="line"><span class="cl">used_memory_peak:859624
+</span></span><span class="line"><span class="cl">used_memory_peak_human:839.48K
+</span></span><span class="line"><span class="cl">used_memory_peak_perc:100.00%
+</span></span><span class="line"><span class="cl">used_memory_overhead:847166
+</span></span><span class="line"><span class="cl">used_memory_startup:797248
+</span></span><span class="line"><span class="cl">used_memory_dataset:12458
+</span></span><span class="line"><span class="cl">used_memory_dataset_perc:19.97%
+</span></span><span class="line"><span class="cl">allocator_allocated:1592408
+</span></span><span class="line"><span class="cl">allocator_active:1937408
+</span></span><span class="line"><span class="cl">allocator_resident:9158656
+</span></span><span class="line"><span class="cl">total_system_memory:2084024320
+</span></span><span class="line"><span class="cl">total_system_memory_human:1.94G
+</span></span><span class="line"><span class="cl">used_memory_lua:41984
+</span></span><span class="line"><span class="cl">used_memory_lua_human:41.00K
+</span></span><span class="line"><span class="cl">used_memory_scripts:0
+</span></span><span class="line"><span class="cl">used_memory_scripts_human:0B
+</span></span><span class="line"><span class="cl">number_of_cached_scripts:0
+</span></span><span class="line"><span class="cl">maxmemory:0
+</span></span><span class="line"><span class="cl">maxmemory_human:0B
+</span></span><span class="line"><span class="cl">maxmemory_policy:noeviction
+</span></span><span class="line"><span class="cl">allocator_frag_ratio:1.22
+</span></span><span class="line"><span class="cl">allocator_frag_bytes:345000
+</span></span><span class="line"><span class="cl">allocator_rss_ratio:4.73
+</span></span><span class="line"><span class="cl">allocator_rss_bytes:7221248
+</span></span><span class="line"><span class="cl">rss_overhead_ratio:0.64
+</span></span><span class="line"><span class="cl">rss_overhead_bytes:-3276800
+</span></span><span class="line"><span class="cl">mem_fragmentation_ratio:7.19
+</span></span><span class="line"><span class="cl">mem_fragmentation_bytes:5064240
+</span></span><span class="line"><span class="cl">mem_not_counted_for_evict:0
+</span></span><span class="line"><span class="cl">mem_replication_backlog:0
+</span></span><span class="line"><span class="cl">mem_clients_slaves:0
+</span></span><span class="line"><span class="cl">mem_clients_normal:49694
+</span></span><span class="line"><span class="cl">mem_aof_buffer:0
+</span></span><span class="line"><span class="cl">mem_allocator:jemalloc-5.2.1
+</span></span><span class="line"><span class="cl">active_defrag_running:0
+</span></span><span class="line"><span class="cl">lazyfree_pending_objects:0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Persistence</span>
+</span></span><span class="line"><span class="cl">loading:0
+</span></span><span class="line"><span class="cl">rdb_changes_since_last_save:0
+</span></span><span class="line"><span class="cl">rdb_bgsave_in_progress:0
+</span></span><span class="line"><span class="cl">rdb_last_save_time:1793255444
+</span></span><span class="line"><span class="cl">rdb_last_bgsave_status:ok
+</span></span><span class="line"><span class="cl">rdb_last_bgsave_time_sec:0
+</span></span><span class="line"><span class="cl">rdb_current_bgsave_time_sec:-1
+</span></span><span class="line"><span class="cl">rdb_last_cow_size:409600
+</span></span><span class="line"><span class="cl">aof_enabled:0
+</span></span><span class="line"><span class="cl">aof_rewrite_in_progress:0
+</span></span><span class="line"><span class="cl">aof_rewrite_scheduled:0
+</span></span><span class="line"><span class="cl">aof_last_rewrite_time_sec:-1
+</span></span><span class="line"><span class="cl">aof_current_rewrite_time_sec:-1
+</span></span><span class="line"><span class="cl">aof_last_bgrewrite_status:ok
+</span></span><span class="line"><span class="cl">aof_last_write_status:ok
+</span></span><span class="line"><span class="cl">aof_last_cow_size:0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Stats</span>
+</span></span><span class="line"><span class="cl">total_connections_received:6
+</span></span><span class="line"><span class="cl">total_commands_processed:8
+</span></span><span class="line"><span class="cl">instantaneous_ops_per_sec:0
+</span></span><span class="line"><span class="cl">total_net_input_bytes:346
+</span></span><span class="line"><span class="cl">total_net_output_bytes:15365
+</span></span><span class="line"><span class="cl">instantaneous_input_kbps:0.00
+</span></span><span class="line"><span class="cl">instantaneous_output_kbps:0.00
+</span></span><span class="line"><span class="cl">rejected_connections:0
+</span></span><span class="line"><span class="cl">sync_full:0
+</span></span><span class="line"><span class="cl">sync_partial_ok:0
+</span></span><span class="line"><span class="cl">sync_partial_err:0
+</span></span><span class="line"><span class="cl">expired_keys:0
+</span></span><span class="line"><span class="cl">expired_stale_perc:0.00
+</span></span><span class="line"><span class="cl">expired_time_cap_reached_count:0
+</span></span><span class="line"><span class="cl">evicted_keys:0
+</span></span><span class="line"><span class="cl">keyspace_hits:0
+</span></span><span class="line"><span class="cl">keyspace_misses:0
+</span></span><span class="line"><span class="cl">pubsub_channels:0
+</span></span><span class="line"><span class="cl">pubsub_patterns:0
+</span></span><span class="line"><span class="cl">latest_fork_usec:345
+</span></span><span class="line"><span class="cl">migrate_cached_sockets:0
+</span></span><span class="line"><span class="cl">slave_expires_tracked_keys:0
+</span></span><span class="line"><span class="cl">active_defrag_hits:0
+</span></span><span class="line"><span class="cl">active_defrag_misses:0
+</span></span><span class="line"><span class="cl">active_defrag_key_hits:0
+</span></span><span class="line"><span class="cl">active_defrag_key_misses:0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Replication</span>
+</span></span><span class="line"><span class="cl">role:master
+</span></span><span class="line"><span class="cl">connected_slaves:0
+</span></span><span class="line"><span class="cl">master_replid:62218837858e978e09cb06bf306966fd23580581
+</span></span><span class="line"><span class="cl">master_replid2:0000000000000000000000000000000000000000
+</span></span><span class="line"><span class="cl">master_repl_offset:0
+</span></span><span class="line"><span class="cl">second_repl_offset:-1
+</span></span><span class="line"><span class="cl">repl_backlog_active:0
+</span></span><span class="line"><span class="cl">repl_backlog_size:1048576
+</span></span><span class="line"><span class="cl">repl_backlog_first_byte_offset:0
+</span></span><span class="line"><span class="cl">repl_backlog_histlen:0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># CPU</span>
+</span></span><span class="line"><span class="cl">used_cpu_sys:1.166961
+</span></span><span class="line"><span class="cl">used_cpu_user:0.974048
+</span></span><span class="line"><span class="cl">used_cpu_sys_children:0.000000
+</span></span><span class="line"><span class="cl">used_cpu_user_children:0.001403
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Cluster</span>
+</span></span><span class="line"><span class="cl">cluster_enabled:0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Keyspace</span>
+</span></span><span class="line"><span class="cl">db0:keys<span class="o">=</span>4,expires<span class="o">=</span>0,avg_ttl<span class="o">=</span><span class="m">0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：info</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>What is the version of the Redis server being used on the target machine?</p>
+<p>目标机器上使用的 Redis 服务器版本是什么？</p>
+</blockquote>
+<p>根据 info 命令回显中的 <code>redis_version:5.0.7</code> 可知 Redis 服务器版本。</p>
+<p><strong>答案：5.0.7</strong></p>
+<h3 id="task-8">Task 8
+</h3><blockquote>
+<p>Which command is used to select the desired database in Redis?</p>
+<p>在 Redis 中，使用哪个命令来选择所需的数据库？</p>
+</blockquote>
+<p>在 info 命令的回显中，最后一块 <code># Keyspace</code> 会列出有数据的 db（即数据库）。</p>
+<p>这里只有一个数据库 <code>db0:keys=4,expires=0,avg_ttl=0</code>。</p>
+<ul>
+<li><code>keys=4</code> 代表库里一共 4 个 key</li>
+<li><code>expires=0</code> 设置了过期时间的 key 的数量是 0</li>
+<li><code>avg_ttl=0</code> 所有带过期 key 的平均剩余存活时间（单位毫秒）</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">10.129.136.187:6379&gt; info keyspace
+</span></span><span class="line"><span class="cl"><span class="c1"># Keyspace</span>
+</span></span><span class="line"><span class="cl">db0:keys<span class="o">=</span>4,expires<span class="o">=</span>0,avg_ttl<span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">10.129.136.187:6379&gt; <span class="k">select</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">OK
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：select</strong></p>
+<h3 id="task-9">Task 9
+</h3><blockquote>
+<p>How many keys are present inside the database with index 0?</p>
+<p>数据库中索引为 0 的键有多少个？</p>
+</blockquote>
+<p>因为 <code>db0:keys=4,expires=0,avg_ttl=0</code>，意思就是索引为 0 的数据库里有四个 key。</p>
+<p>所以这四个键都是索引为 0。</p>
+<p><strong>答案：4</strong></p>
+<h3 id="task-10">Task 10
+</h3><blockquote>
+<p>Which command is used to obtain all the keys in a database?</p>
+<p>哪个命令可以用来获取数据库中的所有键？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">10.129.136.187:6379&gt; KEYS *
+</span></span><span class="line"><span class="cl">1<span class="o">)</span> <span class="s2">&#34;numb&#34;</span>
+</span></span><span class="line"><span class="cl">2<span class="o">)</span> <span class="s2">&#34;stor&#34;</span>
+</span></span><span class="line"><span class="cl">3<span class="o">)</span> <span class="s2">&#34;flag&#34;</span>
+</span></span><span class="line"><span class="cl">4<span class="o">)</span> <span class="s2">&#34;temp&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：keys *</strong></p>
+<h3 id="submit-single-flag">Submit Single Flag
+</h3><blockquote>
+<p>Submit the flag located in the database.</p>
+<p>提交数据库中的 flag。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">10.129.136.187:6379&gt; GET flag
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;03e1d2b376c37ab3f5319922053953eb&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：03e1d2b376c37ab3f5319922053953eb</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/3.-dancing/">
+        
+        
+            <div class="article-image">
+                <img src="/p/3.-dancing/assets/image-20261028145842689.5f13efdb57844034619b217cad3bd563_hu17452011367060013287.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 3. Dancing"
+                        
+                        data-hash="md5-XxPv21eEQDRhmyF8rTvVYw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">3. Dancing</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/2.-fawn/">
+        
+        
+            <div class="article-image">
+                <img src="/p/2.-fawn/assets/image-20261027140445868.773a8c373651890c1be942a87798f1d1_hu337560040496535759.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 2. Fawn"
+                        
+                        data-hash="md5-dzqMNzZRiQwb6UKod5jx0Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2. Fawn</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/1.-meow/">
+        
+        
+            <div class="article-image">
+                <img src="/p/1.-meow/Meow.122025366ccf02d46af5e8b27d41c5df_hu16383599966656616706.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 1. Meow"
+                        
+                        data-hash="md5-EiAlNmzPAtRq9eiyfUHF3w==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">1. Meow</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
