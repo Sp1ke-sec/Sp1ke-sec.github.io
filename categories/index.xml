@@ -7,10 +7,18 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Sp1ke</copyright>
-        <lastBuildDate>Sat, 07 Nov 2026 15:15:29 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 08 Nov 2026 11:30:22 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Easy</title>
+        <link>https://Sp1ke-sec.github.io/categories/easy/</link>
+        <pubDate>Sun, 08 Nov 2026 11:30:22 +0800</pubDate>
+        
+        <guid>https://Sp1ke-sec.github.io/categories/easy/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>HTB</title>
         <link>https://Sp1ke-sec.github.io/categories/htb/</link>
-        <pubDate>Sat, 07 Nov 2026 15:15:29 +0800</pubDate>
+        <pubDate>Sun, 08 Nov 2026 11:30:22 +0800</pubDate>
         
         <guid>https://Sp1ke-sec.github.io/categories/htb/</guid>
         <description>&lt;img src="https://Sp1ke-sec.github.io/categories/htb/HackTheBox.png" alt="Featured image of post HTB" /&gt;</description>
@@ -21,14 +29,6 @@
         <pubDate>Sat, 07 Nov 2026 15:15:29 +0800</pubDate>
         
         <guid>https://Sp1ke-sec.github.io/categories/very-easy/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Easy</title>
-        <link>https://Sp1ke-sec.github.io/categories/easy/</link>
-        <pubDate>Fri, 06 Nov 2026 09:47:05 +0800</pubDate>
-        
-        <guid>https://Sp1ke-sec.github.io/categories/easy/</guid>
         <description></description>
         </item>
         <item>

