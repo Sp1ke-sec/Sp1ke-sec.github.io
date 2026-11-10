@@ -7,7 +7,76 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>Sp1ke</copyright>
-        <lastBuildDate>Sat, 07 Nov 2026 15:15:29 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/categories/very-easy/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Tue, 10 Nov 2026 13:47:14 +0800</lastBuildDate><atom:link href="https://Sp1ke-sec.github.io/categories/very-easy/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>HTB sherlocks DFIR系列</title>
+        <link>https://Sp1ke-sec.github.io/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/</link>
+        <pubDate>Mon, 09 Nov 2026 17:00:00 +0800</pubDate>
+        
+        <guid>https://Sp1ke-sec.github.io/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/</guid>
+        <description>&lt;img src="https://Sp1ke-sec.github.io/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/assets/image-20261109172652784.png" alt="Featured image of post HTB sherlocks DFIR系列" /&gt;&lt;p&gt;&lt;img src=&#34;https://Sp1ke-sec.github.io/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/assets/image-20261109172652784.png&#34;
+	width=&#34;2161&#34;
+	height=&#34;459&#34;
+	srcset=&#34;https://Sp1ke-sec.github.io/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/assets/image-20261109172652784_hu7191443732286771526.png 480w, https://Sp1ke-sec.github.io/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/assets/image-20261109172652784_hu6719496475719934932.png 1024w&#34;
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20261109172652784&#34;
+	
+	
+		class=&#34;gallery-image&#34; 
+		data-flex-grow=&#34;470&#34;
+		data-flex-basis=&#34;1129px&#34;
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;这是 HTB（Hack The Box）Sherlocks DFIR 系列的总览。&lt;/p&gt;
+&lt;p&gt;本系列按顺序记录 Sherlocks DFIR 系列 Very Easy 难度的解题过程，适合刚入门网络安全的同学跟着练习。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;点击下方 标题/图片 即可进入对应文章：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class=&#34;series-parts&#34;&gt;&lt;div class=&#34;series-part&#34;&gt;&lt;a class=&#34;series-part-cover&#34; href=&#34;https://Sp1ke-sec.github.io/p/16.-brutus/&#34;&gt;
+            &lt;img src=&#34;https://Sp1ke-sec.github.io/p/16.-brutus/assets/image-20261109174132535_hu5631800724222173738.png&#34; alt=&#34;16. Brutus&#34; loading=&#34;lazy&#34;&gt;
+        &lt;/a&gt;&lt;div class=&#34;series-part-body&#34;&gt;
+            &lt;h3 class=&#34;series-part-title&#34;&gt;&lt;a href=&#34;https://Sp1ke-sec.github.io/p/16.-brutus/&#34;&gt;16. Brutus&lt;/a&gt;&lt;/h3&gt;&lt;p class=&#34;series-part-desc&#34;&gt;DFIR 第 1 台&lt;/p&gt;&lt;/div&gt;
+    &lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;A &lt;strong&gt;Sherlock&lt;/strong&gt; can fit into one of these categories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DFIR&lt;/li&gt;
+&lt;li&gt;SOC&lt;/li&gt;
+&lt;li&gt;Malware Analysis&lt;/li&gt;
+&lt;li&gt;Threat Hunting&lt;/li&gt;
+&lt;li&gt;Threat Intelligence&lt;/li&gt;
+&lt;li&gt;Cloud&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一个 Sherlock 可以归入以下类别之一：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数字取证与事件响应 (DFIR)&lt;/li&gt;
+&lt;li&gt;安全运营中心 (SOC)&lt;/li&gt;
+&lt;li&gt;恶意软件分析&lt;/li&gt;
+&lt;li&gt;威胁狩猎&lt;/li&gt;
+&lt;li&gt;威胁情报&lt;/li&gt;
+&lt;li&gt;云&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;how-to-play-sherlocks&#34;&gt;How to Play Sherlocks
+&lt;/h1&gt;&lt;p&gt;To play a Sherlock, you need to :&lt;/p&gt;
+&lt;p&gt;要进行一个 Sherlock，你需要：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Download the Investigation Package:&lt;/strong&gt; Download the specific investigation package for your chosen scenario. This is a downloadable zip file containing the data you need to logically piece together the evidence. The password to extract this file is always &lt;strong&gt;&amp;ldquo;hacktheblue&amp;rdquo;&lt;/strong&gt;.
+下载调查资料包：下载适用于您所选场景的特定调查资料包。这是一个可下载的压缩文件，其中包含您逻辑地拼凑证据所需的数据。解压此文件的密码始终为“hacktheblue”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Review the Contents:&lt;/strong&gt; Thoroughly review the downloaded data in a secure, isolated environment.
+检查内容：在安全、隔离的环境中彻底检查下载的数据。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Answer the Tasks:&lt;/strong&gt; You will be presented with a series of mandatory questions related to the scenario. Submit your answers directly on the HackTheBox platform to solve the investigation.
+完成任务：您将看到一系列与场景相关的必答题。请直接在 HackTheBox 平台上提交答案以完成调查。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Please be aware that Sherlocks may include real malware that requires careful handling.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;请注意，Sherlocks 可能包含真正的恶意软件，需要谨慎处理。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Mandatory Readme File&lt;/strong&gt;: Each downloadable artifact will include a readme file that you must read thoroughly before proceeding with the exercise. This file contains vital instructions and precautions to ensure your safety throughout the experience.
+强制性 Readme 文件：每个可下载的资料都将包含一个 Readme 文件，您必须在进行练习之前仔细阅读该文件。本文件包含确保您在整个体验过程中安全的重要说明和注意事项。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Explicit Warning&lt;/strong&gt;: We want to emphasize that the files you download may contain malicious code. We strongly encourage you to employ a Virtual Machine (VM) when interacting with these artifacts. Using a VM provides an additional layer of protection for your system, preventing any potential harm.
+明确警告：我们特此强调，您下载的文件可能包含恶意代码。我们强烈建议您在使用这些文件时使用虚拟机 (VM)。使用虚拟机可以为您的系统提供额外的保护层，防止任何潜在的损害。&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
         <title>HTB Starting Point 入门系列</title>
         <link>https://Sp1ke-sec.github.io/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/</link>
         <pubDate>Wed, 04 Nov 2026 18:00:00 +0800</pubDate>
