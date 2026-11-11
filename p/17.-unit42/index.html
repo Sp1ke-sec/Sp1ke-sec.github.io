@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="DFIR 第 2 台">
+<title>17. Unit42</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/17.-unit42/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="17. Unit42">
+<meta property='og:description' content="DFIR 第 2 台">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/17.-unit42/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-11T11:54:09&#43;08:00'/><meta property='article:modified_time' content='2026-11-11T11:54:09&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/17.-unit42/assets/image-20261111105751467.png' />
+<meta name="twitter:title" content="17. Unit42">
+<meta name="twitter:description" content="DFIR 第 2 台"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/17.-unit42/assets/image-20261111105751467.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#task-1">Task 1</a></li>
+        <li><a href="#task-2">Task 2</a></li>
+        <li><a href="#task-3">Task 3</a></li>
+        <li><a href="#task-4">Task 4</a></li>
+        <li><a href="#task-5">Task 5</a></li>
+        <li><a href="#task-6">Task 6</a></li>
+        <li><a href="#task-7">Task 7</a></li>
+        <li><a href="#task-8">Task 8</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/17.-unit42/">
+                <img src="/p/17.-unit42/assets/image-20261111105751467_hu7228068595373902965.png"
+                        srcset="/p/17.-unit42/assets/image-20261111105751467_hu7228068595373902965.png 800w, /p/17.-unit42/assets/image-20261111105751467_hu9835104140975952527.png 1600w"
+                        width="800" 
+                        height="408" 
+                        loading="lazy"
+                        alt="Featured image of post 17. Unit42" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/17.-unit42/">17. Unit42</a>
+        </h2>
+    
+        
+        <h3 class="article-subtitle">
+            DFIR 第 2 台
+        </h3>
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-11</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="unit42">Unit42
+</h1><p><img src="/p/17.-unit42/assets/image-20261111105751467.png"
+	width="359"
+	height="183"
+	srcset="/p/17.-unit42/assets/image-20261111105751467_hu11380410334754159195.png 480w, /p/17.-unit42/assets/image-20261111105751467_hu2509800276467928034.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111105751467"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="196"
+		data-flex-basis="470px"
+	
+></p>
+<p>Sherlock Scenario</p>
+<p>夏洛克剧本</p>
+<p>In this Sherlock, you will familiarize yourself with Sysmon logs and various useful EventIDs for identifying and analyzing malicious activities on a Windows system. Palo Alto&rsquo;s Unit42 recently conducted research on an UltraVNC campaign, wherein attackers utilized a backdoored version of UltraVNC to maintain access to systems. This lab is inspired by that campaign and guides participants through the initial access stage of the campaign.</p>
+<p>在本教程中，您将熟悉 Sysmon 日志和各种有用的 EventID，以便识别和分析 Windows 系统上的恶意活动。Palo Alto Networks 的 Unit42 最近对 UltraVNC 攻击活动进行了研究，攻击者利用 UltraVNC 的后门版本来维持对系统的访问权限。这个实验室的灵感来源于那次活动，它将指导参与者完成活动的初始访问阶段。</p>
+<p>To answer the questions in this lab, you will only need the Event Viewer, with VirusTotal as an optional supplement. Below are some important Sysmon Event IDs that can be utilized in your analysis:</p>
+<p>要回答本实验中的问题，您只需要事件查看器，VirusTotal 可作为可选的补充工具。以下是一些重要的 Sysmon 事件 ID，您可以在分析中使用：</p>
+<ul>
+<li>
+<p>Event ID 1: Process Creation/Execution. Includes process path, parent process path, and command-line arguments.</p>
+<p>事件 ID 1：进程创建/执行。包括进程路径、父进程路径和命令行参数。</p>
+</li>
+<li>
+<p>Event ID 2: File Creation Time Changed. Includes the file making the change, the file to which the change is being made, tampered timestamp, and original timestamp.</p>
+<p>事件 ID 2：文件创建时间已更改。包括进行更改的文件、被更改的文件、篡改的时间戳和原始时间戳。</p>
+</li>
+<li>
+<p>Event ID 3: Network Connection. Includes the process making the connection, destination IP Address, and port.</p>
+<p>事件 ID 3：网络连接。包括建立连接的进程、目标 IP 地址和端口。</p>
+</li>
+<li>
+<p>Event ID 5: Process Termination. Includes the name of the process that was killed or terminated itself.</p>
+<p>事件 ID 5：进程终止。包括被终止或自行终止的进程名称。</p>
+</li>
+<li>
+<p>Event ID 11: File Created. Includes the process creating the file, the file being created, and its full path.</p>
+<p>事件 ID 11：文件已创建。包括创建文件的进程、正在创建的文件及其完整路径。</p>
+</li>
+<li>
+<p>Event ID 22: DNS Query. Includes the process querying the domain, the target domain name, and the IP Addresses they resolve to.</p>
+<p>事件 ID 22：DNS 查询。包括查询域的过程、目标域名及其解析到的 IP 地址。</p>
+</li>
+</ul>
+<p>下载并解压调查包 unit42.zip，记得校验 SHA1 hash = 1D8AC45395551187EAF23793CE525056C4136D6E.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unit42<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# sha1sum unit42.zip                  
+</span></span><span class="line"><span class="cl">1d8ac45395551187eaf23793ce525056c4136d6e  unit42.zip
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Unit42<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# 7z x unit42.zip <span class="c1"># 密码hacktheblue</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到一个 <code>.evtx</code> 文件。</p>
+<p><code>.evtx</code> 是 Windows Vista+ 的二进制事件日志文件（旧版是 <code>.evt</code>），存放登录、进程、服务、Sysmon、安全审计记录，Windows 默认路径： <code>C:\Windows\System32\winevt\Logs\</code>。</p>
+<p>对于 <code>.evtx</code> 文件，我们可以在 Windows 上使用时间查看器 Event Viewer 直接打开，也可以在 Powershell 中通过原生 <code>Get-WinEvent</code> 进行分析。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111111551378.png"
+	width="2267"
+	height="1373"
+	srcset="/p/17.-unit42/assets/image-20261111111551378_hu14590192751871561636.png 480w, /p/17.-unit42/assets/image-20261111111551378_hu238189193128735842.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111111551378"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="165"
+		data-flex-basis="396px"
+	
+></p>
+<h3 id="task-1">Task 1
+</h3><blockquote>
+<p>How many Event logs are there with Event ID 11?</p>
+<p>事件 ID 为 11 的事件日志有多少条？</p>
+</blockquote>
+<p>使用 Event Viewer，只需在右侧<strong>筛选当前日志</strong>，只看 ID 为 11 的事件。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111111805180.png"
+	width="1509"
+	height="219"
+	srcset="/p/17.-unit42/assets/image-20261111111805180_hu9361711742772468137.png 480w, /p/17.-unit42/assets/image-20261111111805180_hu789067907494334564.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111111805180"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="689"
+		data-flex-basis="1653px"
+	
+></p>
+<p>使用 Powershell。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">PS </span><span class="n">F:</span><span class="p">\</span><span class="n">kali_share</span><span class="p">\</span><span class="n">unit42</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">Get-WinEvent</span> <span class="n">-Path</span> <span class="p">.\</span><span class="nb">Microsoft-Windows</span><span class="n">-Sysmon-Operational</span><span class="p">.</span><span class="py">evtx</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="py">Id</span> <span class="o">-eq</span> <span class="mf">11</span> <span class="p">}).</span><span class="py">count</span>
+</span></span><span class="line"><span class="cl"><span class="mf">56</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>Get-WinEvent -Path .\xxx.evtx</code> 读取事件日志。</p>
+<p><code>Where-Object { $_.Id -eq 11 }</code> 筛选 ID 等于 11 的事件。<code>$_</code> 代表事件、<code>.Id</code> 代表 Event ID、<code>-eq</code> 代表等于。</p>
+<p><code>(...).count</code> 计数。</p>
+<p><strong>答案：56</strong></p>
+<h3 id="task-2">Task 2
+</h3><blockquote>
+<p>Whenever a process is created in memory, an event with Event ID 1 is recorded with details such as command line, hashes, process path, parent process path, etc. This information is very useful for an analyst because it allows us to see all programs executed on a system, which means we can spot any malicious processes being executed. What is the malicious process that infected the victim&rsquo;s system?</p>
+<p>每当在内存中创建一个进程时，都会记录一个事件 ID 为 1 的事件，其中包含命令行、哈希值、进程路径、父进程路径等详细信息。这些信息对分析人员非常有用，因为它使我们能够看到系统上执行的所有程序，这意味着我们可以发现任何正在执行的恶意进程。那么，究竟是什么恶意进程感染了受害者的系统呢？</p>
+</blockquote>
+<p>使用 Powershell 不会显示事件的详细信息，就像这样：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">PS </span><span class="n">F:</span><span class="p">\</span><span class="n">kali_share</span><span class="p">\</span><span class="n">unit42</span><span class="p">&gt;</span> <span class="nb">Get-WinEvent</span> <span class="n">-Path</span> <span class="p">.\</span><span class="nb">Microsoft-Windows</span><span class="n">-Sysmon-Operational</span><span class="p">.</span><span class="py">evtx</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="p">{</span> <span class="nv">$_</span><span class="p">.</span><span class="py">Id</span> <span class="o">-eq</span> <span class="mf">1</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="n">ProviderName</span><span class="err">:</span><span class="nb">Microsoft-Windows</span><span class="n">-Sysmon</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">TimeCreated</span>                      <span class="n">Id</span> <span class="n">LevelDisplayName</span> <span class="n">Message</span>
+</span></span><span class="line"><span class="cl"><span class="p">-----------</span>                      <span class="p">--</span> <span class="p">----------------</span> <span class="p">-------</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2024</span><span class="p">/</span><span class="mf">2</span><span class="p">/</span><span class="mf">14</span> <span class="mf">11</span><span class="err">:</span><span class="mf">41</span><span class="err">:</span><span class="mf">58</span>                <span class="mf">1</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2024</span><span class="p">/</span><span class="mf">2</span><span class="p">/</span><span class="mf">14</span> <span class="mf">11</span><span class="err">:</span><span class="mf">41</span><span class="err">:</span><span class="mf">57</span>                <span class="mf">1</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2024</span><span class="p">/</span><span class="mf">2</span><span class="p">/</span><span class="mf">14</span> <span class="mf">11</span><span class="err">:</span><span class="mf">41</span><span class="err">:</span><span class="mf">57</span>                <span class="mf">1</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2024</span><span class="p">/</span><span class="mf">2</span><span class="p">/</span><span class="mf">14</span> <span class="mf">11</span><span class="err">:</span><span class="mf">41</span><span class="err">:</span><span class="mf">57</span>                <span class="mf">1</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2024</span><span class="p">/</span><span class="mf">2</span><span class="p">/</span><span class="mf">14</span> <span class="mf">11</span><span class="err">:</span><span class="mf">41</span><span class="err">:</span><span class="mf">56</span>                <span class="mf">1</span>
+</span></span><span class="line"><span class="cl"><span class="mf">2024</span><span class="p">/</span><span class="mf">2</span><span class="p">/</span><span class="mf">14</span> <span class="mf">11</span><span class="err">:</span><span class="mf">41</span><span class="err">:</span><span class="mf">45</span>                <span class="mf">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用事件查看器，筛选 ID=1 的事件。</p>
+<p>按时间先后排序，查看事件详细信息，重点看 CommandLine 字段，这里显示了具体执行的命令。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111112911627.png"
+	width="1172"
+	height="668"
+	srcset="/p/17.-unit42/assets/image-20261111112911627_hu3215161685928996796.png 480w, /p/17.-unit42/assets/image-20261111112911627_hu6094086827390772937.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111112911627"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="175"
+		data-flex-basis="421px"
+	
+></p>
+<p>其它事件都执行了一些常规文件，而第二个事件执行了一个用户下载的陌生文件。</p>
+<p><strong>答案：C:\Users\CyberJunkie\Downloads\Preventivo24.02.14.exe.exe</strong></p>
+<h3 id="task-3">Task 3
+</h3><blockquote>
+<p>Which Cloud drive was used to distribute the malware?</p>
+<p>恶意软件是通过哪个云盘传播的？</p>
+</blockquote>
+<p>通过云盘下载，会通过 DNS 请求查询云盘对应域名的 IP，所以筛选 ID 22，即 DNS Query。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111113625024.png"
+	width="1757"
+	height="987"
+	srcset="/p/17.-unit42/assets/image-20261111113625024_hu2342081993622415466.png 480w, /p/17.-unit42/assets/image-20261111113625024_hu14210080614471738615.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111113625024"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="178"
+		data-flex-basis="427px"
+	
+></p>
+<p>只用看前两条，因为第三条时间已经是在恶意文件执行之后。</p>
+<p>第一条请求的是 <code>uc2f030016253ec53f4953980a4e.dl.dropboxusercontent.com</code>。</p>
+<p>第二条请求的是 <code>d.dropbox.com</code>。</p>
+<p>Dropbox 是国外的云盘</p>
+<p><strong>答案：dropbox</strong></p>
+<h3 id="task-4">Task 4
+</h3><blockquote>
+<p>For many of the files it wrote to disk, the initial malicious file used a defense evasion technique called Time Stomping, where the file creation date is changed to make it appear older and blend in with other files. What was the timestamp changed to for the PDF file?</p>
+<p>对于它写入磁盘的许多文件，初始恶意文件使用了一种称为时间篡改的防御规避技术，该技术会更改文件的创建日期，使其看起来更旧，并与其他文件混为一谈。PDF文件的时间戳被更改成了什么？</p>
+</blockquote>
+<p>Event ID 2 = File Creation Time Changed（文件创建时间被修改）。</p>
+<p>筛选 ID=2，找到对应的 PDF 文件。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111114300285.png"
+	width="1787"
+	height="951"
+	srcset="/p/17.-unit42/assets/image-20261111114300285_hu17896886942514313663.png 480w, /p/17.-unit42/assets/image-20261111114300285_hu5262838126665625712.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111114300285"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="187"
+		data-flex-basis="450px"
+	
+></p>
+<p>CreationUtcTime 就是修改后的时间。</p>
+<p><strong>答案：2024-01-14 08:10:06</strong></p>
+<h3 id="task-5">Task 5
+</h3><blockquote>
+<p>The malicious file dropped a few files on disk. Where was &ldquo;once.cmd&rdquo; created on disk? Please answer with the full path along with the filename.</p>
+<p>恶意文件在磁盘上留下了一些文件。“once.cmd”文件创建在磁盘的哪个位置？请提供完整路径和文件名。</p>
+</blockquote>
+<p>Event ID 11 =  File Created（文件已创建）。</p>
+<p>筛选 ID=11，找到对应的 <code>once.cmd</code> 文件。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111114535175.png"
+	width="1788"
+	height="986"
+	srcset="/p/17.-unit42/assets/image-20261111114535175_hu16858163648618959893.png 480w, /p/17.-unit42/assets/image-20261111114535175_hu13684362876923451638.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111114535175"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="181"
+		data-flex-basis="435px"
+	
+></p>
+<p><strong>答案：C:\Users\CyberJunkie\AppData\Roaming\Photo and Fax Vn\Photo and vn  1.1.2\install\F97891C\WindowsVolume\Games\once.cmd</strong></p>
+<h3 id="task-6">Task 6
+</h3><blockquote>
+<p>The malicious file attempted to reach a dummy domain, most likely to check the internet connection status. What domain name did it try to connect to?</p>
+<p>恶意文件试图连接到一个虚假域名，很可能是为了检查网络连接状态。它尝试连接的域名是什么？</p>
+</blockquote>
+<p>筛选 ID=22，找到对应的域名。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111114956751.png"
+	width="1525"
+	height="924"
+	srcset="/p/17.-unit42/assets/image-20261111114956751_hu8397682235999490162.png 480w, /p/17.-unit42/assets/image-20261111114956751_hu4552012633772183874.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111114956751"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="165"
+		data-flex-basis="396px"
+	
+></p>
+<p><strong>答案：www.example.com</strong></p>
+<h3 id="task-7">Task 7
+</h3><blockquote>
+<p>Which IP address did the malicious process try to reach out to?</p>
+<p>恶意进程尝试连接哪个IP地址？</p>
+</blockquote>
+<p>Event ID 3 = NetworkConnect（网络连接）。</p>
+<p>筛选 ID=3，找到对应的 IP 地址。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111114806648.png"
+	width="1789"
+	height="1334"
+	srcset="/p/17.-unit42/assets/image-20261111114806648_hu8962911076029868532.png 480w, /p/17.-unit42/assets/image-20261111114806648_hu11858067468996586127.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111114806648"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="134"
+		data-flex-basis="321px"
+	
+></p>
+<p><strong>答案：93.184.216.34</strong></p>
+<h3 id="task-8">Task 8
+</h3><blockquote>
+<p>The malicious process terminated itself after infecting the PC with a backdoored variant of UltraVNC. When did the process terminate itself?</p>
+<p>恶意进程在用植入后门的 UltraVNC 变种程序感染电脑后自行终止。该进程何时自行终止的？</p>
+</blockquote>
+<p>Event ID 5 = Process Termination（进程终止）。</p>
+<p>筛选 ID=5，找到对应事件的时间。</p>
+<p><img src="/p/17.-unit42/assets/image-20261111115255150.png"
+	width="1788"
+	height="874"
+	srcset="/p/17.-unit42/assets/image-20261111115255150_hu7070261323109987909.png 480w, /p/17.-unit42/assets/image-20261111115255150_hu13428769272854512420.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261111115255150"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="204"
+		data-flex-basis="490px"
+	
+></p>
+<p><strong>答案：2024-02-14 03:41:58</strong></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/assets/image-20261109172652784.9d097f62fa823dd4d18a40bd7f05eaf9_hu209872944237851452.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB sherlocks DFIR系列"
+                        
+                        data-hash="md5-nQl/YvqCPdTRikC9fwXq&#43;Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB sherlocks DFIR系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/assets/image-20261104205444073.d9e4fd976e03998d17a7cc2012db183c_hu3527743922139951764.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB Starting Point 入门系列"
+                        
+                        data-hash="md5-2eT9l24DmY0Xp8wgEtsYPA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB Starting Point 入门系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mazesec-spindle/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MazeSec Spindle</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
