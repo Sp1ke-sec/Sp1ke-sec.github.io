@@ -10,7 +10,7 @@
 <meta property='og:description' content="演示说明">
 <meta property='og:url' content='https://Sp1ke-sec.github.io/tags/'>
 <meta property='og:site_name' content='Sp1ke-sec 安全博客'>
-<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-11-11T11:54:09&#43;08:00 '/>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2026-11-12T17:44:17&#43;08:00 '/>
 <meta name="twitter:title" content="Tags">
 <meta name="twitter:description" content="演示说明"><link rel="alternate" type="application/rss&#43;xml" href="https://Sp1ke-sec.github.io/tags/index.xml">
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -298,11 +298,11 @@
 
     <div class="tagCloud-tags">
         
-            <a href="/categories/htb/" class="font_size_19">
+            <a href="/categories/htb/" class="font_size_20">
                 HTB
             </a>
         
-            <a href="/categories/very-easy/" class="font_size_18">
+            <a href="/categories/very-easy/" class="font_size_19">
                 Very Easy
             </a>
         
@@ -376,6 +376,55 @@
 
         document.head.appendChild(customFont);
     }());
+</script>
+<style>
+.article-content .highlight-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-border-radius);
+}
+.article-content .highlight-wrap .highlight {
+  margin:0;
+}
+ 
+.article-content .highlight-wrap.collapse {
+  max-height: 380px;
+}
+ 
+.article-content .highlight-wrap.collapse::after {
+  content: "";
+  position: absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height: 80px;
+  background: linear-gradient(transparent, var(--pre-background-color));
+  pointer-events: none;
+}
+ 
+.article-content .code-expand-btn {
+  position:absolute;
+  bottom:8px;
+  right:12px;
+  z-index:2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--card-background);
+  color: var(--text-color);
+  cursor: pointer;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.highlight-wrap').forEach(wrap=>{
+    const btn = wrap.querySelector('.code-expand-btn');
+    btn.addEventListener('click', ()=>{
+      wrap.classList.toggle('collapse');
+      btn.innerText = wrap.classList.contains('collapse') ? "▼ 展开" : "▲ 收起";
+    })
+  })
+})
 </script>
 
     </body>
